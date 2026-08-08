@@ -33,6 +33,21 @@ importers:
         specifier: ^7.37.5
         version: 7.37.5(eslint@9.39.5(supports-color@8.1.1))
 
+  packages/gb-printer-schemas:
+    dependencies:
+      dayjs:
+        specifier: ^1.11.21
+        version: 1.11.21
+      gb-image-decoder:
+        specifier: ^2.0.4
+        version: 2.0.4(ohash@2.0.11)
+      gb-palettes:
+        specifier: ^1.0.14
+        version: 1.0.14
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
+
   packages/gb-printer-web:
     devDependencies:
       '@emotion/cache':
@@ -161,6 +176,9 @@ importers:
       gb-palettes:
         specifier: ^1.0.14
         version: 1.0.14
+      gb-printer-schemas:
+        specifier: workspace:*
+        version: link:../gb-printer-schemas
       gbp-decode:
         specifier: ^1.4.1
         version: 1.4.1

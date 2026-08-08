@@ -2,6 +2,7 @@ import chunk from 'chunk';
 import { saveAs } from 'file-saver';
 import { type RGBNTiles, type RGBNPalette } from 'gb-image-decoder';
 import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
+import { type Palette , type Image, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
 import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
 import { getQueryClient } from '@/contexts/QueryClient';
@@ -21,8 +22,6 @@ import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
 import unique from '@/tools/unique';
-import { type Image, type MonochromeImage, type RGBNImage } from '@/types/Image';
-import { type Palette } from '@/types/Palette';
 import { type VideoParams } from '@/types/VideoParams';
 
 interface GifFrameData {

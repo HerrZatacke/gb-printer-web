@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Box from '@mui/material/Box';
-import { maxTiles, RGBNPalette, RGBNTiles } from 'gb-image-decoder';
-import { getMonochromeImageUrl, getRGBNImageUrl, Rotation } from 'gb-image-decoder';
+import { maxTiles, RGBNPalette, RGBNTiles, getMonochromeImageUrl, getRGBNImageUrl, Rotation } from 'gb-image-decoder';
 import React, { CSSPropertiesVars, useEffect, useMemo, useState } from 'react';
 import ImageLoading from '@/components/ImageLoading';
 import { type Dimensions, dimensionsFromTileCount } from '@/hooks/useImageDimensions';

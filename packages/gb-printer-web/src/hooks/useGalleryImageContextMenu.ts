@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { type RGBNImage } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { DialoqQuestionType } from '@/consts/dialog';
@@ -22,7 +23,6 @@ import {
 } from '@/stores/stores';
 import { canShare } from '@/tools/canShare';
 import unique from '@/tools/unique';
-import { type RGBNImage } from '@/types/Image';
 
 interface UseGalleryImageContextMenu {
   isSelected: boolean;

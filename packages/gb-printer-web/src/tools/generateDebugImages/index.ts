@@ -1,10 +1,8 @@
 // Currently unused, but may be added to "window" for debugging purposes
+import { Date, toCreationDate, type MonochromeImage } from 'gb-printer-schemas';
 import { delay } from '@/tools/delay';
 import padToHeight from '@/tools/padToHeight';
-import { Date } from '@/tools/safeDate';
 import saveNewImage from '@/tools/saveNewImage';
-import { toCreationDate } from '@/tools/toCreationDate';
-import { type MonochromeImage } from '@/types/Image';
 
 const generateRandomImage = (numLines: number): string[] => {
   const totalTiles = 20 * numLines;

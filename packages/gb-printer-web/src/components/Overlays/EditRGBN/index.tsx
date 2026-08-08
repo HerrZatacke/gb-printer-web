@@ -17,6 +17,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { type RGBNHashes } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import ImageRender from '@/components/ImageRender';
@@ -25,7 +26,6 @@ import RGBNPreviewImage from '@/components/Overlays/EditRGBN/RGBNPreviewImage';
 import RGBNSelect from '@/components/RGBNSelect';
 import { RGBGrouping, useEditRGBNImages } from '@/hooks/useEditRGBNImages';
 import { getChannelColor } from '@/tools/getChannelColor';
-import { type RGBNHashes } from '@/types/Image';
 
 function previewPalette(isR: boolean, isG: boolean, isB: boolean, isN: boolean): string[] {
   const rPart = isR ? 255 : 0;

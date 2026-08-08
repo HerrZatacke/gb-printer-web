@@ -1,5 +1,6 @@
 import type FileSaver from 'file-saver';
 import { type RGBNTiles, type RGBNPalette, type ExportFrameMode } from 'gb-image-decoder';
+import { type Palette , type Image } from 'gb-printer-schemas';
 import z from 'zod';
 import { ConfigParamType } from '@/consts/plugins';
 import { type ImportFn } from '@/hooks/useImportExportSettings';
@@ -11,8 +12,6 @@ import {
 } from '@/stores/stores';
 import { type HandeFileImportFn } from '@/tools/getHandleFileImport';
 import { type Dialog } from '@/types/Dialog';
-import { type Image } from '@/types/Image';
-import { type Palette } from '@/types/Palette';
 import { type PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
 
 export interface PluginFunctions {

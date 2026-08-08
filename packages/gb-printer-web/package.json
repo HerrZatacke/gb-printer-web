@@ -69,6 +69,7 @@
     "filesize": "^11.0.22",
     "gb-image-decoder": "^2.0.4",
     "gb-palettes": "^1.0.14",
+    "gb-printer-schemas": "workspace:*",
     "gbp-decode": "^1.4.1",
     "globby": "^16.2.2",
     "idb": "^8.0.3",

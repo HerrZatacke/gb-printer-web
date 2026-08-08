@@ -1,13 +1,11 @@
+import { PaletteSchema , Date , toCreationDate } from 'gb-printer-schemas';
+import { type Image, ImageSchema } from 'gb-printer-schemas';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
-import { Date } from '@/tools/safeDate';
-import { toCreationDate } from '@/tools/toCreationDate';
 import { BinaryStoreItemSchema } from '@/types/BinaryStoreItem';
 import { FrameSchema } from '@/types/Frame';
 import { FrameGroupSchema } from '@/types/FrameGroup';
-import { type Image, ImageSchema } from '@/types/Image';
 import { SerializableImageGroupSchema } from '@/types/ImageGroup';
-import { PaletteSchema } from '@/types/Palette';
 import { PluginSchema } from '@/types/Plugin';
 
 const DAY_MS = 24 * 60 * 60 * 1000;

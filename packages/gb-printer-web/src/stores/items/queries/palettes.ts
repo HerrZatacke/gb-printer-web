@@ -1,10 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
+import { Palette } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
 import { palettesKeys } from '@/stores/items/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/items/queries/consts';
-import { Palette } from '@/types/Palette';
 
 const warmPaletteCache = (palettes: Palette[]) => {
   const queryClient = getQueryClient();

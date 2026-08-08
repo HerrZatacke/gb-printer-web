@@ -1,0 +1,17 @@
+{
+  "name": "gb-printer-schemas",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "dayjs": "^1.11.21",
+    "gb-palettes": "^1.0.14",
+    "gb-image-decoder": "^2.0.4",
+    "zod": "^4.4.3"
+  }
+}

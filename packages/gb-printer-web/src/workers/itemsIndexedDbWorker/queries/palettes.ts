@@ -1,6 +1,6 @@
 import predefinedPalettes from 'gb-palettes';
+import { type Palette, PaletteSchema } from 'gb-printer-schemas';
 import z from 'zod';
-import { type Palette, PaletteSchema } from '@/types/Palette';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {

@@ -1,7 +1,7 @@
+import { type Image, ImageSchema } from 'gb-printer-schemas';
 import z from 'zod';
 import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
-import { type Image, ImageSchema } from '@/types/Image';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { facetFromImage, getFacetMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';

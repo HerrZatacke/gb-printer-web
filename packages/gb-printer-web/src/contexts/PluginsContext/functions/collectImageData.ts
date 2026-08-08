@@ -1,5 +1,6 @@
 import { BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
 import { type RGBNPalette, type RGBNTiles } from 'gb-image-decoder';
+import { type Palette, type MonochromeImage } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { framesByIdsQueryOptions } from '@/stores/items/queries/frames';
 import { imageByHashQueryOptions } from '@/stores/items/queries/images';
@@ -10,8 +11,6 @@ import { getMonochromeImageCreationParams } from '@/tools/getMonochromeImageCrea
 import { getPaletteSettings } from '@/tools/getPaletteSettings';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { loadImageTiles } from '@/tools/loadImageTiles';
-import { type MonochromeImage } from '@/types/Image';
-import { type Palette } from '@/types/Palette';
 import { type CollectImageDataFn, type GetCanvasOptions, type PluginImageData } from '@/types/Plugin';
 
 export const collectImageData: CollectImageDataFn = async (hash: string): Promise<PluginImageData> => {

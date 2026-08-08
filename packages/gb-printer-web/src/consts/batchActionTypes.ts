@@ -1,4 +1,4 @@
-import { type MonochromeImage, type Image } from '@/types/Image';
+import { type MonochromeImage, type Image } from 'gb-printer-schemas';
 
 export const BatchActionType = {
   DELETE: 'delete',

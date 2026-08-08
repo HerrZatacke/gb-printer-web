@@ -1,11 +1,11 @@
 import { type QueryClient } from '@tanstack/react-query';
+import { Image } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
 import { imagesKeys } from '@/stores/items/queries/cacheKeys';
 import { resetImageCaches } from '@/stores/items/queries/cacheResets';
 import { STALE_TIME } from '@/stores/items/queries/consts';
-import { Image } from '@/types/Image';
 import {
   type ImageQueryFilters,
   type ImageQueryParams,

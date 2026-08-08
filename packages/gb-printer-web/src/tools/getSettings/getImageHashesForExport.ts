@@ -1,4 +1,4 @@
-import { type Image } from '@/types/Image';
+import { type Image } from 'gb-printer-schemas';
 
 const getImageHashesForExport = (what: 'images' | 'selected_images', images: Image[], imageSelection: string[]): string[] => {
 

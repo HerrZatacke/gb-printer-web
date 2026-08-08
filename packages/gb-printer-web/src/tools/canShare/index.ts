@@ -1,4 +1,4 @@
-import { Date } from '@/tools/safeDate';
+import { Date } from 'gb-printer-schemas';
 
 let canShareValue: boolean | null = null;
 

@@ -1,4 +1,5 @@
 import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
+import { type ImageMetadata, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import useBatchUpdate from '@/hooks/useBatchUpdate';
@@ -11,7 +12,6 @@ import { isRGBNImage } from '@/tools/isRGBNImage';
 import { getImageTileCount } from '@/tools/loadImageTiles';
 import modifyTagChanges from '@/tools/modifyTagChanges';
 import { type TagUpdateMode } from '@/tools/modifyTagChanges';
-import { type ImageMetadata, type MonochromeImage, type RGBNImage } from '@/types/Image';
 import { type ImageUpdates } from '@/types/ImageActions';
 
 interface Batch {

@@ -1,10 +1,10 @@
+import { type Image } from 'gb-printer-schemas';
 import { DialoqQuestionType } from '@/consts/dialog';
 import { CompatibilityActionType } from '@/consts/plugins';
 import { type ImportFn } from '@/hooks/useImportExportSettings';
 import { type UseStores } from '@/hooks/useStores';
 import getHandleFileImport from '@/tools/getHandleFileImport';
 import { Dialog, type DialogQuestion } from '@/types/Dialog';
-import { type Image } from '@/types/Image';
 import { type PluginFunctions } from '@/types/Plugin';
 import { type CompatibilityAction, type PluginCompatibilityWrapper } from '@/types/PluginCompatibility';
 

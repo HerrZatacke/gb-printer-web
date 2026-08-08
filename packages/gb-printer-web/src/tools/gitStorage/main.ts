@@ -1,3 +1,4 @@
+import { Date } from 'gb-printer-schemas';
 import Queue from 'promise-queue';
 import { SyncDirection } from '@/consts/sync';
 import {
@@ -9,7 +10,6 @@ import {
 } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import getUploadFiles from '@/tools/getUploadFiles';
-import { Date } from '@/tools/safeDate';
 import { saveLocalStorageItems } from '@/tools/saveLocalStorageItems';
 import { type JSONExport } from '@/types/ExportState';
 import { type AddToQueueFn, type GitStorageSettings } from '@/types/Sync';

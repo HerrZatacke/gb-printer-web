@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
+import { Date } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import DownloadOptionsForm from '@/components/Overlays/DownloadOptions/DownloadOptionsForm';
@@ -21,7 +22,6 @@ import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import { locales } from '@/i18n/locales';
 import { useSettingsStore } from '@/stores/stores';
-import { Date } from '@/tools/safeDate';
 
 interface ClickActionOption {
   translationKey: string;

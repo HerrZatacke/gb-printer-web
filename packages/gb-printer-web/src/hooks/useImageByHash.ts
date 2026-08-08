@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { Image } from 'gb-printer-schemas';
 import { imageByHashQueryOptions } from '@/stores/items/queries/images';
-import { Image } from '@/types/Image';
 
 export interface UseImageByHash {
   isLoading: boolean;

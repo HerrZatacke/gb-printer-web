@@ -1,9 +1,9 @@
+import { type Palette } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import { PaletteSortMode } from '@/consts/paletteSortModes';
 import { useGlobalQueries } from '@/hooks/useGlobalQueries';
 import { useSettingsStore } from '@/stores/stores';
-import { type Palette } from '@/types/Palette';
 
 export interface PaletteSortOption {
   label: string;

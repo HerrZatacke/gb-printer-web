@@ -1,4 +1,4 @@
-import { type RGBNHashes } from '@/types/Image';
+import { type RGBNHashes } from 'gb-printer-schemas';
 
 export const getChannelColor = (colorKey: keyof RGBNHashes) => {
   switch (colorKey) {
