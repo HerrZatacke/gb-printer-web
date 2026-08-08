@@ -53,6 +53,7 @@ const eslintConfig = defineConfig([
         },
       ],
       "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+      'import/no-duplicates': 'error',
       "no-restricted-globals": [
         "error",
         { "name": "Date", "message": "Use `import { Date } from '@/tools/safeDate';` instead of using the global." }
