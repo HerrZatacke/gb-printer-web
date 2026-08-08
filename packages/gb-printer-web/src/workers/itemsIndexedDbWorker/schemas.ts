@@ -6,8 +6,9 @@ import {
   FrameSchema,
   FrameGroupSchema,
   PluginSchema,
+  ImageSchema,
+  type Image,
 } from 'gb-printer-schemas';
-import { type Image, ImageSchema } from 'gb-printer-schemas';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { BinaryStoreItemSchema } from '@/types/BinaryStoreItem';

@@ -1,7 +1,6 @@
 'use client';
 
-import React, { createContext, useContext } from 'react';
-import { type PropsWithChildren } from 'react';
+import React, { createContext, useContext, type PropsWithChildren } from 'react';
 import { useContextHook } from '@/contexts/GalleryTreeContext/hook';
 import { type GalleryTreeContextType } from '@/types/galleryTreeContext';
 

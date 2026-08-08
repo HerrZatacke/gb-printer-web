@@ -2,8 +2,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import { useTranslations } from 'next-intl';
-import React, { useMemo, useState } from 'react';
-import { type ReactNode } from 'react';
+import React, { useMemo, useState, type ReactNode } from 'react';
+
 
 interface UseAsPasswordField {
   type: 'text' | 'password';

@@ -1,6 +1,5 @@
 import { type Image, type RGBNHashes, type RGBNImage, type Frame } from 'gb-printer-schemas';
-import { loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
-import { type FrameData } from '@/tools/applyFrame/frameData';
+import { loadFrameData, saveFrameData, type FrameData } from '@/tools/applyFrame/frameData';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { reduceItems } from '@/tools/reduceArray';
 import { load, save } from '@/tools/storage';

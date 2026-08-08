@@ -1,5 +1,4 @@
-import { BW_PALETTE, BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob } from 'gb-image-decoder';
-import { type RGBNTiles, type ExportFrameMode, type RGBNPalette } from 'gb-image-decoder';
+import { BW_PALETTE, BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob, type RGBNTiles, type ExportFrameMode, type RGBNPalette } from 'gb-image-decoder';
 import { type Palette, type Image, type MonochromeImage } from 'gb-printer-schemas';
 import { type FileNameStyle } from '@/consts/fileNameStyles';
 import { getTxtFile } from '@/tools/download/getTxtFile';

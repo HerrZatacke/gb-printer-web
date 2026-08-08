@@ -10,8 +10,7 @@ import { useEditStore } from '@/stores/stores';
 import { type TagChange } from '@/tools/applyTagChanges';
 import { isRGBNImage } from '@/tools/isRGBNImage';
 import { getImageTileCount } from '@/tools/loadImageTiles';
-import modifyTagChanges from '@/tools/modifyTagChanges';
-import { type TagUpdateMode } from '@/tools/modifyTagChanges';
+import modifyTagChanges, { type TagUpdateMode } from '@/tools/modifyTagChanges';
 import { type ImageUpdates } from '@/types/ImageActions';
 
 interface Batch {

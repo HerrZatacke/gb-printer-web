@@ -1,5 +1,4 @@
-import { createTheme, lighten } from '@mui/material';
-import { type Components, type PaletteMode, type Theme } from '@mui/material';
+import { createTheme, lighten, type Components, type PaletteMode, type Theme } from '@mui/material';
 import { blend } from '@mui/system';
 import { appBar } from '@/styles/components/appBar';
 import { button } from '@/styles/components/button';

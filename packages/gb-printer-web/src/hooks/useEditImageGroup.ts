@@ -1,6 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { toCreationDate } from 'gb-printer-schemas';
-import { type SerializableImageGroup, TreeImageGroup } from 'gb-printer-schemas';
+import { toCreationDate, type SerializableImageGroup, TreeImageGroup } from 'gb-printer-schemas';
 import { useEffect, useMemo, useState } from 'react';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';

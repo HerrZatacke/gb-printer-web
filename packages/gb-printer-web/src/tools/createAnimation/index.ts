@@ -1,7 +1,6 @@
 import chunk from 'chunk';
 import { saveAs } from 'file-saver';
-import { type RGBNTiles, type RGBNPalette } from 'gb-image-decoder';
-import { getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
+import { type RGBNTiles, type RGBNPalette, getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
 import { type Palette, type Image, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
 import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';

@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { Palette } from 'gb-printer-schemas';
 import {
   Date,
-  toCreationDate,
   type Image,
+  type Palette,
   type SerializableImageGroup,
+  toCreationDate,
 } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';

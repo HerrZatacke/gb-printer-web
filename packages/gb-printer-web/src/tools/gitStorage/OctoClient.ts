@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
-import { type RestEndpointMethodTypes } from '@octokit/rest';
-import { Octokit } from '@octokit/rest';
+import { type RestEndpointMethodTypes, Octokit } from '@octokit/rest';
 import { Date } from 'gb-printer-schemas';
 import readFileAs, { ReadAs } from '@/tools/readFileAs';
 import { type RepoFile, type RepoTasks } from '@/types/Export';

@@ -1,7 +1,6 @@
 'use client';
 
-import { createContext, useContext } from 'react';
-import { type PropsWithChildren } from 'react';
+import { createContext, useContext, type PropsWithChildren } from 'react';
 import { RemotePrinterContextValue, useContextHook } from '@/contexts/RemotePrinterContext/hook';
 
 const remotePrinterContext = createContext<RemotePrinterContextValue | null>(null);
