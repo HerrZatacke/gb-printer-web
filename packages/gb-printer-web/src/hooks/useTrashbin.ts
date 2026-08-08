@@ -3,8 +3,8 @@ import {
   Date,
   toCreationDate,
   type Image,
+  type Frame,
 } from 'gb-printer-schemas';
-import { type Frame } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { getQueryClient } from '@/contexts/QueryClient';

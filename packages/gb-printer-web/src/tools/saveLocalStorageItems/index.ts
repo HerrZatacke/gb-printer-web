@@ -1,5 +1,4 @@
-import { type Image, type RGBNHashes, type RGBNImage } from 'gb-printer-schemas';
-import { type Frame } from 'gb-printer-schemas';
+import { type Image, type RGBNHashes, type RGBNImage, type Frame } from 'gb-printer-schemas';
 import { loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
 import { type FrameData } from '@/tools/applyFrame/frameData';
 import { isRGBNImage } from '@/tools/isRGBNImage';

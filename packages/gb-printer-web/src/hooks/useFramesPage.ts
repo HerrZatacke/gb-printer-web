@@ -1,5 +1,4 @@
-import { type Frame } from 'gb-printer-schemas';
-import { type FrameGroup } from 'gb-printer-schemas';
+import { type Frame, type FrameGroup } from 'gb-printer-schemas';
 import { useState, useEffect } from 'react';
 import { type ExportTypes } from '@/consts/exportTypes';
 import { useActivePalette } from '@/hooks/useActivePalette';

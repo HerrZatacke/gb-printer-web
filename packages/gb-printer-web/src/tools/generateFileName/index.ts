@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import filenamify from 'filenamify/browser';
 import { type RGBNPalette } from 'gb-image-decoder';
-import { type Palette , type Image } from 'gb-printer-schemas';
+import { type Palette, type Image } from 'gb-printer-schemas';
 import { fromCreationDate } from 'gb-printer-schemas';
 import { FileNameStyle } from '@/consts/fileNameStyles';
 

@@ -1,11 +1,12 @@
-import { type Palette , type Image } from 'gb-printer-schemas';
 import {
+  type Frame,
+  type FrameGroup,
+  type Image,
+  type Palette,
+  type Plugin,
   type SerializableImageGroup,
   type TreeImageGroup,
 } from 'gb-printer-schemas';
-import { type Frame } from 'gb-printer-schemas';
-import { type FrameGroup } from 'gb-printer-schemas';
-import { type Plugin } from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';

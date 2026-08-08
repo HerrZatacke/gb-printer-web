@@ -4,8 +4,8 @@ import {
   Date,
   toCreationDate,
   type Image,
+  type SerializableImageGroup,
 } from 'gb-printer-schemas';
-import { type SerializableImageGroup } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';

@@ -1,6 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { Image } from 'gb-printer-schemas';
-import { Frame } from 'gb-printer-schemas';
+import { type Image, type Frame } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';

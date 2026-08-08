@@ -1,8 +1,12 @@
-import { PaletteSchema , ImageSchema } from 'gb-printer-schemas';
-import { SerializableImageGroupSchema } from 'gb-printer-schemas';
-import { type Frame, FrameSchema } from 'gb-printer-schemas';
-import { FrameGroupSchema } from 'gb-printer-schemas';
-import { PluginSchema } from 'gb-printer-schemas';
+import {
+  type Frame,
+  FrameSchema,
+  FrameGroupSchema,
+  ImageSchema,
+  PaletteSchema,
+  PluginSchema,
+  SerializableImageGroupSchema,
+} from 'gb-printer-schemas';
 import hasher from 'object-hash';
 import z from 'zod';
 

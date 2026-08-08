@@ -1,6 +1,4 @@
-import { type Palette , type Image } from 'gb-printer-schemas';
-import { type SerializableImageGroup } from 'gb-printer-schemas';
-import { type Frame } from 'gb-printer-schemas';
+import { type Palette, type Image, type SerializableImageGroup, type Frame } from 'gb-printer-schemas';
 import uniqueBy from '@/tools/unique/by';
 import { type ExportableState } from '@/types/ExportState';
 

@@ -1,6 +1,5 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
-import { type Frame } from 'gb-printer-schemas';
-import { type FrameGroup } from 'gb-printer-schemas';
+import { type Frame, type FrameGroup } from 'gb-printer-schemas';
 import { useCallback, useMemo } from 'react';
 import { useFrames } from '@/hooks/useFrames';
 import {

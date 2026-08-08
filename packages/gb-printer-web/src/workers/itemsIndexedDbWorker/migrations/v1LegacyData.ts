@@ -1,7 +1,9 @@
-import { PaletteSchema } from 'gb-printer-schemas';
-import { FrameSchema } from 'gb-printer-schemas';
-import { FrameGroupSchema } from 'gb-printer-schemas';
-import { PluginSchema } from 'gb-printer-schemas';
+import {
+  PaletteSchema,
+  FrameSchema,
+  FrameGroupSchema,
+  PluginSchema,
+} from 'gb-printer-schemas';
 import {
   openDB,
   type IDBPDatabase,

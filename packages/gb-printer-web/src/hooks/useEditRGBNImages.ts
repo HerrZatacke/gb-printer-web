@@ -3,8 +3,8 @@ import {
   toCreationDate,
   type MonochromeImage,
   type RGBNHashes,
+  type SerializableImageGroup,
 } from 'gb-printer-schemas';
-import { type SerializableImageGroup } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import objectHash from 'object-hash';
 import { useCallback, useEffect, useMemo, useState } from 'react';

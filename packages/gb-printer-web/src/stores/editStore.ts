@@ -1,4 +1,4 @@
-import { type Palette , type CurrentEditBatch } from 'gb-printer-schemas';
+import { type Palette, type CurrentEditBatch } from 'gb-printer-schemas';
 import { create } from 'zustand';
 import { type PickColors } from '@/types/PickColors';
 

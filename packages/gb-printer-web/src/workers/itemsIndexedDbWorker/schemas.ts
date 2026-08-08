@@ -1,9 +1,13 @@
-import { PaletteSchema , Date , toCreationDate } from 'gb-printer-schemas';
+import {
+  PaletteSchema,
+  Date,
+  toCreationDate,
+  SerializableImageGroupSchema,
+  FrameSchema,
+  FrameGroupSchema,
+  PluginSchema,
+} from 'gb-printer-schemas';
 import { type Image, ImageSchema } from 'gb-printer-schemas';
-import { SerializableImageGroupSchema } from 'gb-printer-schemas';
-import { FrameSchema } from 'gb-printer-schemas';
-import { FrameGroupSchema } from 'gb-printer-schemas';
-import { PluginSchema } from 'gb-printer-schemas';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { BinaryStoreItemSchema } from '@/types/BinaryStoreItem';

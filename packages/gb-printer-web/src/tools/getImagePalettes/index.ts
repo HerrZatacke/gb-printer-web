@@ -1,5 +1,5 @@
 import { type RGBNPalette } from 'gb-image-decoder';
-import { type Palette , type Image, type MonochromeImage } from 'gb-printer-schemas';
+import { type Palette, type Image, type MonochromeImage } from 'gb-printer-schemas';
 import { missingGreyPalette } from '@/consts/defaults';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { paletteByShortNameQueryOptions } from '@/stores/items/queries/palettes';
