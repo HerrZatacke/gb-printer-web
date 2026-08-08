@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "pnpm --filter gb-printer-web dev",
     "build": "pnpm --filter gb-printer-web build",
+    "lint:fix": "pnpm -r lint:fix",
     "audit": "pnpm audit --fix=update",
     "checkupdates": "pnpm dlx npm-check-updates --workspaces --root",
     "browserlist": "pnpm dlx update-browserslist-db@latest"

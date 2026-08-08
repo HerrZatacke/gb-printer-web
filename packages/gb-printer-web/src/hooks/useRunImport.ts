@@ -8,7 +8,6 @@ import {
 import { useTranslations } from 'next-intl';
 import Queue from 'promise-queue';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { toSlug } from './useEditImageGroup';
 import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 import { useActivePalette } from '@/hooks/useActivePalette';
@@ -29,6 +28,7 @@ import saveNewImage from '@/tools/saveNewImage';
 import sortBy from '@/tools/sortby';
 import { type SerializableImageGroup } from '@/types/ImageGroup';
 import { type FlaggedImportItem, type ImportItem } from '@/types/ImportItem';
+import { toSlug } from './useEditImageGroup';
 
 const sortByFilename = sortBy<ImportItem>('fileName');
 
