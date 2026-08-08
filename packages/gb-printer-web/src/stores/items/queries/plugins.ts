@@ -1,10 +1,10 @@
 import { type QueryClient } from '@tanstack/react-query';
+import { Plugin } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
 import { pluginsKeys } from '@/stores/items/queries/cacheKeys';
 import { STALE_TIME } from '@/stores/items/queries/consts';
-import { Plugin } from '@/types/Plugin';
 
 const warmPluginCache = (plugins: Plugin[]) => {
   const queryClient = getQueryClient();

@@ -2,9 +2,9 @@ import { PaletteSchema , ImageSchema } from 'gb-printer-schemas';
 import { SerializableImageGroupSchema } from 'gb-printer-schemas';
 import { type Frame, FrameSchema } from 'gb-printer-schemas';
 import { FrameGroupSchema } from 'gb-printer-schemas';
+import { PluginSchema } from 'gb-printer-schemas';
 import hasher from 'object-hash';
 import z from 'zod';
-import { PluginSchema } from '@/types/Plugin';
 
 export const ExportableValuesSchema = z.object({
   frames: z.array(FrameSchema).optional(),

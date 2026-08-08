@@ -5,11 +5,11 @@ import {
 } from 'gb-printer-schemas';
 import { type Frame } from 'gb-printer-schemas';
 import { type FrameGroup } from 'gb-printer-schemas';
+import { type Plugin } from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { type Plugin } from '@/types/Plugin';
 import {
   DeleteBinaryItemsByHashesParamsSchema,
   DeleteFrameGroupsByIdsParamsSchema,

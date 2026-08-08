@@ -1,5 +1,5 @@
+import { type Plugin, PluginSchema } from 'gb-printer-schemas';
 import z from 'zod';
-import { type Plugin, PluginSchema } from '@/types/Plugin';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {

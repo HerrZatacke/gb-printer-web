@@ -1,6 +1,7 @@
 import { PaletteSchema } from 'gb-printer-schemas';
 import { FrameSchema } from 'gb-printer-schemas';
 import { FrameGroupSchema } from 'gb-printer-schemas';
+import { PluginSchema } from 'gb-printer-schemas';
 import {
   openDB,
   type IDBPDatabase,
@@ -8,7 +9,6 @@ import {
   type StoreValue,
 } from 'idb';
 import { type ZodSafeParseResult } from 'zod';
-import { PluginSchema } from '@/types/Plugin';
 import {
   StoredImageSchema,
   StoredSerializableImageGroupSchema,

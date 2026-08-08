@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
-import React, { useState } from 'react';
-import { ConfigParamType } from '@/consts/plugins';
+import { ConfigParamType } from 'gb-printer-schemas';
+import { useState } from 'react';
 
 const inputValueFromType = (type: ConfigParamType, value: string): string | number => {
   switch (type) {
