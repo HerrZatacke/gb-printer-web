@@ -18,14 +18,11 @@ dumps/*
 *.iml
 
 # generated
-/public/fav
+/packages/gb-printer-web/public/fav
 
 # next.js
-/.next/
-/out/
-
-# production
-/build
+/packages/gb-printer-web/.next/
+/packages/gb-printer-web/out/
 
 # env files (can opt-in for committing if needed)
 .env*

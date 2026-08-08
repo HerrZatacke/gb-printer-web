@@ -1,12 +1,17 @@
-name: Build 🧱 and Deploy 🛳
+name: Build 🧱 and Deploy 🛳 gb-printer-web
 
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'packages/gb-printer-web/**'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/gb-printer-web
 
     steps:
       - name: Checkout 💳
@@ -16,6 +21,11 @@ jobs:
         uses: actions/setup-node@v4.0.1
         with:
           node-version: '24.x'
+
+      - name: Setup pnpm 📦
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.20.0
 
       - name: Add release version to environment variables 🌍
         run: |
@@ -27,11 +37,10 @@ jobs:
         with:
           tag: ${{ env.RELEASE_VERSION }}
 
-      - name: Install npm dependencies 🔗
+      - name: Install pnpm dependencies 🔗
         if: steps.checkTag.outputs.exists == 'false'
-        run: |
-          npm cache clear -f
-          npm install
+        working-directory: .
+        run: pnpm install --frozen-lockfile
 
       - name: Build for pages 📖
         if: steps.checkTag.outputs.exists == 'false'
@@ -42,7 +51,7 @@ jobs:
           NEXT_PUBLIC_DROPBOX_APP_PATH: ${{ secrets.NEXT_PUBLIC_DROPBOX_APP_PATH }}
           NEXT_PUBLIC_BASE_PATH: /gb-printer-web
         run: |
-          npm run build
+          pnpm build
           touch out/.nojekyll
 
       - name: Deploy to GitHub-Pages 📖
@@ -50,7 +59,7 @@ jobs:
         if: steps.checkTag.outputs.exists == 'false'
         with:
           branch: gh-pages
-          folder: out
+          folder: packages/gb-printer-web/out
 
       - name: Create Release 🎉 🥳
         uses: softprops/action-gh-release@v2.0.5

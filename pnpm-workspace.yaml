@@ -1,0 +1,11 @@
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  unrs-resolver: true
+
+packages:
+  - "packages/*"
+
+patchedDependencies:
+  next: patches/next.patch
