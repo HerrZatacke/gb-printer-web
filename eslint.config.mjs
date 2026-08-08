@@ -63,13 +63,12 @@ const eslintConfig = defineConfig([
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
-    '.next/**',
-    'out/**',
-    'o/**',
-    'releases/**',
+    'packages/gb-printer-web/.next/**',
+    'packages/gb-printer-web/out/**',
+    'packages/gb-printer-web/o/**',
     'dist/**',
     'build/**',
-    'next-env.d.ts',
+    'packages/gb-printer-web/next-env.d.ts',
   ]),
 ])
 
