@@ -1,4 +1,5 @@
 import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { Frame } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import {
   framesByIdsQueryOptions,
@@ -6,7 +7,6 @@ import {
   updateFramesAction,
   deleteFramesByIdsAction,
 } from '@/stores/items/queries/frames';
-import { Frame } from '@/types/Frame';
 
 export interface UseFrames {
   frames: Frame[];

@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Image } from 'gb-printer-schemas';
+import { Frame } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import { useFrames } from '@/hooks/useFrames';
 import { useStores } from '@/hooks/useStores';
@@ -10,7 +11,6 @@ import { getFrameFromFullTiles } from '@/tools/getFrameFromFullTiles';
 import { reduceImagesMonochrome } from '@/tools/isRGBNImage';
 import { padFrameData } from '@/tools/saveLocalStorageItems';
 import { load } from '@/tools/storage';
-import { Frame } from '@/types/Frame';
 
 export interface UseMigrateFrames {
   convertFormat: () => Promise<void>;

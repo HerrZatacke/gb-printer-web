@@ -1,4 +1,5 @@
 import { type Image, type RGBNHashes, type RGBNImage } from 'gb-printer-schemas';
+import { type Frame } from 'gb-printer-schemas';
 import { loadFrameData, saveFrameData } from '@/tools/applyFrame/frameData';
 import { type FrameData } from '@/tools/applyFrame/frameData';
 import { isRGBNImage } from '@/tools/isRGBNImage';
@@ -6,7 +7,6 @@ import { reduceItems } from '@/tools/reduceArray';
 import { load, save } from '@/tools/storage';
 import { type RepoContents } from '@/types/Export';
 import { createJSONExport, type JSONExport } from '@/types/ExportState';
-import { type Frame } from '@/types/Frame';
 
 interface RehashedItem {
   oldHash: string;

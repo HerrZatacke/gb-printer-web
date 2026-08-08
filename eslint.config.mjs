@@ -19,6 +19,7 @@ const eslintConfig = defineConfig([
             path.join(import.meta.dirname, 'packages/gb-printer-web/tsconfig.json'),
             path.join(import.meta.dirname, 'packages/gb-printer-schemas/tsconfig.json'),
           ],
+          noWarnOnMultipleProjects: true,
         },
       },
     },

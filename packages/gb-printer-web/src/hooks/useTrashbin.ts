@@ -4,6 +4,7 @@ import {
   toCreationDate,
   type Image,
 } from 'gb-printer-schemas';
+import { type Frame } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { getQueryClient } from '@/contexts/QueryClient';
@@ -20,7 +21,6 @@ import { inflate } from '@/tools/pack';
 import { reduceItems } from '@/tools/reduceArray';
 import { type BinaryStoreItem } from '@/types/BinaryStoreItem';
 import { createJSONExport, type ExportableState } from '@/types/ExportState';
-import { type Frame } from '@/types/Frame';
 
 export interface UseTrashbin {
   showTrashCount: (show: boolean) => void;

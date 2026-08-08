@@ -1,5 +1,5 @@
+import { type Frame, FrameSchema } from 'gb-printer-schemas';
 import z from 'zod';
-import { type Frame, FrameSchema } from '@/types/Frame';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {

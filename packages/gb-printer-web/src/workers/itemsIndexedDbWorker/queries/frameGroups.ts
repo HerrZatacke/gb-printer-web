@@ -1,5 +1,5 @@
+import { FrameGroup, FrameGroupSchema } from 'gb-printer-schemas';
 import z from 'zod';
-import { FrameGroup, FrameGroupSchema } from '@/types/FrameGroup';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import {

@@ -3,12 +3,12 @@ import {
   type SerializableImageGroup,
   type TreeImageGroup,
 } from 'gb-printer-schemas';
+import { type Frame } from 'gb-printer-schemas';
+import { type FrameGroup } from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 import z from 'zod';
 import { SpecialTags } from '@/consts/SpecialTags';
 import { BinaryStoreItem } from '@/types/BinaryStoreItem';
-import { type Frame } from '@/types/Frame';
-import { type FrameGroup } from '@/types/FrameGroup';
 import { type Plugin } from '@/types/Plugin';
 import {
   DeleteBinaryItemsByHashesParamsSchema,

@@ -1,4 +1,5 @@
 import { type Palette } from 'gb-printer-schemas';
+import { type Frame } from 'gb-printer-schemas';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAvailableTags } from '@/hooks/useAvailableTags';
 import { useFrames } from '@/hooks/useFrames';
@@ -7,7 +8,6 @@ import { usePalettes } from '@/hooks/usePalettes';
 import { useFiltersStore } from '@/stores/stores';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
-import { type Frame } from '@/types/Frame';
 import { SortDirection } from '@/workers/itemsIndexedDbWorker/schemas';
 
 export const ActiveFilterUpdateMode = {
