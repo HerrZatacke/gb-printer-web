@@ -10,9 +10,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/gb-printer-web
 
     steps:
       - name: Checkout 💳
@@ -28,7 +25,7 @@ jobs:
 
       - name: Add release version to environment variables 🌍
         run: |
-          node -e "console.log('RELEASE_VERSION=' + require('./package.json').version)" >> $GITHUB_ENV
+          node -e "console.log('RELEASE_VERSION=' + require('./packages/gb-printer-web/package.json').version)" >> $GITHUB_ENV
 
       - name: Check if tag already exists 🏷
         id: checkTag
@@ -38,7 +35,6 @@ jobs:
 
       - name: Install pnpm dependencies 🔗
         if: steps.checkTag.outputs.exists == 'false'
-        working-directory: .
         run: pnpm install --frozen-lockfile
 
       - name: Build for pages 📖
@@ -51,7 +47,7 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /gb-printer-web
         run: |
           pnpm build
-          touch out/.nojekyll
+          touch packages/gb-printer-web/out/.nojekyll
 
       - name: Deploy to GitHub-Pages 📖
         uses: JamesIves/github-pages-deploy-action@v4.6.1

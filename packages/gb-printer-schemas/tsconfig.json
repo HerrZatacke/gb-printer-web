@@ -5,7 +5,9 @@
     "rootDir": "./src",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "noEmit": false,
+    "declaration": true
   },
   "include": ["src"]
 }

@@ -6,7 +6,6 @@ const nullToValue = <T extends z.ZodType>(schema: T, defaultValue: undefined | z
   return z.preprocess((val) => (val === null ? defaultValue : val), schema.optional());
 };
 
-
 export const ImageMetadataSchema = z.object({
   romType: z.string().optional(),
   userId: z.string().optional(),
