@@ -14,7 +14,7 @@ import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/querie
 
 
 export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShortNamesParams): Promise<ItemsSourceResponse<Palette>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('palettes');
@@ -45,7 +45,7 @@ export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShort
 };
 
 export const getPalettes = async (): Promise<ItemsSourceTotalResponse<Palette>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('palettes');
@@ -72,7 +72,7 @@ export const updatePalettes = async ({ palettes, purge }: UpdatePalettesParams):
 
   const parsedPalettes = z.array(PaletteSchema).parse(filteredPalettes);
 
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('palettes', 'readwrite');
   const store = tx.store;
@@ -86,7 +86,7 @@ export const updatePalettes = async ({ palettes, purge }: UpdatePalettesParams):
 };
 
 export const deletePalettesByShortNames = async ({ shortNames }: DeletePalettesByShortNamesParams): Promise<void> => {
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('palettes', 'readwrite');
   const store = tx.store;

@@ -12,7 +12,7 @@ import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
 export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('frames');
@@ -25,7 +25,7 @@ export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
 };
 
 export const getFramesByIds = async ({ ids }: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('frames');
@@ -45,7 +45,7 @@ export const getFramesByIds = async ({ ids }: GetFramesByIdsParams): Promise<Ite
 };
 
 export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('frames');
@@ -65,7 +65,7 @@ export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Pr
 export const updateFrames = async ({ frames, purge }: UpdateFramesParams): Promise<void> => {
   const parsedFrames = z.array(FrameSchema).parse(frames);
 
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('frames', 'readwrite');
   const store = tx.store;
@@ -79,7 +79,7 @@ export const updateFrames = async ({ frames, purge }: UpdateFramesParams): Promi
 };
 
 export const deleteFramesByIds = async ({ ids }: DeleteFramesByIdsParams): Promise<void> => {
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('frames', 'readwrite');
   const store = tx.store;

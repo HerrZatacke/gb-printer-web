@@ -26,7 +26,7 @@ import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 const sortById = sortBy<StoredSerializableImageGroup>('id');
 
 export const getImageGroupsList = async (): Promise<ItemsSourceTotalResponse<SerializableImageGroup>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('imagegroups');
@@ -39,7 +39,7 @@ export const getImageGroupsList = async (): Promise<ItemsSourceTotalResponse<Ser
 };
 
 export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<TreeImageGroup>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const groupsStore = db.transaction('imagegroups').store;
@@ -82,7 +82,7 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
 export const updateImageGroups = async ({ imageGroups, purge }: UpdateImageGroupsParams): Promise<void> => {
   const parsedGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('imagegroups', 'readwrite');
   const store = tx.store;
@@ -131,7 +131,7 @@ const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Prom
 };
 
 export const deleteImageGroupsByIds = async ({ ids }: DeleteImageGroupsByIdsParams): Promise<void> => {
-  const db = await getDb();
+  const { db } = await getDb();
 
   for (const id of ids) {
     await deleteImageGroupById(id, db);

@@ -33,7 +33,7 @@ import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queri
 const uniqueByHash = uniqueBy<Image>('hash');
 
 export const getImages = async ({ params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('images');
@@ -64,7 +64,7 @@ export const getImages = async ({ params: queryParamsRaw, candidateHashes }: Get
 };
 
 export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw, filters: filtersRaw } : GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const sort = ImageQuerySortSchema.parse(sortRaw);
@@ -87,7 +87,7 @@ export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw
 };
 
 export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: queryParamsRaw }: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const {
@@ -106,7 +106,7 @@ export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: q
 };
 
 export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('images');
@@ -124,7 +124,7 @@ export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Pr
 };
 
 export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('images');
@@ -159,7 +159,7 @@ export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParam
 };
 
 export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const store = db.transaction('images').store;
@@ -183,7 +183,7 @@ export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> =>
 
 export const updateImages = async ({ images, purge }: UpdateImagesParams): Promise<void> => {
   const parsedImages = z.array(StoredImageSchema).parse(images);
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('images', 'readwrite');
   const store = tx.store;
@@ -198,7 +198,7 @@ export const updateImages = async ({ images, purge }: UpdateImagesParams): Promi
 };
 
 export const deleteImagesByHashes = async ({ hashes }: DeleteImagesByHashesParams): Promise<void> => {
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('images', 'readwrite');
   const store = tx.store;

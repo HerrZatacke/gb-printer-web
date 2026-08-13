@@ -12,7 +12,7 @@ import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/querie
 
 export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryframes', schema: ZodType<BinaryStoreItem>) => {
   const getByHashes = async ({ hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> => {
-    const db = await getDb();
+    const { db } = await getDb();
     const start = performance.now();
 
     const { store } = db.transaction(storeName);
@@ -37,7 +37,7 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
   };
 
   const getHashes = async (): Promise<ItemsSourceTotalResponse<string>> => {
-    const db = await getDb();
+    const { db } = await getDb();
     const start = performance.now();
 
     const { store } = db.transaction(storeName);
@@ -52,7 +52,7 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
   const update = async ({ items }: UpdateBinaryItemsParams): Promise<void> => {
     const parsedItems = z.array(schema).parse(items);
 
-    const db = await getDb();
+    const { db } = await getDb();
     const tx = db.transaction(storeName, 'readwrite');
     const store = tx.store;
 
@@ -61,7 +61,7 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
   };
 
   const deleteByHashes = async ({ hashes }: DeleteBinaryItemsByHashesParams): Promise<void> => {
-    const db = await getDb();
+    const { db } = await getDb();
     const tx = db.transaction(storeName, 'readwrite');
     const store = tx.store;
 

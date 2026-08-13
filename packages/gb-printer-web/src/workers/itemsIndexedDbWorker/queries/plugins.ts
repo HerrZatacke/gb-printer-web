@@ -12,7 +12,7 @@ import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
 export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('plugins');
@@ -25,7 +25,7 @@ export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> =>
 };
 
 export const getPluginsByUrls = async ({ urls }: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('plugins');
@@ -45,7 +45,7 @@ export const getPluginsByUrls = async ({ urls }: GetPluginsByUrlsParams): Promis
 export const updatePlugins = async ({ plugins, purge }: UpdatePluginsParams): Promise<void> => {
   const parsedPlugins = z.array(PluginSchema).parse(plugins);
 
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('plugins', 'readwrite');
   const store = tx.store;
@@ -59,7 +59,7 @@ export const updatePlugins = async ({ plugins, purge }: UpdatePluginsParams): Pr
 };
 
 export const deletePluginsByUrls = async ({ urls }: DeletePluginsByUrlsParams): Promise<void> => {
-const db = await getDb();
+const { db } = await getDb();
 
   const tx = db.transaction('plugins', 'readwrite');
   const store = tx.store;

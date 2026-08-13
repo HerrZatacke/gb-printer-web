@@ -11,7 +11,7 @@ import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/gene
 
 
 export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const start = performance.now();
 
   const { store } = db.transaction('framegroups');
@@ -25,7 +25,7 @@ export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGr
 
 export const updateFrameGroups = async ({ frameGroups, purge }: UpdateFrameGroupsParams): Promise<void> => {
   const parsedFrameGroups = z.array(FrameGroupSchema).parse(frameGroups);
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('framegroups', 'readwrite');
   const store = tx.store;
@@ -39,7 +39,7 @@ export const updateFrameGroups = async ({ frameGroups, purge }: UpdateFrameGroup
 };
 
 export const deleteFrameGroupsByIds = async ({ ids }: DeleteFrameGroupsByIdsParams): Promise<void> => {
-  const db = await getDb();
+  const { db } = await getDb();
 
   const tx = db.transaction('framegroups', 'readwrite');
   const store = tx.store;

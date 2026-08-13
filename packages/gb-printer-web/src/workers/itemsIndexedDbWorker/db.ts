@@ -9,9 +9,13 @@ import {
   type MigrationFn,
 } from '@/workers/itemsIndexedDbWorker/types';
 
+export interface PreparedDb {
+  db: IDBPDatabase<ItemsDB>;
+}
+
 declare global {
   var _hostApi: ItemsHostApi | null;
-  var _dbPromise: Promise<IDBPDatabase<ItemsDB>> | null;
+  var _dbPromise: Promise<PreparedDb> | null;
   var _hostApiPromise: Promise<ItemsHostApi> | null;
 }
 
@@ -35,8 +39,7 @@ export const configureDb = (configureHostApi: ItemsHostApi): void => {
   global._hostApi = configureHostApi;
 };
 
-
-const openAndPrepareDb = async () => {
+const openAndPrepareDb = async (): Promise<PreparedDb> => {
   const start = performance.now();
   const afterUpgradeTasks: AfterUpgradeFn[] = [];
   const hostApi = await getHostApi();
@@ -91,10 +94,12 @@ const openAndPrepareDb = async () => {
   }
 
   console.log(`openAndPrepareDb() done in ${performance.now() - start}ms`);
-  return database;
+  return {
+    db: database,
+  };
 };
 
-export function getDb(): Promise<IDBPDatabase<ItemsDB>> {
+export const getDb = (): Promise<PreparedDb> => {
   if (!global._dbPromise) {
     global._dbPromise = openAndPrepareDb().catch((err) => {
       global._dbPromise = null;
@@ -102,9 +107,9 @@ export function getDb(): Promise<IDBPDatabase<ItemsDB>> {
     });
   }
   return global._dbPromise;
-}
+};
 
-export function getHostApi(): Promise<ItemsHostApi> {
+export const getHostApi = (): Promise<ItemsHostApi> => {
   if (!global._hostApiPromise) {
     if (!global._hostApi) {
       throw new Error('No host api configured');
@@ -112,4 +117,4 @@ export function getHostApi(): Promise<ItemsHostApi> {
     global._hostApiPromise = Promise.resolve(global._hostApi);
   }
   return global._hostApiPromise;
-}
+};

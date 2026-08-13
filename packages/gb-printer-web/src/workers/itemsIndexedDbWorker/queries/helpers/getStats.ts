@@ -7,7 +7,7 @@ import {
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 
 export const getStats = async (): Promise<ItemsStatsResponse> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const startTime = performance.now();
 
   const [
@@ -48,7 +48,7 @@ export const getStats = async (): Promise<ItemsStatsResponse> => {
 };
 
 export const getUsages = async (): Promise<ItemsUsageReponse> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const startTime = performance.now();
 
   const paletteUsageCounts = new Map<string, number>();
