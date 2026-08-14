@@ -2,6 +2,7 @@ import { type IDBPDatabase, openDB } from 'idb';
 import { ITEMS_DB_VERSION } from '@/stores/constants';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { migrateV1 } from '@/workers/itemsIndexedDbWorker/migrations/v1';
+import { createRepositories, type Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 import {
   type AfterUpgradeFn,
   type ItemsDB,
@@ -9,7 +10,7 @@ import {
   type MigrationFn,
 } from '@/workers/itemsIndexedDbWorker/types';
 
-export interface PreparedDb {
+export interface PreparedDb extends Repositories {
   db: IDBPDatabase<ItemsDB>;
 }
 
@@ -84,7 +85,7 @@ const openAndPrepareDb = async (): Promise<PreparedDb> => {
       }
       console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
 
-      await startMaintenanceTasks(database);
+      await startMaintenanceTasks();
     } catch (error) {
       const err = new Error(`Error while running upgrade- or maintenance-tasks: "${(error as Error)?.message}"`);
       hostApi.onMigrationError(err.message);
@@ -93,9 +94,12 @@ const openAndPrepareDb = async (): Promise<PreparedDb> => {
     }
   }
 
+  const repositories = createRepositories(database);
+
   console.log(`openAndPrepareDb() done in ${performance.now() - start}ms`);
   return {
     db: database,
+    ...repositories,
   };
 };
 

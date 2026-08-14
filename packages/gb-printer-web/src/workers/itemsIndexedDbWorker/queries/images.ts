@@ -33,11 +33,11 @@ import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queri
 const uniqueByHash = uniqueBy<Image>('hash');
 
 export const getImages = async ({ params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
-  const { db } = await getDb();
+  const repositories = await getDb();
+  const { images: repository } = repositories;
   const start = performance.now();
 
-  const { store } = db.transaction('images');
-  const total = await store.count();
+  const total = await repository.count();
 
   const {
     page,
@@ -54,7 +54,7 @@ export const getImages = async ({ params: queryParamsRaw, candidateHashes }: Get
     facetMatcher(facetFromImage(item))
   );
 
-  const images = await resolveAndFilterImages(db, imageFacetMatchesFilters, candidateHashes);
+  const images = await resolveAndFilterImages(repositories, imageFacetMatchesFilters, candidateHashes);
 
   const sortByFieldName = sortBy<Image>(sort.field, sort.direction);
 
@@ -64,13 +64,13 @@ export const getImages = async ({ params: queryParamsRaw, candidateHashes }: Get
 };
 
 export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw, filters: filtersRaw } : GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> => {
-  const { db } = await getDb();
+  const repositories = await getDb();
   const start = performance.now();
 
   const sort = ImageQuerySortSchema.parse(sortRaw);
   const filters = ImageQueryFiltersSchema.optional().parse(filtersRaw);
 
-  const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroups, sort, filters);
+  const sortedGroupItems = await resolveGroupItemsByGroupId(repositories, groupId, includeGroups, sort, filters);
   const sortedImageHashes = sortedGroupItems
     .map((item: GroupItem) => {
       switch (item.type) {
@@ -87,7 +87,7 @@ export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw
 };
 
 export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: queryParamsRaw }: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>> => {
-  const { db } = await getDb();
+  const repositories = await getDb();
   const start = performance.now();
 
   const {
@@ -97,23 +97,21 @@ export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: q
     filters,
   } = ImageQueryParamsSchema.parse(queryParamsRaw);
 
-  const { store: imagesStore } = db.transaction('images');
-  const total = await imagesStore.count();
+  const total = await repositories.images.count();
 
-  const sortedGroupItems = await resolveGroupItemsByGroupId(db, groupId, includeGroups, sort, filters);
+  const sortedGroupItems = await resolveGroupItemsByGroupId(repositories, groupId, includeGroups, sort, filters);
   const addPaging = getAddPaging<GroupItem>(total, page, pageSize, start, GroupItemSchema);
   return addPaging(sortedGroupItems);
 };
 
 export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>> => {
-  const { db } = await getDb();
+  const { images: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('images');
-  const total = await store.count();
+  const total = await repository.count();
 
   const images = await Promise.all(
-    hashes.map(hash => store.get(hash)),
+    hashes.map(hash => repository.getByKey(hash)),
   );
 
   const filteredImages = images.filter((image): image is StoredImage => Boolean(image));
@@ -124,22 +122,21 @@ export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Pr
 };
 
 export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
-  const { db } = await getDb();
+  const { images: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('images');
-  const total = await store.count();
+  const total = await repository.count();
 
   const [foundByPrimary, foundByReference] = await Promise.all([
-    Promise.all(hashes.map((hash) => store.get(hash))),
-    Promise.all(hashes.map((hash) => store.index('referencedHashes').getAll(hash))),
+    Promise.all(hashes.map((hash) => repository.getByKey(hash))),
+    repository.getByIndexValues('referencedHashes', hashes),
   ]);
 
   const items = hashes.map((hash): ImageReferenceList => {
 
     const foundFiltered = [
       foundByPrimary.find((image) => (image?.hash === hash )),
-      ...foundByReference.flat().filter((image) => (image?.referencedHashes.includes(hash))),
+      ...foundByReference.filter((image) => (image?.referencedHashes.includes(hash))),
     ]
       .filter((image): image is StoredImage => Boolean(image));
 
@@ -159,22 +156,10 @@ export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParam
 };
 
 export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> => {
-  const { db } = await getDb();
+  const { images: repository } = await getDb();
   const start = performance.now();
 
-  const store = db.transaction('images').store;
-  const index = store.index('tags');
-
-  const uniqueTags: string[] = [];
-  let cursor = await index.openKeyCursor();
-
-  while (cursor) {
-    const tag = cursor.key as string;
-    if (uniqueTags[uniqueTags.length - 1] !== tag) {
-      uniqueTags.push(tag);
-    }
-    cursor = await cursor.continue();
-  }
+  const uniqueTags = await repository.getDistinctIndexValues('tags');
 
   const addPaging = getAddTotal<string>(uniqueTags.length, start, z.string());
 
@@ -183,28 +168,25 @@ export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> =>
 
 export const updateImages = async ({ images, purge }: UpdateImagesParams): Promise<void> => {
   const parsedImages = z.array(StoredImageSchema).parse(images);
-  const { db } = await getDb();
-
-  const tx = db.transaction('images', 'readwrite');
-  const store = tx.store;
+  const { images: repository } = await getDb();
 
   if (purge) {
-    await store.clear();
+    await repository.clear();
   }
 
-  await Promise.all(parsedImages.map((image) => store.put(image)));
-  await tx.done;
-  await startMaintenanceTasks(db);
+  await repository.put(
+    parsedImages.map((image) => ({
+      key: image.hash,
+      value: image,
+    })),
+  );
+
+  await startMaintenanceTasks();
 };
 
 export const deleteImagesByHashes = async ({ hashes }: DeleteImagesByHashesParams): Promise<void> => {
-  const { db } = await getDb();
+  const { images: repository } = await getDb();
+  await repository.deleteByKeys(hashes);
 
-  const tx = db.transaction('images', 'readwrite');
-  const store = tx.store;
-
-  await Promise.all(hashes.map((hash) => store.delete(hash)));
-  await tx.done;
-
-  await startMaintenanceTasks(db);
+  await startMaintenanceTasks();
 };

@@ -10,24 +10,22 @@ import z, { type ZodType } from 'zod';
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
-export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryframes', schema: ZodType<BinaryStoreItem>) => {
+export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binaryFrames', schema: ZodType<BinaryStoreItem>) => {
   const getByHashes = async ({ hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> => {
-    const { db } = await getDb();
+    const { [repositoryKey]: repository } = await getDb();
     const start = performance.now();
 
-    const { store } = db.transaction(storeName);
-    const total = await store.count();
+    const total = await repository.count();
+    const entries = await repository.getEntriesByKeys(hashes);
+    const dataByHash = new Map<string, string>(entries.map(({ key, value }) => [key, value]));
 
-    const items = await Promise.all(
-      hashes.map(async (hash): Promise<BinaryStoreItem | null> => {
-        const data = await store.get(hash);
-        if (!data) {
-          return null;
-        }
-
-        return { hash, data };
-      }),
-    );
+    // Positional correspondence to `hashes` is relied on by callers, so re-derive
+    // `items` from `hashes` itself (not from `entries`) to preserve both the
+    // original order and a `null` placeholder for hashes with no stored data.
+    const items = hashes.map((hash): BinaryStoreItem | null => {
+      const data = dataByHash.get(hash);
+      return data ? { hash, data } : null;
+    });
 
     const filteredItems = items.filter((item): item is BinaryStoreItem => Boolean(item));
 
@@ -37,12 +35,11 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
   };
 
   const getHashes = async (): Promise<ItemsSourceTotalResponse<string>> => {
-    const { db } = await getDb();
+    const { [repositoryKey]: repository } = await getDb();
     const start = performance.now();
 
-    const { store } = db.transaction(storeName);
-    const hashes = await store.getAllKeys();
-    const total = await store.count();
+    const hashes = await repository.getAllKeys();
+    const total = await repository.count();
 
     const addPaging = getAddTotal<string>(total, start, z.string());
 
@@ -51,22 +48,16 @@ export const createBinaryStoreQueries = (storeName: 'binaryimages' | 'binaryfram
 
   const update = async ({ items }: UpdateBinaryItemsParams): Promise<void> => {
     const parsedItems = z.array(schema).parse(items);
+    const { [repositoryKey]: repository } = await getDb();
 
-    const { db } = await getDb();
-    const tx = db.transaction(storeName, 'readwrite');
-    const store = tx.store;
-
-    await Promise.all(parsedItems.map((parsedItem) => store.put(parsedItem.data, parsedItem.hash)));
-    await tx.done;
+    await repository.put(
+      parsedItems.map((parsedItem) => ({ key: parsedItem.hash, value: parsedItem.data })),
+    );
   };
 
   const deleteByHashes = async ({ hashes }: DeleteBinaryItemsByHashesParams): Promise<void> => {
-    const { db } = await getDb();
-    const tx = db.transaction(storeName, 'readwrite');
-    const store = tx.store;
-
-    await Promise.all(hashes.map((hash) => store.delete(hash)));
-    await tx.done;
+    const { [repositoryKey]: repository } = await getDb();
+    await repository.deleteByKeys(hashes);
   };
 
   return { getByHashes, getHashes, update, deleteByHashes };

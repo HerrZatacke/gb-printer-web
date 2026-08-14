@@ -6,8 +6,8 @@ import {
   type StoredImage,
   type StoredSerializableImageGroup,
 } from 'gb-printer-schemas';
-import { type IDBPDatabase } from 'idb';
 import sortBy from '@/tools/sortby';
+import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 import {
   facetFromImage,
   facetFromSerializableImageGroup,
@@ -16,10 +16,9 @@ import {
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
-import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 export const resolveGroupItemsByGroupId = async (
-  db: IDBPDatabase<ItemsDB>,
+  repositories: PreparedDb,
   groupId: string,
   includeGroups: boolean,
   sort: ImageQuerySort,
@@ -36,8 +35,9 @@ export const resolveGroupItemsByGroupId = async (
 
   const facetMatcher = await getFacetMatcher(filters);
 
-  const { store: groupsStore } = db.transaction('imagegroups');
-  const imageGroup: StoredSerializableImageGroup | undefined = await groupsStore.get(groupId);
+  const { imageGroups: imageGroupsRepository } = repositories;
+
+  const imageGroup: StoredSerializableImageGroup | undefined = await imageGroupsRepository.getByKey(groupId);
 
   if (!imageGroup && !rootGroup) {
     throw new Error('Group by ID not found');
@@ -61,7 +61,7 @@ export const resolveGroupItemsByGroupId = async (
     );
 
     const loadedGroups = await Promise.all(
-      groupIds.map((id): Promise<StoredSerializableImageGroup | undefined> => groupsStore.get(id)),
+      groupIds.map((id): Promise<StoredSerializableImageGroup | undefined> => imageGroupsRepository.getByKey(id)),
     );
 
     filteredGroups = loadedGroups
@@ -73,10 +73,10 @@ export const resolveGroupItemsByGroupId = async (
   const imageMatchesFilters = (item: StoredImage): boolean => (
     facetMatcher(facetFromImage(item))
   );
-  const images = await resolveAndFilterImages(db, imageMatchesFilters, new Set(imageHashes));
+  const images = await resolveAndFilterImages(repositories, imageMatchesFilters, new Set(imageHashes));
 
   const coverImageHashes = filteredGroups.map((g) => g.coverImage).filter((h): h is string => Boolean(h));
-  const groupImages = await resolveAndFilterImages(db, undefined, new Set(coverImageHashes));
+  const groupImages = await resolveAndFilterImages(repositories, undefined, new Set(coverImageHashes));
 
   const imageItems = images.map((image): GroupItem => {
     return {
@@ -115,7 +115,7 @@ export const resolveGroupItemsByGroupId = async (
       return checkGroupItem;
     }
 
-    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(db, checkGroupItem.group.id, includeGroups, sort, filters)).length);
+    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(repositories, checkGroupItem.group.id, includeGroups, sort, filters)).length);
     return hasDisplayableItems ? checkGroupItem : null;
   })))
     .filter((gi): gi is GroupItem => Boolean(gi));

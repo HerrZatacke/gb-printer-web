@@ -1,34 +1,28 @@
 import { type StoredImage } from 'gb-printer-schemas';
-import { type IDBPDatabase } from 'idb';
-import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
+import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 
 export const resolveAndFilterImages = async (
-  db: IDBPDatabase<ItemsDB>,
+  repositories: PreparedDb,
   matches?: (item: StoredImage) => boolean,
   seedIds?: Set<string>,
 ): Promise<StoredImage[]> => {
   if (!matches && !seedIds) {
-    return db.transaction('images').store.getAll();
+    return repositories.images.getAll();
   }
-
-  const { store } = db.transaction('images');
-
-  const images: StoredImage[] = [];
 
   if (typeof seedIds === 'undefined') {
-    for await (const cursor of store) {
-      if ((!matches || matches(cursor.value))) {
-        images.push(cursor.value);
+    const images: StoredImage[] = [];
+
+    for await (const image of repositories.images.iterate()) {
+      if (!matches || matches(image)) {
+        images.push(image);
       }
     }
-  } else {
-    for (const hash of seedIds) {
-      const item = await store.get(hash);
-      if (item && (!matches || matches(item))) {
-        images.push(item);
-      }
-    }
+
+    return images;
   }
 
-  return images;
+  const seededEntries = await repositories.images.getEntriesByKeys([...seedIds]);
+  const seededImages = seededEntries.map((entry) => entry.value);
+  return matches ? seededImages.filter(matches) : seededImages;
 };

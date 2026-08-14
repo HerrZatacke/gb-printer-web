@@ -1,4 +1,3 @@
-import { type IDBPDatabase } from 'idb';
-import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
+import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 
-export type MaintenanceTask = (db: IDBPDatabase<ItemsDB>) => Promise<void>;
+export type MaintenanceTask = (repositories: PreparedDb) => Promise<void>;

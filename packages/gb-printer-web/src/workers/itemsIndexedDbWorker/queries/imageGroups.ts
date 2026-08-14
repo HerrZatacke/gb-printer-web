@@ -9,11 +9,10 @@ import {
   type TreeImageGroup,
   type UpdateImageGroupsParams,
 } from 'gb-printer-schemas';
-import { IDBPDatabase } from 'idb';
 import z from 'zod';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { getDb, PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSlugs';
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
@@ -21,17 +20,15 @@ import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildT
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
-import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 const sortById = sortBy<StoredSerializableImageGroup>('id');
 
 export const getImageGroupsList = async (): Promise<ItemsSourceTotalResponse<SerializableImageGroup>> => {
-  const { db } = await getDb();
+  const { imageGroups: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('imagegroups');
-  const imageGroups = await store.getAll();
-  const total = await store.count();
+  const imageGroups = await repository.getAll();
+  const total = await repository.count();
 
   const addPaging = getAddTotal<SerializableImageGroup>(total, start, SerializableImageGroupSchema);
 
@@ -39,16 +36,13 @@ export const getImageGroupsList = async (): Promise<ItemsSourceTotalResponse<Ser
 };
 
 export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<TreeImageGroup>> => {
-  const { db } = await getDb();
+  const repositories = await getDb();
   const start = performance.now();
 
-  const groupsStore = db.transaction('imagegroups').store;
-  const imagesStore = db.transaction('images').store;
-
   const [imageGroups, totalCount, allImageIds] = await Promise.all([
-    groupsStore.getAll(),
-    groupsStore.count(),
-    imagesStore.getAllKeys(),
+    repositories.imageGroups.getAll(),
+    repositories.imageGroups.count(),
+    repositories.images.getAllKeys(),
   ]);
 
   const parsedImageGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
@@ -82,31 +76,30 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
 export const updateImageGroups = async ({ imageGroups, purge }: UpdateImageGroupsParams): Promise<void> => {
   const parsedGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
-  const { db } = await getDb();
-
-  const tx = db.transaction('imagegroups', 'readwrite');
-  const store = tx.store;
+  const { imageGroups: repository } = await getDb();
 
   if (purge) {
-    await store.clear();
+    await repository.clear();
   }
 
-  await Promise.all(parsedGroups.map((group) => store.put(group)));
-  await tx.done;
+  repository.put(
+    parsedGroups.map((group) => ({
+      key: group.id,
+      value: group,
+    })),
+  );
 
-  await startMaintenanceTasks(db);
+  await startMaintenanceTasks();
 };
 
-const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Promise<void> => {
-  const tx = db.transaction('imagegroups', 'readwrite');
-  const store = tx.store;
+const deleteImageGroupById = async (id: string, repositories: PreparedDb): Promise<void> => {
+  const { imageGroups: repository } = repositories;
 
-  const allGroups = await store.getAll();
+  const allGroups = await repository.getAll();
   const groupsById = new Map(allGroups.map((g) => [g.id, g]));
   const group = groupsById.get(id);
 
   if (!group) {
-    await tx.done;
     return;
   }
 
@@ -119,23 +112,25 @@ const deleteImageGroupById = async (id: string, db: IDBPDatabase<ItemsDB>): Prom
     const ownImages = imageIdsByGroup.get(id) ?? [];
     const ownChildIds = childGroupIdsByParent.get(id) ?? [];
 
-    await store.put({
-      ...parent,
-      images: unique([...parent.images, ...ownImages]),
-      groups: unique([...parent.groups, ...ownChildIds]),
-    });
+    await repository.put([{
+      key: parent.id,
+      value: {
+        ...parent,
+        images: unique([...parent.images, ...ownImages]),
+        groups: unique([...parent.groups, ...ownChildIds]),
+      },
+    }]);
   }
 
-  await store.delete(id);
-  await tx.done;
+  await repository.deleteByKeys([id]);
 };
 
 export const deleteImageGroupsByIds = async ({ ids }: DeleteImageGroupsByIdsParams): Promise<void> => {
-  const { db } = await getDb();
+  const repositories = await getDb();
 
   for (const id of ids) {
-    await deleteImageGroupById(id, db);
+    await deleteImageGroupById(id, repositories);
   }
 
-  await startMaintenanceTasks(db);
+  await startMaintenanceTasks();
 };

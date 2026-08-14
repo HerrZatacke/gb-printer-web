@@ -12,12 +12,11 @@ import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
 export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> => {
-  const { db } = await getDb();
+  const { plugins: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('plugins');
-  const plugins = await store.getAll();
-  const total = await store.count();
+  const plugins = await repository.getAll();
+  const total = await repository.count();
 
   const addPaging = getAddTotal<Plugin>(total, start, PluginSchema);
 
@@ -25,15 +24,13 @@ export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> =>
 };
 
 export const getPluginsByUrls = async ({ urls }: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>> => {
-  const { db } = await getDb();
+  const { plugins: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('plugins');
-  const total = await store.count();
+  const total = await repository.count();
 
-  const plugins = await Promise.all(
-    urls.map(url => store.get(url)),
-  );
+  const plugins = (await repository.getEntriesByKeys(urls))
+    .map(({ value }) => value);
 
   const filteredPlugins = plugins.filter((plugin): plugin is Plugin => Boolean(plugin));
 
@@ -44,27 +41,22 @@ export const getPluginsByUrls = async ({ urls }: GetPluginsByUrlsParams): Promis
 
 export const updatePlugins = async ({ plugins, purge }: UpdatePluginsParams): Promise<void> => {
   const parsedPlugins = z.array(PluginSchema).parse(plugins);
-
-  const { db } = await getDb();
-
-  const tx = db.transaction('plugins', 'readwrite');
-  const store = tx.store;
+  const { plugins: repository } = await getDb();
 
   if (purge) {
-    await store.clear();
+    await repository.clear();
   }
 
-  await Promise.all(parsedPlugins.map((palette) => store.put(palette)));
-  await tx.done;
+  await repository.put(
+    parsedPlugins.map((plugin) => ({
+      key: plugin.url,
+      value: plugin,
+    })),
+  );
 };
 
 export const deletePluginsByUrls = async ({ urls }: DeletePluginsByUrlsParams): Promise<void> => {
-const { db } = await getDb();
-
-  const tx = db.transaction('plugins', 'readwrite');
-  const store = tx.store;
-
-  await Promise.all(urls.map((url) => store.delete(url)));
-  await tx.done;
+  const { plugins: repository } = await getDb();
+  await repository.deleteByKeys(urls);
 };
 

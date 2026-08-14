@@ -2,6 +2,7 @@ import { type StoredSerializableImageGroup } from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
 import unique from '@/tools/unique';
 import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
+import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 
 const MAX_PASSES = 20;
 
@@ -55,10 +56,10 @@ const isEmptyGroup = (group: StoredSerializableImageGroup): boolean => {
 // so the caller knows whether another pass is needed to catch newly-dangling
 // references to groups deleted just now.
 const runPass = async (
-  db: IDBPDatabase<ItemsDB>,
+  repositories: PreparedDb,
+  groups: StoredSerializableImageGroup[],
   validImageHashes: Set<string>,
 ): Promise<boolean> => {
-  const groups = await db.getAll('imagegroups');
   const validGroupIds = new Set(groups.map((group) => group.id));
 
   let hasDeletedAny = false;
@@ -67,13 +68,18 @@ const runPass = async (
     const { group: sanitized, didChange } = sanitizeGroup(group, validImageHashes, validGroupIds);
 
     if (isEmptyGroup(sanitized)) {
-      await db.delete('imagegroups', sanitized.id);
+      await repositories.imageGroups.deleteByKeys([sanitized.id]);
       hasDeletedAny = true;
       continue;
     }
 
     if (didChange) {
-      await db.put('imagegroups', sanitized);
+      await repositories.imageGroups.put([
+        {
+          key: sanitized.id,
+          value: sanitized,
+        },
+      ]);
     }
   }
 
@@ -81,14 +87,15 @@ const runPass = async (
 };
 
 export const reconcileImageGroups = async (
-  db: IDBPDatabase<ItemsDB>,
+  repositories: PreparedDb,
 ): Promise<void> => {
   const startPasses = performance.now();
-  const validImageHashes = new Set(await db.getAllKeys('images'));
+  const validImageHashes = new Set(await repositories.images.getAllKeys());
+  const groups = await repositories.imageGroups.getAll();
 
   let pass = 0;
   for (; pass < MAX_PASSES; pass += 1) {
-    const hasDeletedAny = await runPass(db, validImageHashes);
+    const hasDeletedAny = await runPass(repositories, groups, validImageHashes);
 
     if (!hasDeletedAny) {
       break;

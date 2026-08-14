@@ -1,6 +1,7 @@
 import { SpecialTags, StoredImage } from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
 import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
+import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 
 const MAX_TREE_DEPTH = 20;
 
@@ -105,10 +106,10 @@ const resolveGroupAggregates = (
 };
 
 export const populateGroupAggregates = async (
-  db: IDBPDatabase<ItemsDB>,
+  repositories: PreparedDb,
 ): Promise<void> => {
-  const groups = await db.getAll('imagegroups');
-  const images = await db.getAll('images');
+  const groups = await repositories.imageGroups.getAll();
+  const images = await repositories.images.getAll();
 
   const groupsById = new Map(groups.map((group) => [group.id, group]));
   const aggregatesByImageHash = new Map<string, GroupAggregates>(images.map((image: StoredImage): [string, GroupAggregates] => ([
@@ -123,11 +124,14 @@ export const populateGroupAggregates = async (
   ])));
   const resolvedAggregatesById = new Map<string, GroupAggregates>();
 
-  const tx = db.transaction('imagegroups', 'readwrite');
-  for (const group of groups) {
+
+  const updatedGroups = groups.map((group) => {
     const aggregates = resolveGroupAggregates(group.id, 0, groupsById, aggregatesByImageHash, resolvedAggregatesById);
     const coverImage = group.coverImage || aggregates.coverImage;
-    await tx.store.put({ ...group, ...aggregates, coverImage });
-  }
-  await tx.done;
+    return { ...group, ...aggregates, coverImage };
+  });
+
+  await repositories.imageGroups.put(
+    updatedGroups.map((group) => ({ key: group.id, value: group })),
+  );
 };

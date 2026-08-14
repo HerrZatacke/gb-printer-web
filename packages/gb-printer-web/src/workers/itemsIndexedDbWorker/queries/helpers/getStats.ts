@@ -7,7 +7,7 @@ import {
 import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 
 export const getStats = async (): Promise<ItemsStatsResponse> => {
-  const { db } = await getDb();
+  const repositories = await getDb();
   const startTime = performance.now();
 
   const [
@@ -20,14 +20,14 @@ export const getStats = async (): Promise<ItemsStatsResponse> => {
     binaryImages,
     binaryFrames,
   ] = await Promise.all([
-    db.count('framegroups'),
-    db.count('frames'),
-    db.count('imagegroups'),
-    db.count('images'),
-    db.count('palettes'),
-    db.count('plugins'),
-    db.count('binaryimages'),
-    db.count('binaryframes'),
+    repositories.frameGroups.count(),
+    repositories.frames.count(),
+    repositories.imageGroups.count(),
+    repositories.images.count(),
+    repositories.palettes.count(),
+    repositories.plugins.count(),
+    repositories.binaryImages.count(),
+    repositories.binaryFrames.count(),
   ]);
 
   const duration = performance.now() - startTime;
@@ -48,18 +48,13 @@ export const getStats = async (): Promise<ItemsStatsResponse> => {
 };
 
 export const getUsages = async (): Promise<ItemsUsageReponse> => {
-  const { db } = await getDb();
+  const { images: repository } = await getDb();
   const startTime = performance.now();
 
   const paletteUsageCounts = new Map<string, number>();
   const frameUsageCounts = new Map<string, number>();
 
-  const { store } = db.transaction('images');
-  let cursor = await store.openCursor();
-
-  while (cursor) {
-    const image = cursor.value;
-
+  for await (const image of repository.iterate()) {
     if (image.type === 'mono' && image.palette) {
       paletteUsageCounts.set(image.palette, (paletteUsageCounts.get(image.palette) ?? 0) + 1);
     }
@@ -67,8 +62,6 @@ export const getUsages = async (): Promise<ItemsUsageReponse> => {
     if (image.frame) {
       frameUsageCounts.set(image.frame, (frameUsageCounts.get(image.frame) ?? 0) + 1);
     }
-
-    cursor = await cursor.continue();
   }
 
   const palettes: PaletteUsage[] = [...paletteUsageCounts.entries()].map(([shortName, usage]) => ({ shortName, usage }));

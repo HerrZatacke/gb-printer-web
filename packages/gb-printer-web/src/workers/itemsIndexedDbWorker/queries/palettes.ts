@@ -14,12 +14,10 @@ import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/querie
 
 
 export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShortNamesParams): Promise<ItemsSourceResponse<Palette>> => {
-  const { db } = await getDb();
+  const { palettes: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('palettes');
-  const total = await store.count();
-
+  const total = await repository.count();
 
   const palettes = await Promise.all(
     shortNames
@@ -33,7 +31,7 @@ export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShort
           };
         }
 
-        return (await store.get(shortName)) || null;
+        return (await repository.getByKey(shortName)) ?? null;
       }),
   );
 
@@ -45,12 +43,11 @@ export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShort
 };
 
 export const getPalettes = async (): Promise<ItemsSourceTotalResponse<Palette>> => {
-  const { db } = await getDb();
+  const { palettes: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('palettes');
-  const palettes = await store.getAll();
-  const total = await store.count() + predefinedPalettes.length;
+  const palettes = await repository.getAll();
+  const total = await repository.count() + predefinedPalettes.length;
 
   const withPredefined: Palette[] = [
     ...predefinedPalettes.map((palette): Palette => ({
@@ -72,25 +69,21 @@ export const updatePalettes = async ({ palettes, purge }: UpdatePalettesParams):
 
   const parsedPalettes = z.array(PaletteSchema).parse(filteredPalettes);
 
-  const { db } = await getDb();
-
-  const tx = db.transaction('palettes', 'readwrite');
-  const store = tx.store;
+  const { palettes: repository } = await getDb();
 
   if (purge) {
-    await store.clear();
+    await repository.clear();
   }
 
-  await Promise.all(parsedPalettes.map((palette) => store.put(palette)));
-  await tx.done;
+  await repository.put(
+    parsedPalettes.map((palette) => ({
+      key: palette.shortName,
+      value: palette,
+    })),
+  );
 };
 
 export const deletePalettesByShortNames = async ({ shortNames }: DeletePalettesByShortNamesParams): Promise<void> => {
-  const { db } = await getDb();
-
-  const tx = db.transaction('palettes', 'readwrite');
-  const store = tx.store;
-
-  await Promise.all(shortNames.map((shortName) => store.delete(shortName)));
-  await tx.done;
+  const { palettes: repository } = await getDb();
+  await repository.deleteByKeys(shortNames);
 };
