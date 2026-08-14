@@ -11,12 +11,11 @@ import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/gene
 
 
 export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
-  const { db } = await getDb();
+  const { frameGroups: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('framegroups');
-  const frameGroups = await store.getAll();
-  const total = await store.count();
+  const frameGroups = await repository.getAll();
+  const total = await repository.count();
 
   const addPaging = getAddTotal<FrameGroup>(total, start, FrameGroupSchema);
 
@@ -25,25 +24,21 @@ export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGr
 
 export const updateFrameGroups = async ({ frameGroups, purge }: UpdateFrameGroupsParams): Promise<void> => {
   const parsedFrameGroups = z.array(FrameGroupSchema).parse(frameGroups);
-  const { db } = await getDb();
-
-  const tx = db.transaction('framegroups', 'readwrite');
-  const store = tx.store;
+  const { frameGroups: repository } = await getDb();
 
   if (purge) {
-    await store.clear();
+    await repository.clear();
   }
 
-  await Promise.all(parsedFrameGroups.map((frameGroup) => store.put(frameGroup)));
-  await tx.done;
+  await repository.put(
+    parsedFrameGroups.map((frameGroup) => ({
+      key: frameGroup.id,
+      value: frameGroup,
+    })),
+  );
 };
 
 export const deleteFrameGroupsByIds = async ({ ids }: DeleteFrameGroupsByIdsParams): Promise<void> => {
-  const { db } = await getDb();
-
-  const tx = db.transaction('framegroups', 'readwrite');
-  const store = tx.store;
-
-  await Promise.all(ids.map((id) => store.delete(id)));
-  await tx.done;
+  const { frameGroups: repository } = await getDb();
+  await repository.deleteByKeys(ids);
 };

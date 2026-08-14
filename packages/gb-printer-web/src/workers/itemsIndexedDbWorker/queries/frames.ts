@@ -12,12 +12,11 @@ import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 
 export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const { db } = await getDb();
+  const { frames: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('frames');
-  const frames = await store.getAll();
-  const total = await store.count();
+  const frames = await repository.getAll();
+  const total = await repository.count();
 
   const addPaging = getAddTotal<Frame>(total, start, FrameSchema);
 
@@ -25,19 +24,16 @@ export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
 };
 
 export const getFramesByIds = async ({ ids }: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const { db } = await getDb();
+  const { frames: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('frames');
-  const total = await store.count();
+  const total = await repository.count();
 
-  const frames = await Promise.all(
-    ids
-      .filter(Boolean)
-      .map(id => store.get(id)),
-  );
+  const frames = await repository.getEntriesByKeys(ids.filter(Boolean));
 
-  const filteredFrames = frames.filter((frame): frame is Frame => Boolean(frame));
+  const filteredFrames = frames
+    .map(({ value }) => value)
+    .filter((frame): frame is Frame => Boolean(frame));
 
   const addPaging = getAddTotal<Frame>(total, start, FrameSchema);
 
@@ -45,17 +41,17 @@ export const getFramesByIds = async ({ ids }: GetFramesByIdsParams): Promise<Ite
 };
 
 export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const { db } = await getDb();
+  const { frames: repository } = await getDb();
   const start = performance.now();
 
-  const { store } = db.transaction('frames');
-  const total = await store.count();
+  console.log('getFramesByHashes');
 
-  const frames = (await Promise.all(
-    hashes.map(hash => store.index('hash').getAll(hash)),
-  )).flat();
+  const total = await repository.count();
 
-  const filteredFrames = frames.filter((frame): frame is Frame => Boolean(frame));
+  const frames = await repository.getByIndexValues('hash', hashes);
+
+  const filteredFrames = frames
+    .filter((frame): frame is Frame => Boolean(frame));
 
   const addPaging = getAddTotal<Frame>(total, start, FrameSchema);
 
@@ -65,25 +61,21 @@ export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Pr
 export const updateFrames = async ({ frames, purge }: UpdateFramesParams): Promise<void> => {
   const parsedFrames = z.array(FrameSchema).parse(frames);
 
-  const { db } = await getDb();
+  const { frames: repository } = await getDb();
 
-  const tx = db.transaction('frames', 'readwrite');
-  const store = tx.store;
-
-  if (purge) {
-    await store.clear();
+    if (purge) {
+    await repository.clear();
   }
 
-  await Promise.all(parsedFrames.map((frame) => store.put(frame)));
-  await tx.done;
+  await repository.put(
+    parsedFrames.map((frame) => ({
+      key: frame.id,
+      value: frame,
+    })),
+  );
 };
 
 export const deleteFramesByIds = async ({ ids }: DeleteFramesByIdsParams): Promise<void> => {
-  const { db } = await getDb();
-
-  const tx = db.transaction('frames', 'readwrite');
-  const store = tx.store;
-
-  await Promise.all(ids.map((id) => store.delete(id)));
-  await tx.done;
+  const { frames: repository } = await getDb();
+  await repository.deleteByKeys(ids);
 };
