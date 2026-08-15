@@ -59,6 +59,7 @@ catalog:
   eslint-plugin-react: ^7.37.5
   events: ^3.3.0
   fastify: ^5.12.0
+  fastify-plugin: ^6.0.0
   favicons: ^7.3.1
   file-saver: ^2.0.5
   filenamify: ^7.0.2
