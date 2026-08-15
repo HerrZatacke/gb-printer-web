@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import AutoLoad from '@fastify/autoload';
 import fastifyStatic from '@fastify/static';
 import Fastify from 'fastify';
+import { runMigrations } from '@/db/connections';
 import itemsSourcePlugin from '@/plugins/itemsSourcePlugin';
 
 const app = Fastify({
@@ -17,6 +18,7 @@ void app.register(AutoLoad, { dir: path.join(__dirname, 'routes') });
 
 const start = async () => {
   try {
+    await runMigrations();
     await app.listen({ port: 3001, host: '0.0.0.0' });
   } catch (err) {
     app.log.error(err);
