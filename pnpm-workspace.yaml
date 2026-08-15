@@ -1,6 +1,7 @@
 allowBuilds:
   '@parcel/watcher': true
   '@swc/core': true
+  better-sqlite3: true
   esbuild: true
   unrs-resolver: true
 
@@ -27,6 +28,7 @@ catalog:
   '@octokit/rest': ^22.0.1
   '@stylistic/eslint-plugin': ^5.10.0
   '@tanstack/react-query': ^5.101.4
+  '@types/better-sqlite3': ^9.6.0
   '@types/bytes': ^3.1.5
   '@types/chunk': ^0.0.2
   '@types/dom-serial': ^1.0.6
@@ -43,6 +45,7 @@ catalog:
   '@types/umami-browser': ^2.18.1
   '@types/w3c-web-usb': ^1.0.14
   babel-plugin-react-compiler: ^1.0.0
+  better-sqlite3: ^13.0.3
   bowser: ^2.14.1
   bytes: ^3.1.2
   chunk: 0.0.3
@@ -50,6 +53,8 @@ catalog:
   concurrently: ^10.0.4
   dayjs: ^1.11.21
   defu: ^6.1.7
+  drizzle-kit: ^0.31.10
+  drizzle-orm: ^0.45.2
   dropbox: ^10.44.0
   eslint: ^9.39.5
   eslint-config-next: ^16.3.0

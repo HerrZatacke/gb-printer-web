@@ -10,6 +10,10 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@types/better-sqlite3": "catalog:",
+    "drizzle-orm":  "catalog:",
+    "better-sqlite3":  "catalog:",
+    "drizzle-kit":  "catalog:",
     "@fastify/autoload": "catalog:",
     "@fastify/static": "catalog:",
     "fastify": "catalog:",
