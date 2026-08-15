@@ -1,7 +1,7 @@
-import { populateGroupAggregates } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregates';
-import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
-import { MaintenanceTask } from '@/workers/itemsIndexedDbWorker/maintenance/types';
-import { type Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
+import { populateGroupAggregates } from '@/maintenance/populateGroupAggregates';
+import { reconcileImageGroups } from '@/maintenance/reconcileImageGroups';
+import { MaintenanceTask } from '@/maintenance/types';
+import { type Repositories } from '@/types';
 
 const maintenanceTasks: MaintenanceTask[] = [
   populateGroupAggregates,

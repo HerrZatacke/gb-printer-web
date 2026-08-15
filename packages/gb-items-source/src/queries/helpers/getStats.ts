@@ -4,7 +4,7 @@ import {
   type ItemsUsageReponse,
   type PaletteUsage,
 } from 'gb-printer-schemas';
-import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
+import { type ItemsSourceInternal } from '@/types';
 
 export async function getStats(this: ItemsSourceInternal): Promise<ItemsStatsResponse> {
   const { repositories } = this;

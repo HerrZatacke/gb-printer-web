@@ -1,5 +1,5 @@
 import { BinaryStoreItemSchema } from 'gb-printer-schemas';
-import { createBinaryStoreQueries } from '@/workers/itemsIndexedDbWorker/queries/createBinaryStoreQueries';
+import { createBinaryStoreQueries } from '@/queries/createBinaryStoreQueries';
 
 export const {
   getByHashes: getBinaryFramesByHashes,

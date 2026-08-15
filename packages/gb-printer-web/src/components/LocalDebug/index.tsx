@@ -10,7 +10,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { getItemsSource } from '@/stores/items/client';
 import { resetImageCaches } from '@/stores/items/queries/cacheResets';
 import { runMaintenanceAction } from '@/stores/items/queries/global';
 import { useSettingsStore } from '@/stores/stores';

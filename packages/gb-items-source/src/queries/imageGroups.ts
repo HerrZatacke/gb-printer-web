@@ -10,17 +10,16 @@ import {
   type UpdateImageGroupsParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import sortBy from '@/tools/sortby';
-import unique from '@/tools/unique';
-import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
-import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSlugs';
-import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
-import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildTree';
-import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
-import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
-import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
-import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
+import { startMaintenanceTasks } from '@/maintenance';
+import { applyFullSlugs } from '@/queries/helpers/applyFullSlugs';
+import { applyImageTotals } from '@/queries/helpers/applyImageTotals';
+import { buildTree } from '@/queries/helpers/buildTree';
+import { createTreeRoot } from '@/queries/helpers/createTreeRoot';
+import { getAddTotal } from '@/queries/helpers/generic';
+import { resolveOwnership } from '@/queries/helpers/resolveOwnership';
+import sortBy from '@/temptools/sortby';
+import unique from '@/temptools/unique';
+import { type Repositories, type ItemsSourceInternal } from '@/types';
 
 const sortById = sortBy<StoredSerializableImageGroup>('id');
 

@@ -7,8 +7,8 @@ import {
   type UpdateBinaryItemsParams,
 } from 'gb-printer-schemas';
 import z, { type ZodType } from 'zod';
-import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
+import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/types';
 
 export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binaryFrames', schema: ZodType<BinaryStoreItem>) => {
   async function getByHashes(this: ItemsSourceInternal, { hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> {

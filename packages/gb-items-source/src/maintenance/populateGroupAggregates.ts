@@ -1,5 +1,5 @@
 import { SpecialTags, StoredImage } from 'gb-printer-schemas';
-import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
+import { type Repositories } from '@/types';
 
 const MAX_TREE_DEPTH = 20;
 

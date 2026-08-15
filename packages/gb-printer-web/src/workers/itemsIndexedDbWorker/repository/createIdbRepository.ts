@@ -1,10 +1,10 @@
-import { type IDBPDatabase, type StoreNames } from 'idb';
-import { type EntityConfig } from '@/workers/itemsIndexedDbWorker/repository/entityConfig';
 import {
   type IndexedItemRepository,
   type ItemRepository,
   type RepositoryEntry,
-} from '@/workers/itemsIndexedDbWorker/repository/types';
+  type EntityConfig,
+} from 'gb-items-source';
+import { type IDBPDatabase, type StoreNames } from 'idb';
 import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 // Minimal shape of the idb store/index API this repository actually uses,

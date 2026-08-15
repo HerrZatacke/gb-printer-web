@@ -6,15 +6,15 @@ import {
   type StoredImage,
   type StoredSerializableImageGroup,
 } from 'gb-printer-schemas';
-import sortBy from '@/tools/sortby';
 import {
   facetFromImage,
   facetFromSerializableImageGroup,
   getFacetMatcher,
-} from '@/workers/itemsIndexedDbWorker/queries/filters';
-import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
-import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
-import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
+} from '@/queries/filters';
+import { ROOT_ID } from '@/queries/helpers/createTreeRoot';
+import { resolveAndFilterImages } from '@/queries/helpers/resolveAndFilterImages';
+import sortBy from '@/temptools/sortby';
+import { type Repositories } from '@/types';
 
 export const resolveGroupItemsByGroupId = async (
   getFullTree: () => Promise<TreeImageGroup>,

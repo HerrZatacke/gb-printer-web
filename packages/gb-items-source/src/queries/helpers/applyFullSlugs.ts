@@ -1,7 +1,7 @@
 import { type TreeImageGroup } from 'gb-printer-schemas';
 import { joinURL } from 'ufo';
-import { cleanFullSlug } from '@/tools/cleanSlug';
-import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
+import { ROOT_ID } from '@/queries/helpers/createTreeRoot';
+import { cleanFullSlug } from '@/temptools/cleanSlug';
 
 export const applyFullSlugs = (
   group: TreeImageGroup,

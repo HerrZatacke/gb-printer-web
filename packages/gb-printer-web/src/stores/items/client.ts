@@ -1,10 +1,10 @@
 'use client';
 import * as Comlink from 'comlink';
+import { ItemsSource } from 'gb-items-source';
 import { useInteractionsStore } from '@/stores/stores';
 import {
   type InitWorkerFn,
   type ItemsHostApi,
-  type ItemsSource,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 declare global {

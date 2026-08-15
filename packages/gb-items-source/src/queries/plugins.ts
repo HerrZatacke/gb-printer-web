@@ -8,8 +8,8 @@ import {
   type UpdatePluginsParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
+import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/types';
 
 export async function getPlugins(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Plugin>> {
   const { plugins: repository } = this.repositories;

@@ -5,7 +5,7 @@ import {
   type StoredImage,
   type StoredSerializableImageGroup,
 } from 'gb-printer-schemas';
-import { FilterableFacet } from '@/workers/itemsIndexedDbWorker/types';
+import { FilterableFacet } from '@/types';
 
 export const getFacetMatcher = async (filters?: ImageQueryFilters) => {
 

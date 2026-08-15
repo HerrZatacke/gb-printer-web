@@ -6,7 +6,6 @@ Game Boy Camera Gallery is a web app to organise, edit and share shots taken wit
 - Browse and organize shots in a responsive gallery with tagging and filtering
 - Add custom frames and color palettes
 - Print on original Game Boy Printer hardware via WebSerial
-- [**Try it here** and read about all features](https://herrzatacke.github.io/gb-printer-web/)
 
 ## Development usage
 The following options apply if you plan on contributing to this app:

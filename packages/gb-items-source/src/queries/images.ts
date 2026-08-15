@@ -22,14 +22,14 @@ import {
   type TreeImageGroup,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import sortBy from '@/tools/sortby';
-import uniqueBy from '@/tools/unique/by';
-import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
-import { facetFromImage, getFacetMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
-import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
-import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
-import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
+import { startMaintenanceTasks } from '@/maintenance';
+import { facetFromImage, getFacetMatcher } from '@/queries/filters';
+import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { resolveAndFilterImages } from '@/queries/helpers/resolveAndFilterImages';
+import { resolveGroupItemsByGroupId } from '@/queries/helpers/resolveGroupItemsByGroupId';
+import sortBy from '@/temptools/sortby';
+import uniqueBy from '@/temptools/unique/by';
+import { type ItemsSourceInternal } from '@/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
 

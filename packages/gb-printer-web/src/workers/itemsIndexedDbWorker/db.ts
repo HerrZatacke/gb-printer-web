@@ -1,8 +1,11 @@
+import {
+  type Repositories,
+  startMaintenanceTasks,
+} from 'gb-items-source';
 import { openDB } from 'idb';
 import { ITEMS_DB_VERSION } from '@/stores/constants';
-import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { migrateV1 } from '@/workers/itemsIndexedDbWorker/migrations/v1';
-import { createRepositories, type Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
+import { createRepositories } from '@/workers/itemsIndexedDbWorker/repository/createRepositories';
 import {
   type AfterUpgradeFn,
   type ItemsDB,

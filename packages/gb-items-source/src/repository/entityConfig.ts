@@ -1,9 +1,7 @@
-import { type StoreNames } from 'idb';
-import { type RepositoryEntry } from '@/workers/itemsIndexedDbWorker/repository/types';
-import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
+import { type RepositoryEntry, StoreNames } from '@/types';
 
 export interface EntityConfig<TValue, TKey extends string = string> {
-  storeName: StoreNames<ItemsDB>;
+  storeName: StoreNames;
   // true for keyPath stores (images, frames, imagegroups, palettes, plugins,
   // framegroups) where idb reads the key off the value itself.
   // false for out-of-line-key stores (binaryimages, binaryframes)

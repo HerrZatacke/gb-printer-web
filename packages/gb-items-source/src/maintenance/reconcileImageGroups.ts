@@ -1,6 +1,6 @@
 import { type StoredSerializableImageGroup } from 'gb-printer-schemas';
-import unique from '@/tools/unique';
-import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
+import unique from '@/temptools/unique';
+import { type Repositories } from '@/types';
 
 const MAX_PASSES = 20;
 

@@ -1,5 +1,5 @@
 import { type StoredImage } from 'gb-printer-schemas';
-import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
+import { type Repositories } from '@/types';
 
 export const resolveAndFilterImages = async (
   repositories: Repositories,

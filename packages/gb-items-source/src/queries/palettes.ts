@@ -9,8 +9,8 @@ import {
   type UpdatePalettesParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
+import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/types';
 
 
 export async function getPalettesByShortNames(this: ItemsSourceInternal, { shortNames }: GetPalettesByShortNamesParams): Promise<ItemsSourceResponse<Palette>> {

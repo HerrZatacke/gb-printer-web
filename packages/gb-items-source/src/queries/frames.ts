@@ -8,8 +8,8 @@ import {
   type UpdateFramesParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
-import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
+import { getAddTotal } from '@/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/types';
 
 export async function getFrames(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Frame>> {
   const { frames: repository } = this.repositories;
