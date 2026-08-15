@@ -13,6 +13,7 @@
     "@fastify/autoload": "catalog:",
     "@fastify/static": "catalog:",
     "fastify": "catalog:",
+    "fastify-plugin": "catalog:",
     "gb-items-source": "workspace:*",
     "gb-palettes": "catalog:",
     "gb-printer-schemas": "workspace:*",

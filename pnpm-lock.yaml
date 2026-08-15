@@ -150,6 +150,9 @@ catalogs:
     fastify:
       specifier: ^5.12.0
       version: 5.12.0
+    fastify-plugin:
+      specifier: ^6.0.0
+      version: 6.0.0
     favicons:
       specifier: ^7.3.1
       version: 7.3.1
@@ -314,6 +317,9 @@ importers:
       fastify:
         specifier: 'catalog:'
         version: 5.12.0
+      fastify-plugin:
+        specifier: 'catalog:'
+        version: 6.0.0
       gb-items-source:
         specifier: workspace:*
         version: link:../gb-items-source
