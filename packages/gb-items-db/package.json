@@ -11,12 +11,12 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@types/better-sqlite3": "catalog:",
-    "drizzle-orm":  "catalog:",
-    "better-sqlite3":  "catalog:",
-    "drizzle-kit":  "catalog:",
     "@fastify/autoload": "catalog:",
     "@fastify/static": "catalog:",
+    "@types/better-sqlite3": "catalog:",
+    "better-sqlite3":  "catalog:",
+    "drizzle-kit":  "catalog:",
+    "drizzle-orm": "catalog:",
     "fastify": "catalog:",
     "fastify-plugin": "catalog:",
     "gb-items-source": "workspace:*",

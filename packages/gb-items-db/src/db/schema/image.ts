@@ -6,7 +6,12 @@ import {
   text,
 } from 'drizzle-orm/sqlite-core';
 import {
+  type Rotation,
+} from 'gb-image-decoder';
+import {
   type RGBNHashes,
+  type RGBNPalette,
+  type ImageMetadata,
 } from 'gb-printer-schemas';
 
 // ---- Drizzle table — this is what `drizzle-kit generate` reads ----
@@ -21,9 +26,14 @@ export const images = sqliteTable('images', {
   frame: text('frame'),
   tags: text('tags', { mode: 'json' }).notNull().$type<string[]>(),
   type: text('type', { enum: ['mono', 'rgbn'] }).notNull(),
-  lines: integer('lines').notNull(),
-  palette: text('palette'),
+  lines: integer('lines'),
+  palette: text('palette', { mode: 'json' }).$type<string | RGBNPalette>(),
   invertPalette: integer('invert_palette', { mode: 'boolean' }).notNull().default(false),
+  invertFramePalette: integer('invert_frame_palette', { mode: 'boolean' }).notNull().default(false),
+  framePalette: text('frame_palette'),
+  lockFrame: integer('lock_frame', { mode: 'boolean' }).notNull().default(false),
+  meta: text('meta', { mode: 'json' }).$type<ImageMetadata>(),
+  rotation: integer('rotation').$type<Rotation>(),
 });
 
 export const imageReferences = sqliteTable('image_references', {
