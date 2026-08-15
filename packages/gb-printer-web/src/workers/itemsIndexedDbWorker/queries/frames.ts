@@ -44,8 +44,6 @@ export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Pr
   const { frames: repository } = await getDb();
   const start = performance.now();
 
-  console.log('getFramesByHashes');
-
   const total = await repository.count();
 
   const frames = await repository.getByIndexValues('hash', hashes);
