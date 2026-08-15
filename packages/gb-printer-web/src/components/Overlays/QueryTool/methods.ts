@@ -1,3 +1,4 @@
+import { ItemsSource } from 'gb-items-source';
 import {
   GetGroupItemsByGroupIdParamsSchema,
   GetHashesByGroupIdParamsSchema,
@@ -25,9 +26,8 @@ import {
   DeleteBinaryItemsByHashesParamsSchema,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
 
-export type MethodName = keyof Omit<ItemsSource, 'init' | 'debugReset' | 'runMaintenance'>;
+export type MethodName = keyof Omit<ItemsSource, 'init' | 'runMaintenance'>;
 
 // Used for endpoints that take no arguments at all (no JSON body to parse)
 const NoParamsSchema = z.undefined();

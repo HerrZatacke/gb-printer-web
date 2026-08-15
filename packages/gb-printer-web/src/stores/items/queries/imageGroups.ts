@@ -1,11 +1,11 @@
 import { QueryClient } from '@tanstack/react-query';
+import { ROOT_ID } from 'gb-items-source';
 import { type SerializableImageGroup, type TreeImageGroup } from 'gb-printer-schemas';
 import { getItemsSource } from '@/stores/items/client';
 import { imageGroupsKeys } from '@/stores/items/queries/cacheKeys';
 import { resetImageGroupCaches } from '@/stores/items/queries/cacheResets';
 import { STALE_TIME } from '@/stores/items/queries/consts';
 import unique from '@/tools/unique';
-import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 
 export const findGroupByFullSlug = (
   group: TreeImageGroup,

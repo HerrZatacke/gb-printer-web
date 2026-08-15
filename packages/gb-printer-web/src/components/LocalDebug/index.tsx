@@ -10,7 +10,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { getItemsSource } from '@/stores/items/client';
 import { resetImageCaches } from '@/stores/items/queries/cacheResets';
 import { runMaintenanceAction } from '@/stores/items/queries/global';
 import { useSettingsStore } from '@/stores/stores';
@@ -41,12 +40,6 @@ function Index() {
       });
     }
   }, [enableDebug]);
-
-  const debugReset = useCallback(async () => {
-    const source = await getItemsSource();
-    await source.debugReset();
-    window.location.reload();
-  }, []);
 
   const runMaintenance = useCallback(async () => {
     await runMaintenanceAction();
@@ -167,9 +160,6 @@ function Index() {
           </Button>
         </ButtonGroup>
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
-          <Button onClick={debugReset}>
-            debugReset
-          </Button>
           <Button onClick={runMaintenance}>
             runMaintenance
           </Button>

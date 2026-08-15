@@ -1,7 +1,11 @@
 'use client';
 import * as Comlink from 'comlink';
+import { ItemsSource } from 'gb-items-source';
 import { useInteractionsStore } from '@/stores/stores';
-import { type ItemsHostApi, type ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type InitWorkerFn,
+  type ItemsHostApi,
+} from '@/workers/itemsIndexedDbWorker/types';
 
 declare global {
   var __itemsSourcePromise: Promise<ItemsSource> | undefined;
@@ -15,7 +19,7 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
   if (!globalThis.__itemsSourcePromise) {
     globalThis.__itemsSourcePromise = (async () => {
       const worker = new Worker(new URL('@/workers/itemsIndexedDbWorker', import.meta.url), { type: 'module' });
-      const instance = Comlink.wrap<ItemsSource>(worker);
+      const initWorker = Comlink.wrap<InitWorkerFn>(worker);
 
       const hostApi: ItemsHostApi = {
         async getLegacyStorage(): Promise<Record<string, unknown[]>> {
@@ -31,9 +35,7 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
         },
       };
 
-      await instance.init(Comlink.proxy(hostApi));
-
-      return instance;
+      return initWorker(Comlink.proxy(hostApi));
     })().catch((err) => {
       globalThis.__itemsSourcePromise = undefined;
       throw err;
