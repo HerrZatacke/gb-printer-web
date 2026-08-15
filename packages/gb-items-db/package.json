@@ -1,0 +1,27 @@
+{
+  "name": "gb-items-db",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "dev": "concurrently \"tsx watch src/index.ts\" \"tsc-alias --watch\"",
+    "lint": "eslint .",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@fastify/autoload": "catalog:",
+    "@fastify/static": "catalog:",
+    "fastify": "catalog:",
+    "gb-items-source": "workspace:*",
+    "gb-palettes": "catalog:",
+    "gb-printer-schemas": "workspace:*",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "concurrently": "catalog:",
+    "tsc-alias": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}
