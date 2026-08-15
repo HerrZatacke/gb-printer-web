@@ -42,12 +42,6 @@ function Index() {
     }
   }, [enableDebug]);
 
-  const debugReset = useCallback(async () => {
-    const source = await getItemsSource();
-    await source.debugReset();
-    window.location.reload();
-  }, []);
-
   const runMaintenance = useCallback(async () => {
     await runMaintenanceAction();
   }, []);
@@ -167,9 +161,6 @@ function Index() {
           </Button>
         </ButtonGroup>
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
-          <Button onClick={debugReset}>
-            debugReset
-          </Button>
           <Button onClick={runMaintenance}>
             runMaintenance
           </Button>

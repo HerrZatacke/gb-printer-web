@@ -101,7 +101,6 @@ export type MigrationFn = (
 
 export interface ItemsSource {
   init(hostApi: ItemsHostApi): void;
-  debugReset(): Promise<void>;
   runMaintenance(): Promise<void>;
   getStats(): Promise<ItemsStatsResponse>;
   getUsages(): Promise<ItemsUsageReponse>;
