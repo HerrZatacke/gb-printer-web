@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee",
   "scripts": {
-    "dev": "concurrently \"pnpm --filter gb-items-source dev\" \"pnpm --filter gb-printer-schemas dev\" \"pnpm --filter gb-printer-web dev\"",
-    "build": "pnpm --filter gb-printer-schemas build && pnpm --filter gb-items-source build && pnpm --filter gb-printer-web build",
+    "dev": "concurrently \"pnpm --filter gb-items-source dev\" \"pnpm --filter gb-printer-schemas dev\" \"pnpm --filter gb-items-db dev\" \"pnpm --filter gb-printer-web dev\"",
+    "build": "pnpm --filter gb-printer-schemas build && pnpm --filter gb-items-source build && pnpm --filter gb-printer-web build && pnpm --filter gb-items.db build",
     "lint:fix": "pnpm -r lint:fix",
     "audit": "pnpm audit --fix=update",
     "checkupdates": "pnpm dlx npm-check-updates --workspaces --root",

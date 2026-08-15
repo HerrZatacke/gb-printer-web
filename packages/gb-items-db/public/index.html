@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Echo Test</title>
+</head>
+<body>
+<textarea id="body" rows="20" cols="60">
+  {
+  "params": {
+    "sort": {
+      "field": "created",
+      "direction": "desc"
+    },
+    "page": 0,
+    "pageSize": 15
+  }
+}
+</textarea>
+<br>
+<button id="send">POST</button>
+<pre id="result"></pre>
+
+<script>
+  document.getElementById('send').addEventListener('click', async () => {
+    const raw = document.getElementById('body').value;
+    const response = await fetch('/images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: raw,
+    });
+    const data = await response.json();
+    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+  });
+</script>
+</body>
+</html>
