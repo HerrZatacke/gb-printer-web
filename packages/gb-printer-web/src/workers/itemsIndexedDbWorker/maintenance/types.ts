@@ -1,3 +1,3 @@
-import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
+import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 
-export type MaintenanceTask = (repositories: PreparedDb) => Promise<void>;
+export type MaintenanceTask = (repositories: Repositories) => Promise<void>;

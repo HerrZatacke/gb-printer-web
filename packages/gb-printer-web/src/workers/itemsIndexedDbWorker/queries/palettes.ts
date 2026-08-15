@@ -14,7 +14,7 @@ import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 
 export async function getPalettesByShortNames(this: ItemsSourceInternal, { shortNames }: GetPalettesByShortNamesParams): Promise<ItemsSourceResponse<Palette>> {
-  const { palettes: repository } = this.db;
+  const { palettes: repository } = this.repositories;
   const start = performance.now();
 
   const total = await repository.count();
@@ -43,7 +43,7 @@ export async function getPalettesByShortNames(this: ItemsSourceInternal, { short
 }
 
 export async function getPalettes(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Palette>> {
-  const { palettes: repository } = this.db;
+  const { palettes: repository } = this.repositories;
   const start = performance.now();
 
   const palettes = await repository.getAll();
@@ -63,7 +63,7 @@ export async function getPalettes(this: ItemsSourceInternal): Promise<ItemsSourc
 }
 
 export async function updatePalettes(this: ItemsSourceInternal, { palettes, purge }: UpdatePalettesParams): Promise<void> {
-  const { palettes: repository } = this.db;
+  const { palettes: repository } = this.repositories;
   const predefinedPaletteShortNames = new Set(predefinedPalettes.map(({ shortName }) => shortName));
 
   const filteredPalettes = palettes.filter(({ shortName }) => !predefinedPaletteShortNames.has(shortName));
@@ -83,6 +83,6 @@ export async function updatePalettes(this: ItemsSourceInternal, { palettes, purg
 }
 
 export async function deletePalettesByShortNames(this: ItemsSourceInternal, { shortNames }: DeletePalettesByShortNamesParams): Promise<void> {
-  const { palettes: repository } = this.db;
+  const { palettes: repository } = this.repositories;
   await repository.deleteByKeys(shortNames);
 }

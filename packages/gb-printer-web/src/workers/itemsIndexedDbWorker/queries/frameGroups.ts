@@ -11,7 +11,7 @@ import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 
 export async function getFrameGroups(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<FrameGroup>> {
-  const { frameGroups: repository } = this.db;
+  const { frameGroups: repository } = this.repositories;
   const start = performance.now();
 
   const frameGroups = await repository.getAll();
@@ -24,7 +24,7 @@ export async function getFrameGroups(this: ItemsSourceInternal): Promise<ItemsSo
 
 export async function updateFrameGroups(this: ItemsSourceInternal, { frameGroups, purge }: UpdateFrameGroupsParams): Promise<void> {
   const parsedFrameGroups = z.array(FrameGroupSchema).parse(frameGroups);
-  const { frameGroups: repository } = this.db;
+  const { frameGroups: repository } = this.repositories;
 
   if (purge) {
     await repository.clear();
@@ -39,6 +39,6 @@ export async function updateFrameGroups(this: ItemsSourceInternal, { frameGroups
 }
 
 export async function deleteFrameGroupsByIds(this: ItemsSourceInternal, { ids }: DeleteFrameGroupsByIdsParams): Promise<void> {
-  const { frameGroups: repository } = this.db;
+  const { frameGroups: repository } = this.repositories;
   await repository.deleteByKeys(ids);
 }

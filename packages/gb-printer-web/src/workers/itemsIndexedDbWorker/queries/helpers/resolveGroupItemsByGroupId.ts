@@ -7,7 +7,6 @@ import {
   type StoredSerializableImageGroup,
 } from 'gb-printer-schemas';
 import sortBy from '@/tools/sortby';
-import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 import {
   facetFromImage,
   facetFromSerializableImageGroup,
@@ -15,10 +14,11 @@ import {
 } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
+import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 
 export const resolveGroupItemsByGroupId = async (
   getFullTree: () => Promise<TreeImageGroup>,
-  repositories: PreparedDb,
+  repositories: Repositories,
   groupId: string,
   includeGroups: boolean,
   sort: ImageQuerySort,

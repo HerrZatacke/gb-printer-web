@@ -2,5 +2,5 @@ import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenanc
 import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 export async function runMaintenance(this: ItemsSourceInternal) {
-  await startMaintenanceTasks(this.db);
+  await startMaintenanceTasks(this.repositories);
 }

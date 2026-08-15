@@ -7,7 +7,7 @@ import {
 import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 export async function getStats(this: ItemsSourceInternal): Promise<ItemsStatsResponse> {
-  const repositories = this.db;
+  const { repositories } = this;
   const startTime = performance.now();
 
   const [
@@ -48,7 +48,7 @@ export async function getStats(this: ItemsSourceInternal): Promise<ItemsStatsRes
 }
 
 export async function getUsages(this: ItemsSourceInternal): Promise<ItemsUsageReponse> {
-  const { images: repository } = this.db;
+  const { images: repository } = this.repositories;
   const startTime = performance.now();
 
   const paletteUsageCounts = new Map<string, number>();

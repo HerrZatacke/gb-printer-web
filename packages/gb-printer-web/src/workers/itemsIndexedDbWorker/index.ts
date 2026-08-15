@@ -1,8 +1,5 @@
 import * as Comlink from 'comlink';
-import {
-  openAndPrepareDb,
-  type PreparedDb,
-} from '@/workers/itemsIndexedDbWorker/db';
+import { openAndPrepareDb } from '@/workers/itemsIndexedDbWorker/db';
 import {
   deleteBinaryFramesByHashes,
   getBinaryFrameHashes,
@@ -55,11 +52,12 @@ import {
   getPluginsByUrls,
   updatePlugins,
 } from '@/workers/itemsIndexedDbWorker/queries/plugins';
+import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 import {
   type InitWorkerFn,
   type ItemsHostApi,
   type ItemsSource,
-  type WithDb,
+  type WithRepositories,
 } from '@/workers/itemsIndexedDbWorker/types';
 import { getStats, getUsages } from './queries/helpers/getStats';
 import { runMaintenance } from './queries/helpers/runMaintenance';
@@ -68,9 +66,9 @@ if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
   throw new Error(`worker is executing outside a worker context (is: "${self.constructor.name}")`);
 }
 
-export class ItemsSourceApi implements WithDb{
+export class ItemsSourceApi implements WithRepositories {
   constructor(
-    public readonly db: PreparedDb,
+    public readonly repositories: Repositories,
   ) {}
 }
 

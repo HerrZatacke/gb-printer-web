@@ -1,14 +1,14 @@
-import { type PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 import { populateGroupAggregates } from '@/workers/itemsIndexedDbWorker/maintenance/populateGroupAggregates';
 import { reconcileImageGroups } from '@/workers/itemsIndexedDbWorker/maintenance/reconcileImageGroups';
 import { MaintenanceTask } from '@/workers/itemsIndexedDbWorker/maintenance/types';
+import { type Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 
 const maintenanceTasks: MaintenanceTask[] = [
   populateGroupAggregates,
   reconcileImageGroups,
 ];
 
-export const startMaintenanceTasks = async (repositories: PreparedDb): Promise<void> => {
+export const startMaintenanceTasks = async (repositories: Repositories): Promise<void> => {
   const start = performance.now();
   for (const maintenanceTask of maintenanceTasks) {
     await maintenanceTask(repositories);

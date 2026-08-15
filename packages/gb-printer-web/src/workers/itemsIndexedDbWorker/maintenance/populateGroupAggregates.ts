@@ -1,7 +1,5 @@
 import { SpecialTags, StoredImage } from 'gb-printer-schemas';
-import { type IDBPDatabase } from 'idb';
-import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
-import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
+import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 
 const MAX_TREE_DEPTH = 20;
 
@@ -106,7 +104,7 @@ const resolveGroupAggregates = (
 };
 
 export const populateGroupAggregates = async (
-  repositories: PreparedDb,
+  repositories: Repositories,
 ): Promise<void> => {
   const groups = await repositories.imageGroups.getAll();
   const images = await repositories.images.getAll();

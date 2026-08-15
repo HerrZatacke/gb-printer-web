@@ -43,7 +43,7 @@ import {
   type UpdatePluginsParams,
 } from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
-import { type PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
+import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 
 export interface ItemsDB extends DBSchema {
   binaryframes: {
@@ -150,11 +150,11 @@ export interface ItemsSource {
   deleteBinaryFramesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<void>;
 }
 
-export interface WithDb {
-  db: PreparedDb;
+export interface WithRepositories {
+  repositories: Repositories;
 }
 
-export type ItemsSourceInternal = ItemsSource & WithDb;
+export type ItemsSourceInternal = ItemsSource & WithRepositories;
 
 export interface FilterableFacet {
   tags: string[];

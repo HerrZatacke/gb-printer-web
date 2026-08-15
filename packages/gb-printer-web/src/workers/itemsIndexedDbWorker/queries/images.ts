@@ -34,7 +34,7 @@ import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 const uniqueByHash = uniqueBy<Image>('hash');
 
 export async function getImages(this: ItemsSourceInternal, { params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> {
-  const repositories = this.db;
+  const { repositories } = this;
   const { images: repository } = repositories;
   const start = performance.now();
 
@@ -65,7 +65,7 @@ export async function getImages(this: ItemsSourceInternal, { params: queryParams
 }
 
 export async function getHashesByGroupId(this: ItemsSourceInternal, { groupId, includeGroups, sort: sortRaw, filters: filtersRaw }: GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> {
-  const repositories = this.db;
+  const { repositories } = this;
   const start = performance.now();
 
   const sort = ImageQuerySortSchema.parse(sortRaw);
@@ -93,7 +93,7 @@ export async function getHashesByGroupId(this: ItemsSourceInternal, { groupId, i
 }
 
 export async function getGroupItemsByGroupId(this: ItemsSourceInternal, { groupId, includeGroups, params: queryParamsRaw }: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>> {
-  const repositories = this.db;
+  const { repositories } = this;
   const start = performance.now();
 
   const {
@@ -116,7 +116,7 @@ export async function getGroupItemsByGroupId(this: ItemsSourceInternal, { groupI
 }
 
 export async function getImagesByHashes(this: ItemsSourceInternal, { hashes }: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>> {
-  const { images: repository } = this.db;
+  const { images: repository } = this.repositories;
   const start = performance.now();
 
   const total = await repository.count();
@@ -133,7 +133,7 @@ export async function getImagesByHashes(this: ItemsSourceInternal, { hashes }: G
 }
 
 export async function getImagesByAnyHashes(this: ItemsSourceInternal, { hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> {
-  const { images: repository } = this.db;
+  const { images: repository } = this.repositories;
   const start = performance.now();
 
   const total = await repository.count();
@@ -167,7 +167,7 @@ export async function getImagesByAnyHashes(this: ItemsSourceInternal, { hashes }
 }
 
 export async function getAllTags(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<string>> {
-  const { images: repository } = this.db;
+  const { images: repository } = this.repositories;
   const start = performance.now();
 
   const uniqueTags = await repository.getDistinctIndexValues('tags');
@@ -179,7 +179,7 @@ export async function getAllTags(this: ItemsSourceInternal): Promise<ItemsSource
 
 export async function updateImages(this: ItemsSourceInternal, { images, purge }: UpdateImagesParams): Promise<void> {
   const parsedImages = z.array(StoredImageSchema).parse(images);
-  const { images: repository } = this.db;
+  const { images: repository } = this.repositories;
 
   if (purge) {
     await repository.clear();
@@ -192,12 +192,12 @@ export async function updateImages(this: ItemsSourceInternal, { images, purge }:
     })),
   );
 
-  await startMaintenanceTasks(this.db);
+  await startMaintenanceTasks(this.repositories);
 }
 
 export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }: DeleteImagesByHashesParams): Promise<void> {
-  const { images: repository } = this.db;
+  const { images: repository } = this.repositories;
   await repository.deleteByKeys(hashes);
 
-  await startMaintenanceTasks(this.db);
+  await startMaintenanceTasks(this.repositories);
 }

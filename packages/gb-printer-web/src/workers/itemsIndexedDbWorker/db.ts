@@ -1,4 +1,4 @@
-import { type IDBPDatabase, openDB } from 'idb';
+import { openDB } from 'idb';
 import { ITEMS_DB_VERSION } from '@/stores/constants';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { migrateV1 } from '@/workers/itemsIndexedDbWorker/migrations/v1';
@@ -9,10 +9,6 @@ import {
   type ItemsHostApi,
   type MigrationFn,
 } from '@/workers/itemsIndexedDbWorker/types';
-
-export interface PreparedDb extends Repositories {
-  db: IDBPDatabase<ItemsDB>;
-}
 
 const migrationFunctions: MigrationFn[] = [
   migrateV1, // migrate v0 -> v1
@@ -26,7 +22,7 @@ if (ITEMS_DB_VERSION !== migrationFunctions.length) {
   throw new Error('ITEMS_DB_VERSION version mismatch!');
 }
 
-export const openAndPrepareDb = async (hostApi: ItemsHostApi): Promise<PreparedDb> => {
+export const openAndPrepareDb = async (hostApi: ItemsHostApi): Promise<Repositories> => {
   const start = performance.now();
   const afterUpgradeTasks: AfterUpgradeFn[] = [];
 
@@ -60,11 +56,6 @@ export const openAndPrepareDb = async (hostApi: ItemsHostApi): Promise<PreparedD
 
   const repositories = createRepositories(database);
 
-  const preparedDb = {
-    db: database,
-    ...repositories,
-  };
-
   if (didUpgrade) {
     try {
       const startUpgradeTasks = performance.now();
@@ -73,7 +64,7 @@ export const openAndPrepareDb = async (hostApi: ItemsHostApi): Promise<PreparedD
       }
       console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
 
-      await startMaintenanceTasks(preparedDb);
+      await startMaintenanceTasks(repositories);
     } catch (error) {
       const err = new Error(`Error while running upgrade- or maintenance-tasks: "${(error as Error)?.message}"`);
       hostApi.onMigrationError(err.message);
@@ -83,5 +74,5 @@ export const openAndPrepareDb = async (hostApi: ItemsHostApi): Promise<PreparedD
   }
 
   console.log(`openAndPrepareDb() done in ${performance.now() - start}ms`);
-  return preparedDb;
+  return repositories;
 };

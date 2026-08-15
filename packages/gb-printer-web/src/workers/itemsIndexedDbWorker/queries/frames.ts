@@ -12,7 +12,7 @@ import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/gene
 import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 export async function getFrames(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Frame>> {
-  const { frames: repository } = this.db;
+  const { frames: repository } = this.repositories;
   const start = performance.now();
 
   const frames = await repository.getAll();
@@ -24,7 +24,7 @@ export async function getFrames(this: ItemsSourceInternal): Promise<ItemsSourceT
 }
 
 export async function getFramesByIds(this: ItemsSourceInternal, { ids }: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>> {
-  const { frames: repository } = this.db;
+  const { frames: repository } = this.repositories;
   const start = performance.now();
 
   const total = await repository.count();
@@ -41,7 +41,7 @@ export async function getFramesByIds(this: ItemsSourceInternal, { ids }: GetFram
 }
 
 export async function getFramesByHashes(this: ItemsSourceInternal, { hashes }: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> {
-  const { frames: repository } = this.db;
+  const { frames: repository } = this.repositories;
   const start = performance.now();
 
   const total = await repository.count();
@@ -59,7 +59,7 @@ export async function getFramesByHashes(this: ItemsSourceInternal, { hashes }: G
 export async function updateFrames(this: ItemsSourceInternal, { frames, purge }: UpdateFramesParams): Promise<void> {
   const parsedFrames = z.array(FrameSchema).parse(frames);
 
-  const { frames: repository } = this.db;
+  const { frames: repository } = this.repositories;
 
     if (purge) {
     await repository.clear();
@@ -74,6 +74,6 @@ export async function updateFrames(this: ItemsSourceInternal, { frames, purge }:
 }
 
 export async function deleteFramesByIds(this: ItemsSourceInternal, { ids }: DeleteFramesByIdsParams): Promise<void> {
-  const { frames: repository } = this.db;
+  const { frames: repository } = this.repositories;
   await repository.deleteByKeys(ids);
 }

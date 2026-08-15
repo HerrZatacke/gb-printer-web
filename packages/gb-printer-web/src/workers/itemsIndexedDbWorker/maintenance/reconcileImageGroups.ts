@@ -1,8 +1,6 @@
 import { type StoredSerializableImageGroup } from 'gb-printer-schemas';
-import { type IDBPDatabase } from 'idb';
 import unique from '@/tools/unique';
-import { ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
-import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
+import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 
 const MAX_PASSES = 20;
 
@@ -56,7 +54,7 @@ const isEmptyGroup = (group: StoredSerializableImageGroup): boolean => {
 // so the caller knows whether another pass is needed to catch newly-dangling
 // references to groups deleted just now.
 const runPass = async (
-  repositories: PreparedDb,
+  repositories: Repositories,
   groups: StoredSerializableImageGroup[],
   validImageHashes: Set<string>,
 ): Promise<boolean> => {
@@ -87,7 +85,7 @@ const runPass = async (
 };
 
 export const reconcileImageGroups = async (
-  repositories: PreparedDb,
+  repositories: Repositories,
 ): Promise<void> => {
   const startPasses = performance.now();
   const validImageHashes = new Set(await repositories.images.getAllKeys());

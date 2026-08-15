@@ -12,7 +12,7 @@ import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/querie
 import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 export async function getPlugins(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Plugin>> {
-  const { plugins: repository } = this.db;
+  const { plugins: repository } = this.repositories;
   const start = performance.now();
 
   const plugins = await repository.getAll();
@@ -24,7 +24,7 @@ export async function getPlugins(this: ItemsSourceInternal): Promise<ItemsSource
 }
 
 export async function getPluginsByUrls(this: ItemsSourceInternal, { urls }: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>> {
-  const { plugins: repository } = this.db;
+  const { plugins: repository } = this.repositories;
   const start = performance.now();
 
   const total = await repository.count();
@@ -41,7 +41,7 @@ export async function getPluginsByUrls(this: ItemsSourceInternal, { urls }: GetP
 
 export async function updatePlugins(this: ItemsSourceInternal, { plugins, purge }: UpdatePluginsParams): Promise<void> {
   const parsedPlugins = z.array(PluginSchema).parse(plugins);
-  const { plugins: repository } = this.db;
+  const { plugins: repository } = this.repositories;
 
   if (purge) {
     await repository.clear();
@@ -56,6 +56,6 @@ export async function updatePlugins(this: ItemsSourceInternal, { plugins, purge 
 }
 
 export async function deletePluginsByUrls(this: ItemsSourceInternal, { urls }: DeletePluginsByUrlsParams): Promise<void> {
-  const { plugins: repository } = this.db;
+  const { plugins: repository } = this.repositories;
   await repository.deleteByKeys(urls);
 }

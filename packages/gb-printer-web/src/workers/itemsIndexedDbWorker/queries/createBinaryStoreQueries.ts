@@ -12,7 +12,7 @@ import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binaryFrames', schema: ZodType<BinaryStoreItem>) => {
   async function getByHashes(this: ItemsSourceInternal, { hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> {
-    const { [repositoryKey]: repository } = this.db;
+    const { [repositoryKey]: repository } = this.repositories;
     const start = performance.now();
 
     const total = await repository.count();
@@ -35,7 +35,7 @@ export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binary
   }
 
   async function getHashes(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<string>> {
-    const { [repositoryKey]: repository } = this.db;
+    const { [repositoryKey]: repository } = this.repositories;
     const start = performance.now();
 
     const hashes = await repository.getAllKeys();
@@ -48,7 +48,7 @@ export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binary
 
   async function update(this: ItemsSourceInternal, { items }: UpdateBinaryItemsParams): Promise<void> {
     const parsedItems = z.array(schema).parse(items);
-    const { [repositoryKey]: repository } = this.db;
+    const { [repositoryKey]: repository } = this.repositories;
 
     await repository.put(
       parsedItems.map((parsedItem) => ({ key: parsedItem.hash, value: parsedItem.data })),
@@ -56,7 +56,7 @@ export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binary
   }
 
   async function deleteByHashes(this: ItemsSourceInternal, { hashes }: DeleteBinaryItemsByHashesParams): Promise<void> {
-    const { [repositoryKey]: repository } = this.db;
+    const { [repositoryKey]: repository } = this.repositories;
     await repository.deleteByKeys(hashes);
   }
 

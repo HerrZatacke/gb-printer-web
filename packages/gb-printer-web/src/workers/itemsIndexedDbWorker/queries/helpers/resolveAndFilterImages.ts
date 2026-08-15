@@ -1,8 +1,8 @@
 import { type StoredImage } from 'gb-printer-schemas';
-import { PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
+import { Repositories } from '@/workers/itemsIndexedDbWorker/repository/entities';
 
 export const resolveAndFilterImages = async (
-  repositories: PreparedDb,
+  repositories: Repositories,
   matches?: (item: StoredImage) => boolean,
   seedIds?: Set<string>,
 ): Promise<StoredImage[]> => {
