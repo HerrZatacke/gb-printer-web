@@ -12,7 +12,7 @@ import {
 import z from 'zod';
 import sortBy from '@/tools/sortby';
 import unique from '@/tools/unique';
-import { getDb, PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
+import { type PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { applyFullSlugs } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyFullSlugs';
 import { applyImageTotals } from '@/workers/itemsIndexedDbWorker/queries/helpers/applyImageTotals';
@@ -20,11 +20,12 @@ import { buildTree } from '@/workers/itemsIndexedDbWorker/queries/helpers/buildT
 import { createTreeRoot } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveOwnership } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveOwnership';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 const sortById = sortBy<StoredSerializableImageGroup>('id');
 
-export const getImageGroupsList = async (): Promise<ItemsSourceTotalResponse<SerializableImageGroup>> => {
-  const { imageGroups: repository } = await getDb();
+export async function getImageGroupsList(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<SerializableImageGroup>> {
+  const { imageGroups: repository } = this.db;
   const start = performance.now();
 
   const imageGroups = await repository.getAll();
@@ -33,10 +34,10 @@ export const getImageGroupsList = async (): Promise<ItemsSourceTotalResponse<Ser
   const addPaging = getAddTotal<SerializableImageGroup>(total, start, SerializableImageGroupSchema);
 
   return addPaging(imageGroups);
-};
+}
 
-export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<TreeImageGroup>> => {
-  const repositories = await getDb();
+export async function getImageGroupsFullTree(this: ItemsSourceInternal): Promise<RootItemSourceResponse<TreeImageGroup>> {
+  const repositories = this.db;
   const start = performance.now();
 
   const [imageGroups, totalCount, allImageIds] = await Promise.all([
@@ -71,12 +72,11 @@ export const getImageGroupsFullTree = async (): Promise<RootItemSourceResponse<T
     totalCount,
     duration: performance.now() - start,
   };
-};
+}
 
-export const updateImageGroups = async ({ imageGroups, purge }: UpdateImageGroupsParams): Promise<void> => {
+export async function updateImageGroups(this: ItemsSourceInternal, { imageGroups, purge }: UpdateImageGroupsParams): Promise<void> {
+  const { imageGroups: repository } = this.db;
   const parsedGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
-
-  const { imageGroups: repository } = await getDb();
 
   if (purge) {
     await repository.clear();
@@ -89,8 +89,8 @@ export const updateImageGroups = async ({ imageGroups, purge }: UpdateImageGroup
     })),
   );
 
-  await startMaintenanceTasks();
-};
+  await startMaintenanceTasks(this.db);
+}
 
 const deleteImageGroupById = async (id: string, repositories: PreparedDb): Promise<void> => {
   const { imageGroups: repository } = repositories;
@@ -125,12 +125,12 @@ const deleteImageGroupById = async (id: string, repositories: PreparedDb): Promi
   await repository.deleteByKeys([id]);
 };
 
-export const deleteImageGroupsByIds = async ({ ids }: DeleteImageGroupsByIdsParams): Promise<void> => {
-  const repositories = await getDb();
+export async function deleteImageGroupsByIds(this: ItemsSourceInternal, { ids }: DeleteImageGroupsByIdsParams): Promise<void> {
+  const repositories = this.db;
 
   for (const id of ids) {
     await deleteImageGroupById(id, repositories);
   }
 
-  await startMaintenanceTasks();
-};
+  await startMaintenanceTasks(repositories);
+}

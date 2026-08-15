@@ -4,10 +4,10 @@ import {
   type ItemsUsageReponse,
   type PaletteUsage,
 } from 'gb-printer-schemas';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getStats = async (): Promise<ItemsStatsResponse> => {
-  const repositories = await getDb();
+export async function getStats(this: ItemsSourceInternal): Promise<ItemsStatsResponse> {
+  const repositories = this.db;
   const startTime = performance.now();
 
   const [
@@ -45,10 +45,10 @@ export const getStats = async (): Promise<ItemsStatsResponse> => {
     },
     duration,
   };
-};
+}
 
-export const getUsages = async (): Promise<ItemsUsageReponse> => {
-  const { images: repository } = await getDb();
+export async function getUsages(this: ItemsSourceInternal): Promise<ItemsUsageReponse> {
+  const { images: repository } = this.db;
   const startTime = performance.now();
 
   const paletteUsageCounts = new Map<string, number>();
@@ -74,4 +74,4 @@ export const getUsages = async (): Promise<ItemsUsageReponse> => {
     },
     duration: performance.now() - startTime,
   };
-};
+}

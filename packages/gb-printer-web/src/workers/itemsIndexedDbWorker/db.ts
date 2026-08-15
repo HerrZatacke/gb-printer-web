@@ -14,16 +14,6 @@ export interface PreparedDb extends Repositories {
   db: IDBPDatabase<ItemsDB>;
 }
 
-declare global {
-  var _hostApi: ItemsHostApi | null;
-  var _dbPromise: Promise<PreparedDb> | null;
-  var _hostApiPromise: Promise<ItemsHostApi> | null;
-}
-
-global._hostApi = null;
-global._dbPromise = null;
-global._hostApiPromise = null;
-
 const migrationFunctions: MigrationFn[] = [
   migrateV1, // migrate v0 -> v1
   // Pattern for future migrations:
@@ -36,18 +26,9 @@ if (ITEMS_DB_VERSION !== migrationFunctions.length) {
   throw new Error('ITEMS_DB_VERSION version mismatch!');
 }
 
-export const configureDb = (configureHostApi: ItemsHostApi): void => {
-  global._hostApi = configureHostApi;
-};
-
-const openAndPrepareDb = async (): Promise<PreparedDb> => {
+export const openAndPrepareDb = async (hostApi: ItemsHostApi): Promise<PreparedDb> => {
   const start = performance.now();
   const afterUpgradeTasks: AfterUpgradeFn[] = [];
-  const hostApi = await getHostApi();
-
-  if (!hostApi) {
-    throw new Error('getDb not configured');
-  }
 
   let didUpgrade = false;
 
@@ -77,6 +58,13 @@ const openAndPrepareDb = async (): Promise<PreparedDb> => {
     },
   );
 
+  const repositories = createRepositories(database);
+
+  const preparedDb = {
+    db: database,
+    ...repositories,
+  };
+
   if (didUpgrade) {
     try {
       const startUpgradeTasks = performance.now();
@@ -85,7 +73,7 @@ const openAndPrepareDb = async (): Promise<PreparedDb> => {
       }
       console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
 
-      await startMaintenanceTasks();
+      await startMaintenanceTasks(preparedDb);
     } catch (error) {
       const err = new Error(`Error while running upgrade- or maintenance-tasks: "${(error as Error)?.message}"`);
       hostApi.onMigrationError(err.message);
@@ -94,31 +82,6 @@ const openAndPrepareDb = async (): Promise<PreparedDb> => {
     }
   }
 
-  const repositories = createRepositories(database);
-
   console.log(`openAndPrepareDb() done in ${performance.now() - start}ms`);
-  return {
-    db: database,
-    ...repositories,
-  };
-};
-
-export const getDb = (): Promise<PreparedDb> => {
-  if (!global._dbPromise) {
-    global._dbPromise = openAndPrepareDb().catch((err) => {
-      global._dbPromise = null;
-      throw err;
-    });
-  }
-  return global._dbPromise;
-};
-
-export const getHostApi = (): Promise<ItemsHostApi> => {
-  if (!global._hostApiPromise) {
-    if (!global._hostApi) {
-      throw new Error('No host api configured');
-    }
-    global._hostApiPromise = Promise.resolve(global._hostApi);
-  }
-  return global._hostApiPromise;
+  return preparedDb;
 };

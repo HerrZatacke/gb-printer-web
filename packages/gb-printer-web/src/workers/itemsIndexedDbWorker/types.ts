@@ -43,6 +43,7 @@ import {
   type UpdatePluginsParams,
 } from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
+import { type PreparedDb } from '@/workers/itemsIndexedDbWorker/db';
 
 export interface ItemsDB extends DBSchema {
   binaryframes: {
@@ -100,7 +101,6 @@ export type MigrationFn = (
 ) => AfterUpgradeFn | null;
 
 export interface ItemsSource {
-  init(hostApi: ItemsHostApi): void;
   runMaintenance(): Promise<void>;
   getStats(): Promise<ItemsStatsResponse>;
   getUsages(): Promise<ItemsUsageReponse>;
@@ -150,9 +150,17 @@ export interface ItemsSource {
   deleteBinaryFramesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<void>;
 }
 
+export interface WithDb {
+  db: PreparedDb;
+}
+
+export type ItemsSourceInternal = ItemsSource & WithDb;
+
 export interface FilterableFacet {
   tags: string[];
   specialTags: SpecialTags[];
   palettes: string[];
   frames: string[];
 }
+
+export type InitWorkerFn = (hostApi: ItemsHostApi) => Promise<ItemsSource>;

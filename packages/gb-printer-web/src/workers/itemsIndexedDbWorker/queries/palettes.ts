@@ -9,12 +9,12 @@ import {
   type UpdatePalettesParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 
-export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShortNamesParams): Promise<ItemsSourceResponse<Palette>> => {
-  const { palettes: repository } = await getDb();
+export async function getPalettesByShortNames(this: ItemsSourceInternal, { shortNames }: GetPalettesByShortNamesParams): Promise<ItemsSourceResponse<Palette>> {
+  const { palettes: repository } = this.db;
   const start = performance.now();
 
   const total = await repository.count();
@@ -40,10 +40,10 @@ export const getPalettesByShortNames = async ({ shortNames }: GetPalettesByShort
   const addPaging = getAddPaging<Palette>(total, 0, palettes.length, start, PaletteSchema);
 
   return addPaging(filteredPalettes);
-};
+}
 
-export const getPalettes = async (): Promise<ItemsSourceTotalResponse<Palette>> => {
-  const { palettes: repository } = await getDb();
+export async function getPalettes(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Palette>> {
+  const { palettes: repository } = this.db;
   const start = performance.now();
 
   const palettes = await repository.getAll();
@@ -60,16 +60,15 @@ export const getPalettes = async (): Promise<ItemsSourceTotalResponse<Palette>> 
   const addPaging = getAddTotal<Palette>(total, start, PaletteSchema);
 
   return addPaging(withPredefined);
-};
+}
 
-export const updatePalettes = async ({ palettes, purge }: UpdatePalettesParams): Promise<void> => {
+export async function updatePalettes(this: ItemsSourceInternal, { palettes, purge }: UpdatePalettesParams): Promise<void> {
+  const { palettes: repository } = this.db;
   const predefinedPaletteShortNames = new Set(predefinedPalettes.map(({ shortName }) => shortName));
 
   const filteredPalettes = palettes.filter(({ shortName }) => !predefinedPaletteShortNames.has(shortName));
 
   const parsedPalettes = z.array(PaletteSchema).parse(filteredPalettes);
-
-  const { palettes: repository } = await getDb();
 
   if (purge) {
     await repository.clear();
@@ -81,9 +80,9 @@ export const updatePalettes = async ({ palettes, purge }: UpdatePalettesParams):
       value: palette,
     })),
   );
-};
+}
 
-export const deletePalettesByShortNames = async ({ shortNames }: DeletePalettesByShortNamesParams): Promise<void> => {
-  const { palettes: repository } = await getDb();
+export async function deletePalettesByShortNames(this: ItemsSourceInternal, { shortNames }: DeletePalettesByShortNamesParams): Promise<void> {
+  const { palettes: repository } = this.db;
   await repository.deleteByKeys(shortNames);
-};
+}

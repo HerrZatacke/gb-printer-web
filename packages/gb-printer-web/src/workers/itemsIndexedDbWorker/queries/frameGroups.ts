@@ -6,12 +6,12 @@ import {
   type UpdateFrameGroupsParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 
-export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
-  const { frameGroups: repository } = await getDb();
+export async function getFrameGroups(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<FrameGroup>> {
+  const { frameGroups: repository } = this.db;
   const start = performance.now();
 
   const frameGroups = await repository.getAll();
@@ -20,11 +20,11 @@ export const getFrameGroups = async (): Promise<ItemsSourceTotalResponse<FrameGr
   const addPaging = getAddTotal<FrameGroup>(total, start, FrameGroupSchema);
 
   return addPaging(frameGroups);
-};
+}
 
-export const updateFrameGroups = async ({ frameGroups, purge }: UpdateFrameGroupsParams): Promise<void> => {
+export async function updateFrameGroups(this: ItemsSourceInternal, { frameGroups, purge }: UpdateFrameGroupsParams): Promise<void> {
   const parsedFrameGroups = z.array(FrameGroupSchema).parse(frameGroups);
-  const { frameGroups: repository } = await getDb();
+  const { frameGroups: repository } = this.db;
 
   if (purge) {
     await repository.clear();
@@ -36,9 +36,9 @@ export const updateFrameGroups = async ({ frameGroups, purge }: UpdateFrameGroup
       value: frameGroup,
     })),
   );
-};
+}
 
-export const deleteFrameGroupsByIds = async ({ ids }: DeleteFrameGroupsByIdsParams): Promise<void> => {
-  const { frameGroups: repository } = await getDb();
+export async function deleteFrameGroupsByIds(this: ItemsSourceInternal, { ids }: DeleteFrameGroupsByIdsParams): Promise<void> {
+  const { frameGroups: repository } = this.db;
   await repository.deleteByKeys(ids);
-};
+}

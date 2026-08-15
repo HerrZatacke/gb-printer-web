@@ -19,21 +19,22 @@ import {
   type ItemsSourceTotalResponse,
   type StoredImage,
   type UpdateImagesParams,
+  type TreeImageGroup,
 } from 'gb-printer-schemas';
 import z from 'zod';
 import sortBy from '@/tools/sortby';
 import uniqueBy from '@/tools/unique/by';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { startMaintenanceTasks } from '@/workers/itemsIndexedDbWorker/maintenance';
 import { facetFromImage, getFacetMatcher } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
 import { resolveGroupItemsByGroupId } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveGroupItemsByGroupId';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 const uniqueByHash = uniqueBy<Image>('hash');
 
-export const getImages = async ({ params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> => {
-  const repositories = await getDb();
+export async function getImages(this: ItemsSourceInternal, { params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> {
+  const repositories = this.db;
   const { images: repository } = repositories;
   const start = performance.now();
 
@@ -61,16 +62,21 @@ export const getImages = async ({ params: queryParamsRaw, candidateHashes }: Get
   const sortedImages = sortByFieldName(images);
 
   return addPaging(sortedImages);
-};
+}
 
-export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw, filters: filtersRaw } : GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> => {
-  const repositories = await getDb();
+export async function getHashesByGroupId(this: ItemsSourceInternal, { groupId, includeGroups, sort: sortRaw, filters: filtersRaw }: GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> {
+  const repositories = this.db;
   const start = performance.now();
 
   const sort = ImageQuerySortSchema.parse(sortRaw);
   const filters = ImageQueryFiltersSchema.optional().parse(filtersRaw);
 
-  const sortedGroupItems = await resolveGroupItemsByGroupId(repositories, groupId, includeGroups, sort, filters);
+  const getFullTree = async (): Promise<TreeImageGroup> => {
+    const root = await this.getImageGroupsFullTree();
+    return root.item;
+  };
+
+  const sortedGroupItems = await resolveGroupItemsByGroupId(getFullTree, repositories, groupId, includeGroups, sort, filters);
   const sortedImageHashes = sortedGroupItems
     .map((item: GroupItem) => {
       switch (item.type) {
@@ -84,10 +90,10 @@ export const getHashesByGroupId = async ({ groupId, includeGroups, sort: sortRaw
     });
   const addPaging = getAddTotal<string>(sortedImageHashes.length, start, z.string());
   return addPaging(sortedImageHashes);
-};
+}
 
-export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: queryParamsRaw }: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>> => {
-  const repositories = await getDb();
+export async function getGroupItemsByGroupId(this: ItemsSourceInternal, { groupId, includeGroups, params: queryParamsRaw }: GetGroupItemsByGroupIdParams): Promise<ItemsSourceResponse<GroupItem>> {
+  const repositories = this.db;
   const start = performance.now();
 
   const {
@@ -99,13 +105,18 @@ export const getGroupItemsByGroupId = async ({ groupId, includeGroups, params: q
 
   const total = await repositories.images.count();
 
-  const sortedGroupItems = await resolveGroupItemsByGroupId(repositories, groupId, includeGroups, sort, filters);
+  const getFullTree = async (): Promise<TreeImageGroup> => {
+    const root = await this.getImageGroupsFullTree();
+    return root.item;
+  };
+
+  const sortedGroupItems = await resolveGroupItemsByGroupId(getFullTree, repositories, groupId, includeGroups, sort, filters);
   const addPaging = getAddPaging<GroupItem>(total, page, pageSize, start, GroupItemSchema);
   return addPaging(sortedGroupItems);
-};
+}
 
-export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>> => {
-  const { images: repository } = await getDb();
+export async function getImagesByHashes(this: ItemsSourceInternal, { hashes }: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>> {
+  const { images: repository } = this.db;
   const start = performance.now();
 
   const total = await repository.count();
@@ -119,10 +130,10 @@ export const getImagesByHashes = async ({ hashes }: GetImagesByHashesParams): Pr
   const addPaging = getAddPaging<Image>(total, 0, images.length, start, ImageSchema);
 
   return addPaging(filteredImages);
-};
+}
 
-export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
-  const { images: repository } = await getDb();
+export async function getImagesByAnyHashes(this: ItemsSourceInternal, { hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> {
+  const { images: repository } = this.db;
   const start = performance.now();
 
   const total = await repository.count();
@@ -153,10 +164,10 @@ export const getImagesByAnyHashes = async ({ hashes }: GetImagesByAnyHashesParam
   const addPaging = getAddPaging<ImageReferenceList>(total, 0, items.length, start, ImageReferenceListSchema);
 
   return addPaging(items);
-};
+}
 
-export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> => {
-  const { images: repository } = await getDb();
+export async function getAllTags(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<string>> {
+  const { images: repository } = this.db;
   const start = performance.now();
 
   const uniqueTags = await repository.getDistinctIndexValues('tags');
@@ -164,11 +175,11 @@ export const getAllTags = async (): Promise<ItemsSourceTotalResponse<string>> =>
   const addPaging = getAddTotal<string>(uniqueTags.length, start, z.string());
 
   return addPaging(uniqueTags);
-};
+}
 
-export const updateImages = async ({ images, purge }: UpdateImagesParams): Promise<void> => {
+export async function updateImages(this: ItemsSourceInternal, { images, purge }: UpdateImagesParams): Promise<void> {
   const parsedImages = z.array(StoredImageSchema).parse(images);
-  const { images: repository } = await getDb();
+  const { images: repository } = this.db;
 
   if (purge) {
     await repository.clear();
@@ -181,12 +192,12 @@ export const updateImages = async ({ images, purge }: UpdateImagesParams): Promi
     })),
   );
 
-  await startMaintenanceTasks();
-};
+  await startMaintenanceTasks(this.db);
+}
 
-export const deleteImagesByHashes = async ({ hashes }: DeleteImagesByHashesParams): Promise<void> => {
-  const { images: repository } = await getDb();
+export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }: DeleteImagesByHashesParams): Promise<void> {
+  const { images: repository } = this.db;
   await repository.deleteByKeys(hashes);
 
-  await startMaintenanceTasks();
-};
+  await startMaintenanceTasks(this.db);
+}

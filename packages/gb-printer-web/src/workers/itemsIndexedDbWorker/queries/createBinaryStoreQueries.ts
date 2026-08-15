@@ -7,12 +7,12 @@ import {
   type UpdateBinaryItemsParams,
 } from 'gb-printer-schemas';
 import z, { type ZodType } from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
 export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binaryFrames', schema: ZodType<BinaryStoreItem>) => {
-  const getByHashes = async ({ hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> => {
-    const { [repositoryKey]: repository } = await getDb();
+  async function getByHashes(this: ItemsSourceInternal, { hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> {
+    const { [repositoryKey]: repository } = this.db;
     const start = performance.now();
 
     const total = await repository.count();
@@ -32,10 +32,10 @@ export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binary
     const addPaging = getAddPaging<BinaryStoreItem>(total, 0, items.length, start, schema);
 
     return addPaging(filteredItems);
-  };
+  }
 
-  const getHashes = async (): Promise<ItemsSourceTotalResponse<string>> => {
-    const { [repositoryKey]: repository } = await getDb();
+  async function getHashes(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<string>> {
+    const { [repositoryKey]: repository } = this.db;
     const start = performance.now();
 
     const hashes = await repository.getAllKeys();
@@ -44,21 +44,21 @@ export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binary
     const addPaging = getAddTotal<string>(total, start, z.string());
 
     return addPaging(hashes);
-  };
+  }
 
-  const update = async ({ items }: UpdateBinaryItemsParams): Promise<void> => {
+  async function update(this: ItemsSourceInternal, { items }: UpdateBinaryItemsParams): Promise<void> {
     const parsedItems = z.array(schema).parse(items);
-    const { [repositoryKey]: repository } = await getDb();
+    const { [repositoryKey]: repository } = this.db;
 
     await repository.put(
       parsedItems.map((parsedItem) => ({ key: parsedItem.hash, value: parsedItem.data })),
     );
-  };
+  }
 
-  const deleteByHashes = async ({ hashes }: DeleteBinaryItemsByHashesParams): Promise<void> => {
-    const { [repositoryKey]: repository } = await getDb();
+  async function deleteByHashes(this: ItemsSourceInternal, { hashes }: DeleteBinaryItemsByHashesParams): Promise<void> {
+    const { [repositoryKey]: repository } = this.db;
     await repository.deleteByKeys(hashes);
-  };
+  }
 
   return { getByHashes, getHashes, update, deleteByHashes };
 };

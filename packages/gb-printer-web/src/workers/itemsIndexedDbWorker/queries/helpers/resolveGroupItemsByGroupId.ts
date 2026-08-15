@@ -15,9 +15,9 @@ import {
 } from '@/workers/itemsIndexedDbWorker/queries/filters';
 import { ROOT_ID } from '@/workers/itemsIndexedDbWorker/queries/helpers/createTreeRoot';
 import { resolveAndFilterImages } from '@/workers/itemsIndexedDbWorker/queries/helpers/resolveAndFilterImages';
-import { getImageGroupsFullTree } from '@/workers/itemsIndexedDbWorker/queries/imageGroups';
 
 export const resolveGroupItemsByGroupId = async (
+  getFullTree: () => Promise<TreeImageGroup>,
   repositories: PreparedDb,
   groupId: string,
   includeGroups: boolean,
@@ -30,7 +30,7 @@ export const resolveGroupItemsByGroupId = async (
 
   if (!groupId || groupId === ROOT_ID) {
     // getImageGroupsFullTree must be called before creating stores
-    rootGroup = (await getImageGroupsFullTree()).item;
+    rootGroup = await getFullTree();
   }
 
   const facetMatcher = await getFacetMatcher(filters);
@@ -115,7 +115,14 @@ export const resolveGroupItemsByGroupId = async (
       return checkGroupItem;
     }
 
-    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(repositories, checkGroupItem.group.id, includeGroups, sort, filters)).length);
+    const hasDisplayableItems = Boolean((await resolveGroupItemsByGroupId(
+      getFullTree,
+      repositories,
+      checkGroupItem.group.id,
+      includeGroups,
+      sort,
+      filters,
+    )).length);
     return hasDisplayableItems ? checkGroupItem : null;
   })))
     .filter((gi): gi is GroupItem => Boolean(gi));

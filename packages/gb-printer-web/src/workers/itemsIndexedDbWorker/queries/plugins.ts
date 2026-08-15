@@ -8,11 +8,11 @@ import {
   type UpdatePluginsParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddPaging, getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> => {
-  const { plugins: repository } = await getDb();
+export async function getPlugins(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Plugin>> {
+  const { plugins: repository } = this.db;
   const start = performance.now();
 
   const plugins = await repository.getAll();
@@ -21,10 +21,10 @@ export const getPlugins = async (): Promise<ItemsSourceTotalResponse<Plugin>> =>
   const addPaging = getAddTotal<Plugin>(total, start, PluginSchema);
 
   return addPaging(plugins);
-};
+}
 
-export const getPluginsByUrls = async ({ urls }: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>> => {
-  const { plugins: repository } = await getDb();
+export async function getPluginsByUrls(this: ItemsSourceInternal, { urls }: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>> {
+  const { plugins: repository } = this.db;
   const start = performance.now();
 
   const total = await repository.count();
@@ -37,11 +37,11 @@ export const getPluginsByUrls = async ({ urls }: GetPluginsByUrlsParams): Promis
   const addPaging = getAddPaging<Plugin>(total, 0, plugins.length, start, PluginSchema);
 
   return addPaging(filteredPlugins);
-};
+}
 
-export const updatePlugins = async ({ plugins, purge }: UpdatePluginsParams): Promise<void> => {
+export async function updatePlugins(this: ItemsSourceInternal, { plugins, purge }: UpdatePluginsParams): Promise<void> {
   const parsedPlugins = z.array(PluginSchema).parse(plugins);
-  const { plugins: repository } = await getDb();
+  const { plugins: repository } = this.db;
 
   if (purge) {
     await repository.clear();
@@ -53,10 +53,9 @@ export const updatePlugins = async ({ plugins, purge }: UpdatePluginsParams): Pr
       value: plugin,
     })),
   );
-};
+}
 
-export const deletePluginsByUrls = async ({ urls }: DeletePluginsByUrlsParams): Promise<void> => {
-  const { plugins: repository } = await getDb();
+export async function deletePluginsByUrls(this: ItemsSourceInternal, { urls }: DeletePluginsByUrlsParams): Promise<void> {
+  const { plugins: repository } = this.db;
   await repository.deleteByKeys(urls);
-};
-
+}

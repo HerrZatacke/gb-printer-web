@@ -8,11 +8,11 @@ import {
   type UpdateFramesParams,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getDb } from '@/workers/itemsIndexedDbWorker/db';
 import { getAddTotal } from '@/workers/itemsIndexedDbWorker/queries/helpers/generic';
+import { type ItemsSourceInternal } from '@/workers/itemsIndexedDbWorker/types';
 
-export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const { frames: repository } = await getDb();
+export async function getFrames(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Frame>> {
+  const { frames: repository } = this.db;
   const start = performance.now();
 
   const frames = await repository.getAll();
@@ -21,10 +21,10 @@ export const getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
   const addPaging = getAddTotal<Frame>(total, start, FrameSchema);
 
   return addPaging(frames);
-};
+}
 
-export const getFramesByIds = async ({ ids }: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const { frames: repository } = await getDb();
+export async function getFramesByIds(this: ItemsSourceInternal, { ids }: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>> {
+  const { frames: repository } = this.db;
   const start = performance.now();
 
   const total = await repository.count();
@@ -38,10 +38,10 @@ export const getFramesByIds = async ({ ids }: GetFramesByIdsParams): Promise<Ite
   const addPaging = getAddTotal<Frame>(total, start, FrameSchema);
 
   return addPaging(filteredFrames);
-};
+}
 
-export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> => {
-  const { frames: repository } = await getDb();
+export async function getFramesByHashes(this: ItemsSourceInternal, { hashes }: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> {
+  const { frames: repository } = this.db;
   const start = performance.now();
 
   const total = await repository.count();
@@ -54,12 +54,12 @@ export const getFramesByHashes = async ({ hashes }: GetFramesByHashesParams): Pr
   const addPaging = getAddTotal<Frame>(total, start, FrameSchema);
 
   return addPaging(filteredFrames);
-};
+}
 
-export const updateFrames = async ({ frames, purge }: UpdateFramesParams): Promise<void> => {
+export async function updateFrames(this: ItemsSourceInternal, { frames, purge }: UpdateFramesParams): Promise<void> {
   const parsedFrames = z.array(FrameSchema).parse(frames);
 
-  const { frames: repository } = await getDb();
+  const { frames: repository } = this.db;
 
     if (purge) {
     await repository.clear();
@@ -71,9 +71,9 @@ export const updateFrames = async ({ frames, purge }: UpdateFramesParams): Promi
       value: frame,
     })),
   );
-};
+}
 
-export const deleteFramesByIds = async ({ ids }: DeleteFramesByIdsParams): Promise<void> => {
-  const { frames: repository } = await getDb();
+export async function deleteFramesByIds(this: ItemsSourceInternal, { ids }: DeleteFramesByIdsParams): Promise<void> {
+  const { frames: repository } = this.db;
   await repository.deleteByKeys(ids);
-};
+}

@@ -1,5 +1,8 @@
 import * as Comlink from 'comlink';
-import { configureDb } from '@/workers/itemsIndexedDbWorker/db';
+import {
+  openAndPrepareDb,
+  type PreparedDb,
+} from '@/workers/itemsIndexedDbWorker/db';
 import {
   deleteBinaryFramesByHashes,
   getBinaryFrameHashes,
@@ -52,7 +55,12 @@ import {
   getPluginsByUrls,
   updatePlugins,
 } from '@/workers/itemsIndexedDbWorker/queries/plugins';
-import { ItemsSource } from '@/workers/itemsIndexedDbWorker/types';
+import {
+  type InitWorkerFn,
+  type ItemsHostApi,
+  type ItemsSource,
+  type WithDb,
+} from '@/workers/itemsIndexedDbWorker/types';
 import { getStats, getUsages } from './queries/helpers/getStats';
 import { runMaintenance } from './queries/helpers/runMaintenance';
 
@@ -60,8 +68,13 @@ if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
   throw new Error(`worker is executing outside a worker context (is: "${self.constructor.name}")`);
 }
 
-const api: ItemsSource = {
-  init: configureDb,
+export class ItemsSourceApi implements WithDb{
+  constructor(
+    public readonly db: PreparedDb,
+  ) {}
+}
+
+Object.assign(ItemsSourceApi.prototype, {
   runMaintenance,
   getStats,
   getUsages,
@@ -109,6 +122,12 @@ const api: ItemsSource = {
   getBinaryImageHashes,
   updateBinaryImages,
   deleteBinaryImagesByHashes,
+});
+
+const init: InitWorkerFn = async (hostApi: ItemsHostApi) => {
+  const db = await openAndPrepareDb(hostApi);
+  const instance = new ItemsSourceApi(db) as unknown as ItemsSource;
+  return Comlink.proxy(instance);
 };
 
-Comlink.expose(api);
+Comlink.expose(init);
