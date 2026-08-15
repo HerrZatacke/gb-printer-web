@@ -1,6 +1,6 @@
 {
-  "name": "gb-printer-schemas",
-  "version": "0.0.1",
+  "name": "gb-items-source",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -11,9 +11,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "dayjs": "catalog:",
-    "gb-image-decoder": "catalog:",
+    "comlink": "catalog:",
     "gb-palettes": "catalog:",
+    "gb-printer-schemas": "workspace:*",
+    "ufo": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
