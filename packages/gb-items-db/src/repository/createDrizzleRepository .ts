@@ -15,7 +15,6 @@ import {
   type ItemRepository,
   type RepositoryEntry,
 } from 'gb-items-source';
-import { type RawSqliteDb } from '@/db/connections';
 import { images } from '@/db/schema';
 
 const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
@@ -31,10 +30,9 @@ const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
 
 export const createDrizzleRepository = <TValue, TKey extends string = string>(
   db: BetterSQLite3Database,
-  sqlite: RawSqliteDb,
   config: EntityConfig<TValue, TKey>,
 ): ItemRepository<TValue, TKey> => {
-  const { storeName } = config;
+  const { storeName, hasKeyPath } = config;
   const table = tableByStoreName[storeName];
 
   if (!table) {
@@ -99,11 +97,20 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   };
 
   const iterate = async function* (): AsyncGenerator<TValue> {
-    const { sql, params } = db.select().from(table).toSQL();
-    const statement = sqlite.prepare(sql);
+    const pageSize = 200;
+    let offset = 0;
 
-    for (const row of statement.iterate(...params)) {
-      yield row as TValue;
+    while (true) {
+      const rows = await db.select().from(table).limit(pageSize).offset(offset);
+      if (rows.length === 0) {
+        break;
+      }
+
+      for (const row of rows) {
+        yield row as TValue;
+      }
+
+      offset += pageSize;
     }
   };
 
@@ -122,10 +129,9 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
 
 export const createIndexedDrizzleRepository = <TValue, TKey extends string = string>(
   db: BetterSQLite3Database,
-  sqlite: RawSqliteDb,
   config: EntityConfig<TValue, TKey>,
 ): IndexedItemRepository<TValue, TKey> => {
-  const base = createDrizzleRepository(db, sqlite, config);
+  const base = createDrizzleRepository(db, config);
 
   const getByIndexValues = async (indexName: string, values: string[]): Promise<TValue[]> => {
     throw new Error('not implemented');

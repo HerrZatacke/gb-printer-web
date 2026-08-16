@@ -10,19 +10,17 @@ import {
   binaryImagesConfig,
   binaryFramesConfig,
 } from 'gb-items-source';
-import { type RawSqliteDb } from '@/db/connections';
 import { createDrizzleRepository, createIndexedDrizzleRepository } from '@/repository/createDrizzleRepository ';
 
 export const createRepositories = (
   db: BetterSQLite3Database,
-  sqlite: RawSqliteDb,
 ): Repositories => ({
-  images: createIndexedDrizzleRepository(db, sqlite, imagesConfig),
-  frames: createIndexedDrizzleRepository(db, sqlite, framesConfig),
-  frameGroups: createDrizzleRepository(db, sqlite, frameGroupsConfig),
-  imageGroups: createDrizzleRepository(db, sqlite, imageGroupsConfig),
-  palettes: createDrizzleRepository(db, sqlite, palettesConfig),
-  plugins: createDrizzleRepository(db, sqlite, pluginsConfig),
-  binaryImages: createDrizzleRepository(db, sqlite, binaryImagesConfig),
-  binaryFrames: createDrizzleRepository(db, sqlite, binaryFramesConfig),
+  images: createIndexedDrizzleRepository(db, imagesConfig),
+  frames: createIndexedDrizzleRepository(db, framesConfig),
+  frameGroups: createDrizzleRepository(db, frameGroupsConfig),
+  imageGroups: createDrizzleRepository(db, imageGroupsConfig),
+  palettes: createDrizzleRepository(db, palettesConfig),
+  plugins: createDrizzleRepository(db, pluginsConfig),
+  binaryImages: createDrizzleRepository(db, binaryImagesConfig),
+  binaryFrames: createDrizzleRepository(db, binaryFramesConfig),
 });
