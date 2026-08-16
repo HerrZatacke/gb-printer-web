@@ -6,7 +6,7 @@ import {
   text,
 } from 'drizzle-orm/sqlite-core';
 import {
-  type Rotation,
+  Rotation,
 } from 'gb-image-decoder';
 import {
   type RGBNHashes,
@@ -19,21 +19,28 @@ import {
 // so no .primaryKey({ autoIncrement: true }) — that's only for integer ids
 // SQLite generates for you.
 export const images = sqliteTable('images', {
+  // CommonImage properties
   hash: text('hash').primaryKey(),
-  hashes: text('hashes', { mode: 'json' }).$type<RGBNHashes>(),
-  created: text('created').notNull(),
-  title: text('title').notNull(),
+  created: text('created'),
+  title: text('title'),
   frame: text('frame'),
-  tags: text('tags', { mode: 'json' }).notNull().$type<string[]>(),
-  type: text('type', { enum: ['mono', 'rgbn'] }).notNull(),
-  lines: integer('lines'),
-  palette: text('palette', { mode: 'json' }).$type<string | RGBNPalette>(),
-  invertPalette: integer('invert_palette', { mode: 'boolean' }).notNull().default(false),
-  invertFramePalette: integer('invert_frame_palette', { mode: 'boolean' }).notNull().default(false),
-  framePalette: text('frame_palette'),
-  lockFrame: integer('lock_frame', { mode: 'boolean' }).notNull().default(false),
-  meta: text('meta', { mode: 'json' }).$type<ImageMetadata>(),
+  tags: text('tags', { mode: 'json' }).default([]).$type<string[]>(),
+  lockFrame: integer('lock_frame', { mode: 'boolean' }),
   rotation: integer('rotation').$type<Rotation>(),
+  meta: text('meta', { mode: 'json' }).$type<ImageMetadata>(),
+
+  // Different properties for MonochromeImage and RGBNImage
+  type: text('type', { enum: ['mono', 'rgbn'] }).notNull(),
+  palette: text('palette', { mode: 'json' }).$type<string | RGBNPalette>(),
+
+  // MonochromeImage properties
+  lines: integer('lines'),
+  invertPalette: integer('invert_palette', { mode: 'boolean' }),
+  framePalette: text('frame_palette'),
+  invertFramePalette: integer('invert_frame_palette', { mode: 'boolean' }),
+
+  // RGBNImage properties
+  hashes: text('hashes', { mode: 'json' }).$type<RGBNHashes>(),
 });
 
 export const imageReferences = sqliteTable('image_references', {
@@ -42,4 +49,12 @@ export const imageReferences = sqliteTable('image_references', {
 }, (table) => [
   primaryKey({ columns: [table.sourceHash, table.referencedHash] }),
   index('idx_image_references_referenced_hash').on(table.referencedHash),
+]);
+
+export const imageTags = sqliteTable('image_tags', {
+  imageHash: text('image_hash').notNull().references(() => images.hash, { onDelete: 'cascade' }),
+  tag: text('tag').notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.imageHash, table.tag] }),
+  index('idx_image_tags_tag').on(table.tag),
 ]);
