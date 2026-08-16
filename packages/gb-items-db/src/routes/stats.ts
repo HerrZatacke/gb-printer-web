@@ -7,20 +7,7 @@ const imagesRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.get('/stats', async (): Promise<ItemsStatsResponse> => {
-    console.log('aaaaa', await app.itemsSource.getStats());
-    return {
-      totals: {
-        palettes: 0,
-        plugins: 0,
-        frames: 0,
-        frameGroups: 0,
-        images: 0,
-        imageGroups: 0,
-        binaryImages: 0,
-        binaryFrames: 0,
-      },
-      duration: 123,
-    };
+    return app.itemsSource.getStats();
   });
 };
 
