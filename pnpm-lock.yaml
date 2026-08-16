@@ -344,6 +344,9 @@ importers:
       fastify-plugin:
         specifier: 'catalog:'
         version: 6.0.0
+      gb-image-decoder:
+        specifier: 'catalog:'
+        version: 2.0.4(ohash@2.0.11)
       gb-items-source:
         specifier: workspace:*
         version: link:../gb-items-source
