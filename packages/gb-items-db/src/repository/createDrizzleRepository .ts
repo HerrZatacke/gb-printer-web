@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { count as countFn } from 'drizzle-orm';
+import {
+  count as countFn,
+  inArray,
+} from 'drizzle-orm';
 import { type BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import {
+  getTableConfig,
   type SQLiteTable,
 } from 'drizzle-orm/sqlite-core';
 import {
@@ -11,6 +15,7 @@ import {
   type ItemRepository,
   type RepositoryEntry,
 } from 'gb-items-source';
+import { type RawSqliteDb } from '@/db/connections';
 import { images } from '@/db/schema';
 
 const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
@@ -26,6 +31,7 @@ const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
 
 export const createDrizzleRepository = <TValue, TKey extends string = string>(
   db: BetterSQLite3Database,
+  sqlite: RawSqliteDb,
   config: EntityConfig<TValue, TKey>,
 ): ItemRepository<TValue, TKey> => {
   const { storeName } = config;
@@ -46,6 +52,13 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
     };
   }
 
+  const tableConfig = getTableConfig(table);
+  const keyColumn = tableConfig.primaryKeys[0]?.columns[0]
+    ?? tableConfig.columns.find((column) => column.primary);
+
+  if (!keyColumn) {
+    throw new Error(`No primary key column found for store: ${storeName}`);
+  }
 
   const count = async (): Promise<number> => {
     const [result] = await db.select({ value: countFn() }).from(table);
@@ -65,7 +78,12 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   };
 
   const getEntriesByKeys = async (keys: TKey[]): Promise<RepositoryEntry<TValue, TKey>[]> => {
-    throw new Error('not implemented');
+    const rows = await db.select().from(table).where(inArray(keyColumn, keys));
+
+    return rows.map((row) => ({
+      key: (row as Record<string, TKey>)[keyColumn.name],
+      value: row as TValue,
+    }));
   };
 
   const put = async (entries: RepositoryEntry<TValue, TKey>[]): Promise<void> => {
@@ -81,7 +99,12 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   };
 
   const iterate = async function* (): AsyncGenerator<TValue> {
-    throw new Error('not implemented');
+    const { sql, params } = db.select().from(table).toSQL();
+    const statement = sqlite.prepare(sql);
+
+    for (const row of statement.iterate(...params)) {
+      yield row as TValue;
+    }
   };
 
   return {
@@ -99,9 +122,10 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
 
 export const createIndexedDrizzleRepository = <TValue, TKey extends string = string>(
   db: BetterSQLite3Database,
+  sqlite: RawSqliteDb,
   config: EntityConfig<TValue, TKey>,
 ): IndexedItemRepository<TValue, TKey> => {
-  const base = createDrizzleRepository(db, config);
+  const base = createDrizzleRepository(db, sqlite, config);
 
   const getByIndexValues = async (indexName: string, values: string[]): Promise<TValue[]> => {
     throw new Error('not implemented');
