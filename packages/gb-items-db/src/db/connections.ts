@@ -1,11 +1,13 @@
 import fs from 'node:fs';
-import Database from 'better-sqlite3';
+import Database, { type Database as RawSqliteDb } from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 
+export type { RawSqliteDb };
+
 fs.mkdirSync('./database', { recursive: true });
 
-const sqlite = new Database('./database/items.db');
+export const sqlite: RawSqliteDb = new Database('./database/items.db');
 sqlite.pragma('journal_mode = WAL');
 sqlite.pragma('foreign_keys = ON');
 

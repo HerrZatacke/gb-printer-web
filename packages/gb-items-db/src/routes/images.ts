@@ -3,12 +3,13 @@ import { type GetImagesParams, type Image, type ItemsSourceResponse } from 'gb-p
 
 const imagesRoutes: FastifyPluginAsync = async (app) => {
   app.post('/images', async (request): Promise<ItemsSourceResponse<Image>> => {
-    const { params, candidateHashes } = request.body as GetImagesParams;
 
-    console.log({
-      params,
-      candidateHashes,
-    });
+    try {
+      return app.itemsSource.getImages(request.body as GetImagesParams);
+    } catch (error) {
+      console.log(error);
+    }
+
 
     return {
       items: [],
@@ -19,7 +20,7 @@ const imagesRoutes: FastifyPluginAsync = async (app) => {
         pageSize: 0,
         maxPageIndex: 0,
       },
-      duration: 123,
+      duration: 12345,
     };
   });
 };
