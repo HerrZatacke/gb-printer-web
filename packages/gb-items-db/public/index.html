@@ -5,6 +5,17 @@
   <title>Echo Test</title>
 </head>
 <body>
+<select id="endpoint">
+  <option value="/images">getImages</option>
+  <option value="/images/tags">getAllTags</option>
+  <option value="/images/byHashes">getImagesByHashes</option>
+  <option value="/images/byAnyHashes">getImagesByAnyHashes</option>
+  <option value="/images/hashesByGroupId">getHashesByGroupId</option>
+  <option value="/images/groupItemsByGroupId">getGroupItemsByGroupId</option>
+  <option value="/images/update">updateImages</option>
+  <option value="/images/delete">deleteImagesByHashes</option>
+</select>
+<br>
 <textarea id="body" rows="20" cols="60">
   {
   "params": {
@@ -24,7 +35,8 @@
 <script>
   document.getElementById('send').addEventListener('click', async () => {
     const raw = document.getElementById('body').value;
-    const response = await fetch('/images', {
+    const endpoint = document.getElementById('endpoint').value;
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: raw,
