@@ -19,6 +19,7 @@
     "drizzle-orm": "catalog:",
     "fastify": "catalog:",
     "fastify-plugin": "catalog:",
+    "gb-image-decoder": "catalog:",
     "gb-items-source": "workspace:*",
     "gb-palettes": "catalog:",
     "gb-printer-schemas": "workspace:*",
