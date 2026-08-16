@@ -31,6 +31,7 @@ import sortBy from '@/temptools/sortby';
 import uniqueBy from '@/temptools/unique/by';
 import { type ItemsSourceInternal } from '@/types';
 
+// ToDo: get from tools package once available
 const uniqueByHash = uniqueBy<Image>('hash');
 
 export async function getImages(this: ItemsSourceInternal, { params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> {
