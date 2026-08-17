@@ -35,6 +35,7 @@ import { type ItemsSourceInternal } from '@/types';
 const uniqueByHash = uniqueBy<Image>('hash');
 
 export async function getImages(this: ItemsSourceInternal, { params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> {
+  // ToDo: Parse full params not only params!!
   const { repositories } = this;
   const { images: repository } = repositories;
   const start = performance.now();
