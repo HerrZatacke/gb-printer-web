@@ -85,7 +85,17 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   };
 
   const put = async (entries: RepositoryEntry<TValue, TKey>[]): Promise<void> => {
-    throw new Error('not implemented');
+    const rows = entries.map((entry) => (
+      hasKeyPath
+        ? entry.value
+        : { [keyColumn.name]: entry.key, value: entry.value }
+    ));
+
+    await Promise.all(rows.map((row) => (
+      db.insert(table)
+        .values(row as Record<string, unknown>)
+        .onConflictDoUpdate({ target: keyColumn, set: row as Record<string, unknown> })
+    )));
   };
 
   const deleteByKeys = async (keys: TKey[]): Promise<void> => {
