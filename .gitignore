@@ -24,6 +24,9 @@ dumps/*
 /packages/gb-printer-web/.next/
 /packages/gb-printer-web/out/
 
+# database
+/packages/gb-items-db/database
+
 # env files (can opt-in for committing if needed)
 .env*
 
