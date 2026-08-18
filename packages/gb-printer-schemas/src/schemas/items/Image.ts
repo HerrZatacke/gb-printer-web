@@ -4,10 +4,6 @@ import { fromCreationDate, toCreationDate } from '@/tools/creationDate';
 import { Date } from '@/tools/safeDate';
 import { DAY_MS, SpecialTags } from '../api/consts';
 
-const nullToValue = <T extends z.ZodType>(schema: T, defaultValue: undefined | z.input<T>) => {
-  return z.preprocess((val) => (val === null ? defaultValue : val), schema.optional());
-};
-
 export const ImageMetadataSchema = z.object({
   romType: z.string().optional(),
   userId: z.string().optional(),
@@ -46,11 +42,11 @@ export const CommonImageSchema = z.object({
     }
   }),
   title: z.string(),
-  frame: z.string().optional().catch(undefined),
+  frame: z.string().nullable().catch(null),
   tags: z.array(z.string()).catch([]),
   lockFrame: z.boolean().prefault(false),
-  rotation: nullToValue(z.enum(Rotation), Rotation.DEG_0),
-  meta: nullToValue(ImageMetadataSchema, undefined),
+  rotation: z.enum(Rotation).catch(Rotation.DEG_0),
+  meta: ImageMetadataSchema.nullable().catch(null),
 });
 
 export type CommonImage = z.infer<typeof CommonImageSchema>;
@@ -69,7 +65,7 @@ const RGBNPaletteSchema = z.object({
   g: z.array(z.number()).optional(),
   b: z.array(z.number()).optional(),
   n: z.array(z.number()).optional(),
-  blend: nullToValue(z.enum(BlendMode), undefined).catch(undefined),
+  blend: z.enum(BlendMode).optional().catch(undefined),
 }) satisfies z.ZodType<DecoderLibRGBNPalette>;
 
 export type RGBNPalette = z.infer<typeof RGBNPaletteSchema>;
@@ -85,9 +81,9 @@ export type RGBNImage = z.infer<typeof RGBNImageSchema>;
 export const MonochromeImageSchema = CommonImageSchema.extend({
   type: z.literal('mono'),
   lines: z.number(),
-  palette: z.string().optional().catch(undefined),
+  palette: z.string().nullable().catch(null),
   invertPalette: z.boolean().prefault(false),
-  framePalette: z.string().optional().catch(undefined),
+  framePalette: z.string().nullable().catch(null),
   invertFramePalette: z.boolean().prefault(false),
 });
 

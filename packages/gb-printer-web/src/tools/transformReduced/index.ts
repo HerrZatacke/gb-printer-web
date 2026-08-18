@@ -23,6 +23,7 @@ export const transformReduced = async (file: File): Promise<ImportResult> => {
       tiles,
       lastModified: file.lastModified ? (file.lastModified + index) : undefined,
       tempId: randomId(),
+      meta: null,
     }]);
 
     return true;

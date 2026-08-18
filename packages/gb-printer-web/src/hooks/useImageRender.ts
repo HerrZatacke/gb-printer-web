@@ -94,7 +94,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
         return;
       }
 
-      const loadedTiles = await loadImageTiles(hash, false, frameId, galleryImageData?.hashes);
+      const loadedTiles = await loadImageTiles(hash, false, frameId || undefined, galleryImageData?.hashes);
 
       const frameData = frameHash ? await loadFrameData(frameHash) : null;
 

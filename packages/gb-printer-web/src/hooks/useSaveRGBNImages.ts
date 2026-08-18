@@ -1,3 +1,4 @@
+import { Rotation } from 'gb-image-decoder';
 import { type RGBNHashes, type RGBNImage, toCreationDate, Date } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import { defaultRGBNPalette } from '@/consts/defaults';
@@ -28,6 +29,9 @@ const useSaveRGBNImages = (): UseSaveRGBNImages => {
         title: '',
         tags: [],
         lockFrame: false,
+        frame: null,
+        meta: null,
+        rotation: Rotation.DEG_0,
       };
 
       return image;

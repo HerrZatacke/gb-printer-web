@@ -144,7 +144,7 @@ const getFileMeta = (data: Uint8Array, baseAddress: number, cartIsJP: boolean): 
   const thumbnail = data.slice(baseAddress + 0x00E00, baseAddress + 0x00EFF + 1);
 
 
-  let meta: ImageMetaData | undefined;
+  let meta: ImageMetaData | null = null;
 
   // not deleted or last seen
   if (albumIndex !== -1) {
