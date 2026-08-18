@@ -41,6 +41,10 @@ export const images = sqliteTable('images', {
 
   // RGBNImage properties
   hashes: text('hashes', { mode: 'json' }).$type<RGBNHashes>(),
+
+  // StoredImage
+  referencedHashes: text('referenced_hashes', { mode: 'json' }).default([]).$type<string[]>(),
+  specialTags: text('special_tags', { mode: 'json' }).default([]).$type<string[]>(),
 });
 
 export const imageReferences = sqliteTable('image_references', {
