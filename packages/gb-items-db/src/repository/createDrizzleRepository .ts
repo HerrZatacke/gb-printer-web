@@ -99,11 +99,11 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   };
 
   const deleteByKeys = async (keys: TKey[]): Promise<void> => {
-    throw new Error('not implemented');
+    await db.delete(table).where(inArray(keyColumn, keys));
   };
 
   const clear = async (): Promise<void> => {
-    throw new Error('not implemented');
+    await db.delete(table);
   };
 
   const iterate = async function* (): AsyncGenerator<TValue> {
