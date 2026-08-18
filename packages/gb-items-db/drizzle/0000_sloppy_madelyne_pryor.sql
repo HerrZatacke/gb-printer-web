@@ -29,5 +29,22 @@ CREATE TABLE `images` (
 	`invert_palette` integer,
 	`frame_palette` text,
 	`invert_frame_palette` integer,
-	`hashes` text
+	`hashes` text,
+	`referenced_hashes` text DEFAULT '[]',
+	`special_tags` text DEFAULT '[]'
+);
+--> statement-breakpoint
+CREATE TABLE `image_groups` (
+	`id` text PRIMARY KEY NOT NULL,
+	`slug` text NOT NULL,
+	`created` text,
+	`title` text,
+	`is_favourite` integer,
+	`cover_image` text,
+	`images` text DEFAULT '[]',
+	`groups` text DEFAULT '[]',
+	`tags` text DEFAULT '[]',
+	`special_tags` text DEFAULT '[]',
+	`palettes` text DEFAULT '[]',
+	`frames` text DEFAULT '[]'
 );
