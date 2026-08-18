@@ -4,7 +4,7 @@ import { type RGBNHashes } from 'gb-printer-schemas';
 import React, { useCallback, useEffect, useState } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { defaultRGBNPalette } from '@/consts/defaults';
-import { loadImageTiles as getLoadImageTiles } from '@/tools/loadImageTiles';
+import { loadImageTiles } from '@/tools/loadImageTiles';
 
 interface Props {
   rgbnHashes: RGBNHashes;
@@ -13,18 +13,10 @@ interface Props {
 function RGBNPreviewImage({ rgbnHashes }: Props) {
   const [tiles, setTiles] = useState<RGBNTiles | null>(null);
 
-  const loadImageTiles = useCallback(
-    async (hashesOverride?: RGBNHashes): Promise<RGBNTiles> => {
-      const imageLoader = getLoadImageTiles();
-
-      return (await imageLoader('', undefined, undefined, hashesOverride) as RGBNTiles);
-    },
-    [],
-  );
-
   useEffect(()=> {
     const handle = window.setTimeout(async () => {
-      setTiles(await loadImageTiles(rgbnHashes));
+      const rgbnTiles = await loadImageTiles('', undefined, undefined, rgbnHashes) as RGBNTiles;
+      setTiles(rgbnTiles);
     }, 1);
 
     return () => window.clearTimeout(handle);

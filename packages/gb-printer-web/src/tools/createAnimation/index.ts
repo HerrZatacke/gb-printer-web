@@ -148,12 +148,8 @@ export const createAnimation = async () => {
     return [...acc, animationFrame];
   }, []);
 
-  console.log({ animationFrames });
-
-  const tileLoader = loadImageTiles();
-
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
-    const tiles = await tileLoader(image.hash);
+    const tiles = await loadImageTiles(image.hash);
     const lockFrame = videoLockFrame || image.lockFrame || false;
     const rotation = image.rotation || 0;
 

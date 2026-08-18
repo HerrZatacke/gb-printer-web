@@ -12,45 +12,40 @@ export type PImage = {
   hashes?: RGBNImage['hashes'];
 }
 
-export const loadImageTiles = () => {
-  const loader = async (
-    hash: string,
-    noDummy?: boolean,
-    overrideFrame?: string,
-    hashesOverride?: RGBNHashes,
-  ): Promise<string[] | RGBNTiles> => {
-    const queryClient = getQueryClient();
-    const image = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
+export const loadImageTiles =  async (
+  hash: string,
+  noDummy?: boolean,
+  overrideFrame?: string,
+  hashesOverride?: RGBNHashes,
+): Promise<string[] | RGBNTiles> => {
+  const queryClient = getQueryClient();
+  const image = await queryClient.fetchQuery(imageByHashQueryOptions(hash));
 
-    // Image may not exist when loading RGBN-channels where original image has been deleted.
-    const frame = (typeof overrideFrame === 'string' ? overrideFrame : image?.frame) || undefined;
-    const { items: [foundFrame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(frame ? [frame] : []));
-    const frameHash = foundFrame?.hash;
+  // Image may not exist when loading RGBN-channels where original image has been deleted.
+  const frame = (typeof overrideFrame === 'string' ? overrideFrame : image?.frame) || undefined;
+  const { items: [foundFrame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(frame ? [frame] : []));
+  const frameHash = foundFrame?.hash;
 
-    if (!hashesOverride) {
-      if (!image || !isRGBNImage(image)) {
-        const tiles = await load(hash, frameHash, noDummy);
-        return tiles || [];
-      }
+  if (!hashesOverride) {
+    if (!image || !isRGBNImage(image)) {
+      const tiles = await load(hash, frameHash, noDummy);
+      return tiles || [];
     }
+  }
 
-    const hashes = hashesOverride || (image as RGBNImage).hashes;
+  const hashes = hashesOverride || (image as RGBNImage).hashes;
 
-    const r = hashes.r ? await loader(hashes.r, noDummy, frame) as string[] : [];
-    const g = hashes.g ? await loader(hashes.g, noDummy, frame) as string[] : [];
-    const b = hashes.b ? await loader(hashes.b, noDummy, frame) as string[] : [];
-    const n = hashes.n ? await loader(hashes.n, noDummy, frame) as string[] : [];
+  const r = hashes.r ? await loadImageTiles(hashes.r, noDummy, frame) as string[] : [];
+  const g = hashes.g ? await loadImageTiles(hashes.g, noDummy, frame) as string[] : [];
+  const b = hashes.b ? await loadImageTiles(hashes.b, noDummy, frame) as string[] : [];
+  const n = hashes.n ? await loadImageTiles(hashes.n, noDummy, frame) as string[] : [];
 
-    return { r, g, b, n };
-  };
-
-  return loader;
+  return { r, g, b, n };
 };
 
 export const getImageTileCount = () => {
-  const tileLoader = loadImageTiles();
   return async (hash: string): Promise<number> => {
-    const loadedTiles = await tileLoader(hash, true, '');
+    const loadedTiles = await loadImageTiles(hash, true, '');
     if (loadedTiles) {
       return (
         (loadedTiles as string[])?.length ||

@@ -26,7 +26,7 @@ export const collectImageData: CollectImageDataFn = async (hash: string): Promis
     throw new Error('selectedPalette not found');
   }
 
-  const getTiles = () => loadImageTiles()(meta.hash);
+  const getTiles = () => loadImageTiles(meta.hash);
 
   const isRGBN = isRGBNImage(meta);
 

@@ -164,12 +164,11 @@ export const dropBoxSyncTool = (
       handleExportFrame,
       fileNameStyle,
     };
-    const loadTiles = loadImageTiles();
 
     const downloadInfos = (await Promise.all(
       images.map(async (image, index): Promise<unknown> => (
         addToQueue('Generate images and hashes')(`${index + 1}/${images.length}`, 10, async () => {
-          const tiles = await loadTiles(image.hash);
+          const tiles = await loadImageTiles(image.hash);
 
           const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));
           const frameData = frame ? await loadFrameData(frame?.hash) : null;
