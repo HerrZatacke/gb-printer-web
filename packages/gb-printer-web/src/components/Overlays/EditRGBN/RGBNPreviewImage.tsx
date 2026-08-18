@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
 import { RGBNTiles } from 'gb-image-decoder';
 import { type RGBNHashes } from 'gb-printer-schemas';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GameBoyImage from '@/components/GameBoyImage';
 import { defaultRGBNPalette } from '@/consts/defaults';
-import { loadImageTiles as getLoadImageTiles } from '@/tools/loadImageTiles';
+import { loadImageTiles } from '@/tools/loadImageTiles';
 
 interface Props {
   rgbnHashes: RGBNHashes;
@@ -13,22 +13,26 @@ interface Props {
 function RGBNPreviewImage({ rgbnHashes }: Props) {
   const [tiles, setTiles] = useState<RGBNTiles | null>(null);
 
-  const loadImageTiles = useCallback(
-    async (hashesOverride?: RGBNHashes): Promise<RGBNTiles> => {
-      const imageLoader = getLoadImageTiles();
-
-      return (await imageLoader('', undefined, undefined, hashesOverride) as RGBNTiles);
-    },
-    [],
-  );
-
   useEffect(()=> {
+    let cancelled = false;
+
     const handle = window.setTimeout(async () => {
-      setTiles(await loadImageTiles(rgbnHashes));
+      if (Object.values(rgbnHashes).filter(Boolean).length) {
+        const rgbnTiles = await loadImageTiles('', undefined, undefined, rgbnHashes) as RGBNTiles;
+        if (!cancelled) {
+          setTiles(rgbnTiles);
+        }
+      } else {
+        setTiles(null);
+        return;
+      }
     }, 1);
 
-    return () => window.clearTimeout(handle);
-  });
+    return () => {
+      cancelled = true;
+      window.clearTimeout(handle);
+    };
+  }, [rgbnHashes]);
 
   if (!tiles) { return null; }
 

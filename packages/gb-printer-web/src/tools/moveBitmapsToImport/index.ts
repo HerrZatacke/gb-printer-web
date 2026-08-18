@@ -94,6 +94,7 @@ export const moveBitmapsToImport: DispatchBitmapsToImportFn = ({
       tiles,
       lastModified,
       tempId: randomId(),
+      meta: null,
     }]);
   });
 };

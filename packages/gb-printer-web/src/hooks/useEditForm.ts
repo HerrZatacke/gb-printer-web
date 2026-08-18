@@ -1,4 +1,4 @@
-import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
+import { type RGBNPalette, Rotation } from 'gb-image-decoder';
 import { type ImageMetadata, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -51,8 +51,8 @@ interface Form {
   title: string;
   created: string;
   frame: string;
-  lockFrame?: boolean;
-  rotation?: Rotation;
+  lockFrame: boolean;
+  rotation: Rotation;
   invertPalette?: boolean;
   invertFramePalette?: boolean;
   paletteShort: string;
@@ -142,9 +142,9 @@ export const useEditForm = (): UseEditForm => {
     }, { mono: false, rgb: false });
 
     const mixedTypes = typeCount.mono && typeCount.rgb;
-    const paletteRGBN = isRGBNImage(image) ? (image as RGBNImage).palette : undefined;
-    const paletteShort = !isRGBNImage(image) ? (image as MonochromeImage).palette : undefined;
-    const framePaletteShort = !isRGBNImage(image) ? (image as MonochromeImage).framePalette : undefined;
+    const paletteRGBN: RGBNPalette | undefined = isRGBNImage(image) ? (image as RGBNImage).palette || undefined : undefined;
+    const paletteShort: string | undefined = !isRGBNImage(image) ? (image as MonochromeImage).palette || undefined : undefined;
+    const framePaletteShort: string | undefined = !isRGBNImage(image) ? (image as MonochromeImage).framePalette || undefined : undefined;
 
 
     return ({
@@ -159,9 +159,9 @@ export const useEditForm = (): UseEditForm => {
       tags: stateTags,
       title: image.title,
 
-      frame: image.frame,
+      frame: image.frame || undefined,
       hashes: isRGBNImage(image) ? (image as RGBNImage).hashes : undefined,
-      meta: image.meta,
+      meta: image.meta || undefined,
       paletteRGBN,
       paletteShort,
       framePaletteShort,
@@ -172,10 +172,10 @@ export const useEditForm = (): UseEditForm => {
   const [title, updateTitle] = useState<string>(toEdit?.title || '');
   const [created, updateCreated] = useState<string>(toEdit?.created || '');
   const [frame, updateFrame] = useState<string>(toEdit?.frame || '');
-  const [lockFrame, updateFrameLock] = useState<boolean | undefined>(toEdit?.lockFrame);
-  const [rotation, updateRotation] = useState<Rotation | undefined>(toEdit?.rotation);
-  const [invertPalette, updateInvertPalette] = useState<boolean | undefined>(toEdit?.invertPalette);
-  const [invertFramePalette, updateInvertFramePalette] = useState<boolean | undefined>(toEdit?.invertFramePalette);
+  const [lockFrame, updateFrameLock] = useState<boolean>(toEdit?.lockFrame || false);
+  const [rotation, updateRotation] = useState<Rotation>(toEdit?.rotation || Rotation.DEG_0);
+  const [invertPalette, updateInvertPalette] = useState<boolean>(toEdit?.invertPalette || false);
+  const [invertFramePalette, updateInvertFramePalette] = useState<boolean>(toEdit?.invertFramePalette || false);
   const [paletteShort, updatePaletteShort] = useState<string>(toEdit?.paletteShort || '');
   const [framePaletteShort, updateFramePaletteShort] = useState<string>(toEdit?.framePaletteShort || '');
   const [paletteRGBN, updatePaletteRGBN] = useState<RGBNPalette | undefined>(toEdit?.paletteRGBN);
@@ -195,7 +195,7 @@ export const useEditForm = (): UseEditForm => {
     updateCreated(toEdit.created);
     updateFrame(toEdit.frame ?? '');
     updateFrameLock(toEdit.lockFrame);
-    updateRotation(toEdit.rotation);
+    updateRotation(toEdit.rotation || Rotation.DEG_0);
     updateInvertPalette(toEdit.invertPalette);
     updateInvertFramePalette(toEdit.invertFramePalette);
     updatePaletteShort(toEdit.paletteShort ?? '');

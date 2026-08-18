@@ -52,7 +52,7 @@ export interface FileMetaData {
   albumIndex: number;
   baseAddress: number;
   frameNumber: number;
-  meta?: ImageMetaData;
+  meta: ImageMetaData | null;
 }
 
 export interface WithTiles {

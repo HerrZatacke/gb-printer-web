@@ -67,7 +67,7 @@ const useDownload = (): UseDownload => {
     if (!image) { throw new Error('image not found'); }
 
 
-    const tiles = await loadImageTiles()(image.hash);
+    const tiles = await loadImageTiles(image.hash);
     if (!tiles) { throw new Error('no tiles'); }
 
     const { items: [frame] } = await queryClient.fetchQuery(framesByIdsQueryOptions(image.frame ? [image.frame] : []));

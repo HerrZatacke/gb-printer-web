@@ -1,13 +1,12 @@
 import { type RGBNPalette } from 'gb-image-decoder';
-import { type RGBNHashes } from 'gb-printer-schemas';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { type GameBoyImageProps } from '@/components/GameBoyImage';
 import { missingGreyPalette, defaultRGBNPalette } from '@/consts/defaults';
 import { useFrames } from '@/hooks/useFrames';
 import { useGalleryImage } from '@/hooks/useGalleryImage';
 import { usePalettes } from '@/hooks/usePalettes';
 import { loadFrameData } from '@/tools/applyFrame/frameData';
-import { loadImageTiles as getLoadImageTiles } from '@/tools/loadImageTiles';
+import { loadImageTiles } from '@/tools/loadImageTiles';
 
 export type PartialGameBoyImageProps = Omit<GameBoyImageProps, 'dimensions' | 'asThumb'>;
 
@@ -27,14 +26,6 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
   const { galleryImageData } = useGalleryImage(hash);
 
   const frameId = overrides?.frameId || galleryImageData?.frame;
-
-  const loadImageTiles = useCallback(
-    (imgHash: string, noDummy?: boolean, overrideFrame?: string, hashesOverride?: RGBNHashes) => {
-      const imageLoader = getLoadImageTiles();
-      return imageLoader(imgHash, noDummy, overrideFrame, hashesOverride);
-    },
-    [],
-  );
 
   const isRGB = useMemo(() => {
     return  Boolean(galleryImageData?.hashes);
@@ -94,7 +85,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
         return;
       }
 
-      const loadedTiles = await loadImageTiles(hash, false, frameId, galleryImageData?.hashes);
+      const loadedTiles = await loadImageTiles(hash, false, frameId || undefined, galleryImageData?.hashes);
 
       const frameData = frameHash ? await loadFrameData(frameHash) : null;
 

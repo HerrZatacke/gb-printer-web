@@ -24,16 +24,16 @@ export type SelectionEditMode = (typeof SelectionEditMode)[keyof typeof Selectio
 interface GalleryImageData {
   title: string;
   created: string;
-  frame?: string;
+  frame: string | null;
   hashes?: RGBNHashes;
   tags: string[];
   selectionIndex: number;
   palette: RGBNPalette | string[];
   framePalette: string[];
-  lockFrame?: boolean;
+  lockFrame: boolean;
   invertPalette?: boolean;
   invertFramePalette?: boolean;
-  rotation?: Rotation;
+  rotation: Rotation;
 }
 
 interface UseGalleryImage {

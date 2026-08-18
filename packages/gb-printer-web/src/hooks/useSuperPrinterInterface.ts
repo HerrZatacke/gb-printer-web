@@ -17,8 +17,7 @@ export const useSuperPrinterInterface = (): UseSuperPrinterInterface => {
   const { setProgress, startProgress, stopProgress } = useProgressStore();
 
   const getTiles = useCallback(async (hash: string) => {
-    const tileLoader = loadImageTiles();
-    const loadedTiles = await tileLoader(hash, true);
+    const loadedTiles = await loadImageTiles(hash, true);
 
     if ((loadedTiles as string[]).length) {
       return loadedTiles as string[];

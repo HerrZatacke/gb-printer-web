@@ -7,7 +7,7 @@ export interface ImportItem {
   tiles: string[];
   lastModified?: number;
   tempId: string;
-  meta?: ImageMetadata;
+  meta: ImageMetadata | null;
 }
 
 export interface FlaggedImportItem extends ImportItem {

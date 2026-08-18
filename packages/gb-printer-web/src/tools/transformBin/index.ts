@@ -60,6 +60,7 @@ export const transformBin = async (file: File): Promise<ImportResult> => {
     tiles,
     lastModified: file.lastModified,
     tempId: randomId(),
+    meta: null,
   }]);
 
   return {

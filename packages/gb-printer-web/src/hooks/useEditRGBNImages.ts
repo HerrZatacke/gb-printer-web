@@ -65,12 +65,14 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
   const { editRGBNImages, cancelEditRGBNImages, cancelEditImageGroup } = useEditStore();
   const { updateImageGroup } = useImageGroups({});
 
-  const [createGroup, setCreateGroup] = useState<boolean>(editRGBNImages.length > 5 && stateCreateGroup);
+  const [createGroup, setCreateGroup] = useState<boolean>(false);
+  const [order, setOrder] = useState<RGBOrder>(['r', 'g', 'b', 's', 'n']);
+  const [grouping, setGrouping] = useState<RGBGrouping>(RGBGrouping.MANUAL);
+  const [manualHashes, setManualHashes] = useState<RGBNHashes>({});
 
   useEffect(() => {
     stateSetCreateGroup(createGroup);
   }, [createGroup, stateSetCreateGroup]);
-
 
   const globalSortDirection = sortBy.split('_')[1];
 
@@ -78,22 +80,20 @@ export const useEditRGBNImages = (): UseEditRGBNImages => {
 
   const sortedImages = useMemo(() => rawImages.reduce(reduceImagesMonochrome, []), [rawImages]);
 
-  const [order, setOrder] = useState<RGBOrder>(['r', 'g', 'b', 's', 'n']);
-  const [grouping, setGrouping] = useState<RGBGrouping>(RGBGrouping.MANUAL);
-  const [manualHashes, setManualHashes] = useState<RGBNHashes>({
-    r: sortedImages[0]?.hash || undefined,
-    g: sortedImages[Math.floor(sortedImages.length / 3)]?.hash || undefined,
-    b: sortedImages[Math.floor(sortedImages.length / 3) * 2]?.hash || undefined,
-  });
-
   useEffect(() => {
-    // intentional: recalculate grouping default when sortedImages changes,
-    // while still allowing free user overrides via setGrouping in between
+    // intentional: recalculate defaults when sortedImages change,
+    // while still allowing free user overrides
     // https://github.com/react/react/issues/34858
     // https://github.com/react/react/issues/34743
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setGrouping(sortedImages.length <= 4 ? RGBGrouping.MANUAL : RGBGrouping.BY_COLOR);
-  }, [sortedImages]);
+    setManualHashes({
+      r: sortedImages[0]?.hash || undefined,
+      g: sortedImages[Math.floor(sortedImages.length / 3)]?.hash || undefined,
+      b: sortedImages[Math.floor(sortedImages.length / 3) * 2]?.hash || undefined,
+    });
+    setCreateGroup(editRGBNImages.length > 5 && stateCreateGroup);
+  }, [editRGBNImages.length, sortedImages, stateCreateGroup]);
 
   const toggleSingleChannel = (channel: keyof RGBNHashes, hash: string) => {
     const nextRGBNHashes: RGBNHashes = { ...manualHashes };

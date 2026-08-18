@@ -39,7 +39,7 @@ const generateDebugImage = async (index: number): Promise<DebugImport> => {
     tags: ['debug', 'dummy'],
     // Adding index to milliseconds to ensure better sorting
     created: toCreationDate(timestamp + index),
-    meta: {},
+    meta: null,
   });
 
   const elapsed = Date.now() - timestamp;

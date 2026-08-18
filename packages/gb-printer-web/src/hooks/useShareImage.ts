@@ -38,7 +38,7 @@ const useShareImage = (): UseShareImage => {
       handleExportFrame,
     };
 
-    const tiles = await loadImageTiles()(image.hash);
+    const tiles = await loadImageTiles(image.hash);
 
     const frameData = frame ? await loadFrameData(frame?.hash) : null;
 
