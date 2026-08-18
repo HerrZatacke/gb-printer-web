@@ -38,15 +38,39 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   if (!table) {
     // ToDo: throw once all regular tables are implemented
     return {
-      count: async () => 0,
-      getAll: async () => {throw new Error('not implemented');},
-      getAllKeys: async () => {throw new Error('not implemented');},
-      getByKey: async () => {throw new Error('not implemented');},
-      getEntriesByKeys: async () => {throw new Error('not implemented');},
-      iterate: async function* () {throw new Error('not implemented');},
-      put: async () => {throw new Error('not implemented');},
-      deleteByKeys: async () => {throw new Error('not implemented');},
-      clear: async () => {throw new Error('not implemented');},
+      count: async () => {
+        console.warn(`${storeName}.count() not implemented`);
+        return 0;
+      },
+      getAll: async () => {
+        console.warn(`${storeName}.getAll() not implemented`);
+        return [];
+        },
+      getAllKeys: async () => {
+        console.warn(`${storeName}.getAllKeys() not implemented`);
+        return [];
+        },
+      getByKey: async () => {
+        console.warn(`${storeName}.getByKey() not implemented`);
+        return undefined;
+        },
+      getEntriesByKeys: async () => {
+        console.warn(`${storeName}.getEntriesByKeys() not implemented`);
+        return [];
+        },
+      iterate: async function* () {
+        console.warn(`${storeName}.iterate() not implemented`);
+        return [];
+        },
+      put: async () => {
+        console.warn(`${storeName}.put() not implemented`);
+        },
+      deleteByKeys: async () => {
+        console.warn(`${storeName}.deleteByKeys() not implemented`);
+        },
+      clear: async () => {
+        console.warn(`${storeName}.clear() not implemented`);
+        },
     };
   }
 
@@ -64,15 +88,15 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   };
 
   const getAll = async (): Promise<TValue[]> => {
-    throw new Error('not implemented');
+    throw new Error(`${storeName}.getAll() not implemented`);
   };
 
   const getAllKeys = async (): Promise<TKey[]> => {
-    throw new Error('not implemented');
+    throw new Error(`${storeName}.getAllKeys() not implemented`);
   };
 
   const getByKey = async (key: TKey): Promise<TValue | undefined> => {
-    throw new Error('not implemented');
+    throw new Error(`${storeName}.getByKey() not implemented`);
   };
 
   const getEntriesByKeys = async (keys: TKey[]): Promise<RepositoryEntry<TValue, TKey>[]> => {
