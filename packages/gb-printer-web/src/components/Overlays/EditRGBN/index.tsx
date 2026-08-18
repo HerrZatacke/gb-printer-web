@@ -81,27 +81,7 @@ function EditRGBN() {
   const aboveSm = useMediaQuery(theme.breakpoints.up('sm'));
 
   if (!sortedImages.length) {
-    return (
-      <Lightbox
-        confirm={save}
-        deny={cancelEditRGBNImages}
-        closeOnOverlayClick={false}
-        canConfirm={canConfirm && !lengthWarning}
-        header="Debuggerino"
-        contentWidth="600px"
-      >
-        <pre>{JSON.stringify({
-          canConfirm,
-          order,
-          grouping,
-          lengthWarning,
-          rgbnHashes,
-          sortedImages,
-          createGroup,
-        }, null, 2)}
-        </pre>
-      </Lightbox>
-    );
+    return null;
   }
 
   return (

@@ -47,7 +47,7 @@ export const imagesKeys = {
   byHash: (hash: string) => [...imagesBaseKeys, 'byHash', hash] as const,
   byHashes: (hashes: string[]) => [...imagesBaseKeys, 'byHashes', [...hashes].sort()] as const,
   byAnyHashes: (hashes: string[]) => [...imagesBaseKeys, 'byAnyHashes', [...hashes].sort()] as const,
-  raw: (raw: ImageQueryParams, candidateHashes?: Set<string>) => [...imagesBaseKeys, 'raw', { raw, candidateHashes }] as const,
+  raw: (raw: ImageQueryParams, candidateHashes?: Set<string>) => [...imagesBaseKeys, 'raw', { raw, hashes: candidateHashes && [...candidateHashes].sort() }] as const,
 };
 
 
