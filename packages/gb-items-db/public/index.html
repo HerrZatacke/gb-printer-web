@@ -6,14 +6,22 @@
 </head>
 <body>
 <select id="endpoint">
-  <option value="/images">getImages</option>
-  <option value="/images/tags">getAllTags</option>
-  <option value="/images/byHashes">getImagesByHashes</option>
-  <option value="/images/byAnyHashes">getImagesByAnyHashes</option>
-  <option value="/images/hashesByGroupId">getHashesByGroupId</option>
-  <option value="/images/groupItemsByGroupId">getGroupItemsByGroupId</option>
-  <option value="/images/update">updateImages</option>
-  <option value="/images/delete">deleteImagesByHashes</option>
+  <optgroup label="Images">
+    <option value="/images">getImages</option>
+    <option value="/images/tags">getAllTags</option>
+    <option value="/images/byHashes">getImagesByHashes</option>
+    <option value="/images/byAnyHashes">getImagesByAnyHashes</option>
+    <option value="/images/hashesByGroupId">getHashesByGroupId</option>
+    <option value="/images/groupItemsByGroupId">getGroupItemsByGroupId</option>
+    <option value="/images/update">updateImages</option>
+    <option value="/images/delete">deleteImagesByHashes</option>
+  </optgroup>
+  <optgroup label="ImageGroups">
+    <option value="/imageGroups/list">getImageGroupsList</option>
+    <option value="/imageGroups/tree">getImageGroupsFullTree</option>
+    <option value="/imageGroups/update">updateImageGroups</option>
+    <option value="/imageGroups/delete">deleteImageGroupsByIds</option>
+  </optgroup>
 </select>
 <br>
 <textarea id="body" rows="20" cols="60">
@@ -36,13 +44,18 @@
   document.getElementById('send').addEventListener('click', async () => {
     const raw = document.getElementById('body').value;
     const endpoint = document.getElementById('endpoint').value;
+    document.getElementById('result').textContent = 'loading';
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: raw,
     });
-    const data = await response.json();
-    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+    try {
+      const data = await response.json();
+      document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+      document.getElementById('result').textContent = err.message;
+    }
   });
 </script>
 </body>
