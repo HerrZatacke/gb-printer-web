@@ -2,6 +2,7 @@
 import {
   count as countFn,
   inArray,
+  eq,
 } from 'drizzle-orm';
 import { type BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import {
@@ -15,13 +16,13 @@ import {
   type ItemRepository,
   type RepositoryEntry,
 } from 'gb-items-source';
-import { images } from '@/db/schema';
+import { images, imageGroups } from '@/db/schema';
 
 const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
   [StoreNames.IMAGES]: images,
   [StoreNames.FRAMES]: null,
   [StoreNames.FRAMEGROUPS]: null,
-  [StoreNames.IMAGEGROUPS]: null,
+  [StoreNames.IMAGEGROUPS]: imageGroups,
   [StoreNames.PALETTES]: null,
   [StoreNames.PLUGINS]: null,
   [StoreNames.BINARYIMAGES]: null,
@@ -88,15 +89,18 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   };
 
   const getAll = async (): Promise<TValue[]> => {
-    throw new Error(`${storeName}.getAll() not implemented`);
+    const rows = await db.select().from(table);
+    return rows as TValue[];
   };
 
   const getAllKeys = async (): Promise<TKey[]> => {
-    throw new Error(`${storeName}.getAllKeys() not implemented`);
+    const rows = await db.select({ key: keyColumn }).from(table);
+    return rows.map((row) => row.key as TKey);
   };
 
   const getByKey = async (key: TKey): Promise<TValue | undefined> => {
-    throw new Error(`${storeName}.getByKey() not implemented`);
+    const [row] = await db.select().from(table).where(eq(keyColumn, key));
+    return row as TValue | undefined;
   };
 
   const getEntriesByKeys = async (keys: TKey[]): Promise<RepositoryEntry<TValue, TKey>[]> => {
