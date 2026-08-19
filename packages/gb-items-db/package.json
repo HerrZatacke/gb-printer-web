@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fastify/autoload": "catalog:",
+    "@fastify/cors": "catalog:",
     "@fastify/static": "catalog:",
     "@types/better-sqlite3": "catalog:",
     "better-sqlite3":  "catalog:",
