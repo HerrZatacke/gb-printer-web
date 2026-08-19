@@ -1,11 +1,14 @@
 import {
   Button,
+  Grid,
   MenuItem,
+  Paper,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import { filesize } from 'filesize';
+import { $fetch, type FetchError } from 'ofetch';
 import React, { useCallback, useEffect, useState } from 'react';
 import Lightbox from '@/components/Lightbox';
 import {
@@ -23,10 +26,13 @@ function QueryTool() {
   const [endpoint, setEndpoint] = useState<MethodName | ''>('');
   const [currentSettings, setCurrentSettings] = useState<EndpointSettings | null>(null);
   const [requestBody, setRequestBody] = useState<string>('{}');
-  const [requestDuration, setRequestDuration] = useState<number>(0);
   const [requestError, setRequestError] = useState<string>('');
-  const [result, setResult] = useState<string>('');
-  const [resultIsError, setResultIsError] = useState<boolean>(false);
+  const [localRequestDuration, setLocalRequestDuration] = useState<number>(0);
+  const [localResult, setLocalResult] = useState<string>('');
+  const [localResultIsError, setLocalResultIsError] = useState<boolean>(false);
+  const [remoteRequestDuration, setRemoteRequestDuration] = useState<number>(0);
+  const [remoteResult, setRemoteResult] = useState<string>('');
+  const [remoteResultIsError, setRemoteResultIsError] = useState<boolean>(false);
 
   const updateBody = useCallback((newBody: string) => {
     if (!newBody) {
@@ -44,47 +50,93 @@ function QueryTool() {
     }
   }, []);
 
-  const execute = useCallback(async () => {
+
+  const requestLocal = useCallback(async (endpointName: MethodName, body: unknown) => {
     const source = await getItemsSource();
-    const fn = endpoint ? source[endpoint] : () => {};
+    const fn = source[endpointName];
 
     if (typeof fn !== 'function') {
-      setResult(`${endpoint} is not a valid endpoint`);
+      setLocalResult(`${endpointName} is not a valid endpoint`);
     }
 
-    let body: unknown;
+    const start = performance.now();
+    setLocalResultIsError(false);
+    setLocalResult('');
 
     try {
-      body = currentSettings?.schema.parse(requestBody ? JSON.parse(requestBody) : undefined) || undefined;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const res = await fn(body);
+      setLocalResult(JSON.stringify(res, null, 2));
+    } catch (error) {
+      setLocalResult((error as Error).message);
+      setLocalResultIsError(true);
+    }
+
+    setLocalRequestDuration(performance.now() - start);
+  }, []);
+
+  const requestRemote = useCallback(async (endpointName: MethodName, body?: Record<string, unknown>) => {
+    let endpointPath = endpointSettings[endpointName].remotePath;
+    const method = ['/stats', '/health'].includes(endpointPath) ? 'get' : 'post';
+
+    if (!endpointPath) {
+      setRemoteResult(`${endpointName} is not a valid endpoint path`);
+      return;
+    }
+
+    endpointPath = `http://localhost:3001${endpointPath}`;
+
+    const start = performance.now();
+    setRemoteResultIsError(false);
+    setRemoteResult(`calling "${endpointPath}"`);
+
+    try {
+      const res = await $fetch(endpointPath, {
+        method,
+        body,
+      });
+      setRemoteResult(JSON.stringify(res, null, 2));
+    } catch (error) {
+      const message = [
+        (error as Error).message || null,
+        (error as FetchError).response?._data.message || null,
+      ].filter(Boolean).join('\n');
+      setRemoteResult(message);
+      setRemoteResultIsError(true);
+    }
+
+    setRemoteRequestDuration(performance.now() - start);
+  }, []);
+
+  const execute = useCallback(async () => {
+    if (!endpoint) {
+      return;
+    }
+
+    let body: Record<string, unknown> | undefined;
+
+    try {
+      body = currentSettings?.schema.parse(requestBody ? JSON.parse(requestBody) : undefined) as Record<string, unknown> || undefined;
       setRequestError('');
     } catch (error) {
       setRequestError((error as Error).message);
       return;
     }
 
-    const start = performance.now();
-
-    try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const res = await fn(body);
-      setResult(JSON.stringify(res, null, 2));
-      setResultIsError(false);
-    } catch (error) {
-      setResult((error as Error).message);
-      setResultIsError(true);
-    }
-
-    setRequestDuration(performance.now() - start);
-  }, [endpoint, requestBody, currentSettings]);
+    await Promise.all([
+      requestLocal(endpoint, body),
+      requestRemote(endpoint, body),
+    ]);
+  }, [currentSettings, endpoint, requestBody, requestLocal, requestRemote]);
 
   useEffect(() => {
     if (endpoint) {
       const newSettings = endpointSettings[endpoint];
       // eslint-disable-next-line react-hooks/set-state-in-effect
       updateBody(newSettings.exampleBody);
-      setResult('');
-      setRequestDuration(0);
+      setLocalResult('');
+      setLocalRequestDuration(0);
       setCurrentSettings(newSettings);
     }
   }, [endpoint, updateBody]);
@@ -138,7 +190,7 @@ function QueryTool() {
           error={Boolean(requestError)}
           helperText={requestError || null}
           multiline
-          rows={15}
+          rows={10}
           onChange={(ev) => setRequestBody(ev.target.value)}
           onBlur={() => setRequestBody((current) => {
             try {
@@ -159,18 +211,46 @@ function QueryTool() {
           Run!
         </Button>
 
-        <Typography variant="caption">
-          {[
-            result?.length ? filesize(result.length) : 'no result',
-            requestDuration ? `${Math.round(requestDuration)}ms` : null,
-          ].filter(Boolean).join(' / ')}
-        </Typography>
-        <pre style={{
-          height: '30vh',
-          color: resultIsError ? 'red' : 'inherit',
-        }}>
-          {result || 'no response'}
-        </pre>
+        <Grid container spacing={4}>
+          <Grid size={6}>
+            <Typography variant="caption">
+              {[
+                localResult?.length ? filesize(localResult.length) : 'no result',
+                localRequestDuration ? `${Math.round(localRequestDuration)}ms` : null,
+              ].filter(Boolean).join(' / ')}
+            </Typography>
+            <Paper
+              component="pre"
+              elevation={4}
+              sx={{
+                p: 2,
+                height: '30vh',
+                color: localResultIsError ? 'red' : 'inherit',
+              }}
+            >
+              {localResult || 'no response'}
+            </Paper>
+          </Grid>
+          <Grid size={6}>
+            <Typography variant="caption">
+              {[
+                remoteResult?.length ? filesize(remoteResult.length) : 'no result',
+                remoteRequestDuration ? `${Math.round(remoteRequestDuration)}ms` : null,
+              ].filter(Boolean).join(' / ')}
+            </Typography>
+            <Paper
+              component="pre"
+              elevation={4}
+              sx={{
+                p: 2,
+                height: '30vh',
+                color: remoteResultIsError ? 'red' : 'inherit',
+              }}
+            >
+              {remoteResult || 'no response'}
+            </Paper>
+          </Grid>
+        </Grid>
 
       </Stack>
     </Lightbox>
