@@ -30,7 +30,7 @@ Verbind direct met community-projectapparaten via WebSerial:
 Verbind een printer-emulator via WebSerial om direct van je Game Boy Camera naar de WebApp af te drukken:
 - [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) – Arduino-gebaseerde emulator door mofosyne
 - [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) – Raspberry Pi Pico implementatie door untoxa
-- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Arduino Nano implementatie door Rafael Zenaro
+- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – ESP32 implementatie door Rafael Zenaro
 - [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) – ESP8266 WiFi-emulator met geïntegreerde webserver die deze webapp kan hosten
 
 ## [Importeren](/import)
