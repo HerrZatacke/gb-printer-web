@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   count as countFn,
   inArray,
@@ -7,6 +6,7 @@ import {
 import { type BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import {
   getTableConfig,
+  type SQLiteColumn,
   type SQLiteTable,
 } from 'drizzle-orm/sqlite-core';
 import {
@@ -16,7 +16,12 @@ import {
   type ItemRepository,
   type RepositoryEntry,
 } from 'gb-items-source';
-import { images, imageGroups } from '@/db/schema';
+import {
+  images,
+  imageTags,
+  imageReferences,
+  imageGroups,
+} from '@/db/schema';
 
 const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
   [StoreNames.IMAGES]: images,
@@ -27,6 +32,19 @@ const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
   [StoreNames.PLUGINS]: null,
   [StoreNames.BINARYIMAGES]: null,
   [StoreNames.BINARYFRAMES]: null,
+};
+
+interface IndexDefinition {
+  table: SQLiteTable;
+  ownerColumn: SQLiteColumn;
+  valueColumn: SQLiteColumn;
+}
+
+const indexesByStoreName: Partial<Record<StoreNames, Record<string, IndexDefinition>>> = {
+  [StoreNames.IMAGES]: {
+    tags: { table: imageTags, ownerColumn: imageTags.imageHash, valueColumn: imageTags.tag },
+    referencedHashes: { table: imageReferences, ownerColumn: imageReferences.sourceHash, valueColumn: imageReferences.referencedHash },
+  },
 };
 
 export const createDrizzleRepository = <TValue, TKey extends string = string>(
@@ -170,13 +188,51 @@ export const createIndexedDrizzleRepository = <TValue, TKey extends string = str
   config: EntityConfig<TValue, TKey>,
 ): IndexedItemRepository<TValue, TKey> => {
   const base = createDrizzleRepository(db, config);
+  const { storeName } = config;
+  const table = tableByStoreName[storeName];
+
+  if (!table) {
+    // ToDo: throw once all regular tables are implemented
+    return {
+      ...base,
+      getByIndexValues: async () => {
+        console.warn(`${storeName}.getByIndexValues() not implemented`);
+        return [];
+      },
+      getDistinctIndexValues: async () => {
+        console.warn(`${storeName}.getDistinctIndexValues() not implemented`);
+        return [];
+      },
+    };
+  }
+
+  const tableConfig = getTableConfig(table);
+  const keyColumn = tableConfig.primaryKeys[0]?.columns[0]
+    ?? tableConfig.columns.find((column) => column.primary);
 
   const getByIndexValues = async (indexName: string, values: string[]): Promise<TValue[]> => {
-    throw new Error('not implemented');
+    const indexDef = indexesByStoreName[storeName]?.[indexName];
+    if (!indexDef) {
+      throw new Error(`No index "${indexName}" defined for store: ${storeName}`);
+    }
+
+    const rows = await db
+      .select({ owner: table })
+      .from(table)
+      .innerJoin(indexDef.table, eq(keyColumn, indexDef.ownerColumn))
+      .where(inArray(indexDef.valueColumn, values));
+
+    return rows.map((row) => row.owner) as TValue[];
   };
 
   const getDistinctIndexValues = async (indexName: string): Promise<string[]> => {
-    throw new Error('not implemented');
+    const indexDef = indexesByStoreName[storeName]?.[indexName];
+    if (!indexDef) {
+      throw new Error(`No index "${indexName}" defined for store: ${storeName}`);
+    }
+
+    const rows = await db.selectDistinct({ value: indexDef.valueColumn }).from(indexDef.table).orderBy(indexDef.valueColumn);
+    return rows.map((row) => row.value) as string[];
   };
 
   return {
