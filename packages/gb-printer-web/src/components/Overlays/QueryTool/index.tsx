@@ -78,7 +78,7 @@ function QueryTool() {
 
   const requestRemote = useCallback(async (endpointName: MethodName, body?: Record<string, unknown>) => {
     let endpointPath = endpointSettings[endpointName].remotePath;
-    const method = ['/stats', '/health'].includes(endpointPath) ? 'get' : 'post';
+    const method = ['/stats', '/health', '/usages', '/maintenance'].includes(endpointPath) ? 'get' : 'post';
 
     if (!endpointPath) {
       setRemoteResult(`${endpointName} is not a valid endpoint path`);

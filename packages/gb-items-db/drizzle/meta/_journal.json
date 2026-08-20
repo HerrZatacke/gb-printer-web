@@ -8,6 +8,20 @@
       "when": 1787093982881,
       "tag": "0000_sloppy_madelyne_pryor",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1787244527976,
+      "tag": "0001_romantic_pyro",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1787247463685,
+      "tag": "0002_black_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }

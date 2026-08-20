@@ -19,9 +19,7 @@ export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binary
     const entries = await repository.getEntriesByKeys(hashes);
     const dataByHash = new Map<string, string>(entries.map(({ key, value }) => [key, value]));
 
-    // Positional correspondence to `hashes` is relied on by callers, so re-derive
-    // `items` from `hashes` itself (not from `entries`) to preserve both the
-    // original order and a `null` placeholder for hashes with no stored data.
+    // Positional is relevant -> map result to original hash order
     const items = hashes.map((hash): BinaryStoreItem | null => {
       const data = dataByHash.get(hash);
       return data ? { hash, data } : null;

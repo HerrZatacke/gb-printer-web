@@ -6,46 +6,15 @@ import {
 import { type BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import {
   getTableConfig,
-  type SQLiteColumn,
-  type SQLiteTable,
 } from 'drizzle-orm/sqlite-core';
 import {
-  StoreNames,
   type EntityConfig,
   type IndexedItemRepository,
   type ItemRepository,
   type RepositoryEntry,
 } from 'gb-items-source';
-import {
-  images,
-  imageTags,
-  imageReferences,
-  imageGroups,
-} from '@/db/schema';
-
-const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
-  [StoreNames.IMAGES]: images,
-  [StoreNames.FRAMES]: null,
-  [StoreNames.FRAMEGROUPS]: null,
-  [StoreNames.IMAGEGROUPS]: imageGroups,
-  [StoreNames.PALETTES]: null,
-  [StoreNames.PLUGINS]: null,
-  [StoreNames.BINARYIMAGES]: null,
-  [StoreNames.BINARYFRAMES]: null,
-};
-
-interface IndexDefinition {
-  table: SQLiteTable;
-  ownerColumn: SQLiteColumn;
-  valueColumn: SQLiteColumn;
-}
-
-const indexesByStoreName: Partial<Record<StoreNames, Record<string, IndexDefinition>>> = {
-  [StoreNames.IMAGES]: {
-    tags: { table: imageTags, ownerColumn: imageTags.imageHash, valueColumn: imageTags.tag },
-    referencedHashes: { table: imageReferences, ownerColumn: imageReferences.sourceHash, valueColumn: imageReferences.referencedHash },
-  },
-};
+import { indexesByStoreName } from '@/repository/indexesByStoreName';
+import { tableByStoreName } from '@/repository/tablesByStoreName';
 
 export const createDrizzleRepository = <TValue, TKey extends string = string>(
   db: BetterSQLite3Database,
@@ -55,42 +24,7 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   const table = tableByStoreName[storeName];
 
   if (!table) {
-    // ToDo: throw once all regular tables are implemented
-    return {
-      count: async () => {
-        console.warn(`${storeName}.count() not implemented`);
-        return 0;
-      },
-      getAll: async () => {
-        console.warn(`${storeName}.getAll() not implemented`);
-        return [];
-        },
-      getAllKeys: async () => {
-        console.warn(`${storeName}.getAllKeys() not implemented`);
-        return [];
-        },
-      getByKey: async () => {
-        console.warn(`${storeName}.getByKey() not implemented`);
-        return undefined;
-        },
-      getEntriesByKeys: async () => {
-        console.warn(`${storeName}.getEntriesByKeys() not implemented`);
-        return [];
-        },
-      iterate: async function* () {
-        console.warn(`${storeName}.iterate() not implemented`);
-        return [];
-        },
-      put: async () => {
-        console.warn(`${storeName}.put() not implemented`);
-        },
-      deleteByKeys: async () => {
-        console.warn(`${storeName}.deleteByKeys() not implemented`);
-        },
-      clear: async () => {
-        console.warn(`${storeName}.clear() not implemented`);
-        },
-    };
+    throw new Error(`Found no table for ${storeName}`);
   }
 
   const tableConfig = getTableConfig(table);
@@ -123,6 +57,12 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
 
   const getEntriesByKeys = async (keys: TKey[]): Promise<RepositoryEntry<TValue, TKey>[]> => {
     const rows = await db.select().from(table).where(inArray(keyColumn, keys));
+
+    console.log(JSON.stringify({ rows }, null, 2));
+
+    if (!hasKeyPath) {
+      return rows as RepositoryEntry<TValue, TKey>[];
+    }
 
     return rows.map((row) => ({
       key: (row as Record<string, TKey>)[keyColumn.name],
@@ -192,18 +132,7 @@ export const createIndexedDrizzleRepository = <TValue, TKey extends string = str
   const table = tableByStoreName[storeName];
 
   if (!table) {
-    // ToDo: throw once all regular tables are implemented
-    return {
-      ...base,
-      getByIndexValues: async () => {
-        console.warn(`${storeName}.getByIndexValues() not implemented`);
-        return [];
-      },
-      getDistinctIndexValues: async () => {
-        console.warn(`${storeName}.getDistinctIndexValues() not implemented`);
-        return [];
-      },
-    };
+    throw new Error(`Found no table for ${storeName}`);
   }
 
   const tableConfig = getTableConfig(table);

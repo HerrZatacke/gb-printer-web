@@ -7,11 +7,8 @@ import {
   type DeleteImageGroupsByIdsParams,
   type UpdateImageGroupsParams,
 } from 'gb-printer-schemas';
-import {  } from 'gb-printer-schemas/dist/schemas/items/ImageGroup';
-import {  } from 'gb-printer-schemas/dist/schemas/api/Responses';
-import {  } from 'gb-printer-schemas/dist/schemas/types';
 
-const imagesRoutes: FastifyPluginAsync = async (app) => {
+const imageGroupsRoutes: FastifyPluginAsync = async (app) => {
   app.post('/imageGroups/list', async (): Promise<ItemsSourceTotalResponse<SerializableImageGroup>> => {
     return app.itemsSource.getImageGroupsList();
   });
@@ -30,4 +27,4 @@ const imagesRoutes: FastifyPluginAsync = async (app) => {
 
 };
 
-export default imagesRoutes;
+export default imageGroupsRoutes;
