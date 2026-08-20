@@ -9,6 +9,7 @@ import itemsSourcePlugin from '@/plugins/itemsSourcePlugin';
 
 const app = Fastify({
   logger: true,
+  bodyLimit: 10 * 1024 * 1024, // 10MB
 });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
