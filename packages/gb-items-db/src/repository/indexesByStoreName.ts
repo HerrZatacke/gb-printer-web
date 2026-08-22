@@ -1,5 +1,5 @@
 import {
-  type SQLiteColumn,
+  SQLiteColumn,
   type SQLiteTable,
 } from 'drizzle-orm/sqlite-core';
 import  {
@@ -8,17 +8,42 @@ import  {
 import {
   imageReferences,
   imageTags,
+  frames,
 } from '@/db/schema';
 
-interface IndexDefinition {
-  table: SQLiteTable;
+export interface IndexDefinition {
+  indexTable: SQLiteTable;
+  sourceFieldName: string;
+  ownerFieldName: string;
+  valueFieldName: string;
+}
+
+export interface WithColumns {
   ownerColumn: SQLiteColumn;
   valueColumn: SQLiteColumn;
 }
 
 export const indexesByStoreName: Partial<Record<StoreNames, Record<string, IndexDefinition>>> = {
   [StoreNames.IMAGES]: {
-    tags: { table: imageTags, ownerColumn: imageTags.imageHash, valueColumn: imageTags.tag },
-    referencedHashes: { table: imageReferences, ownerColumn: imageReferences.sourceHash, valueColumn: imageReferences.referencedHash },
+    tags: {
+      indexTable: imageTags,
+      sourceFieldName: 'tags',
+      ownerFieldName: 'imageHash',
+      valueFieldName: 'tag',
+    },
+    referencedHashes: {
+      indexTable: imageReferences,
+      sourceFieldName: 'referencedHashes',
+      ownerFieldName: 'sourceHash',
+      valueFieldName: 'referencedHash',
+    },
+  },
+  [StoreNames.FRAMES]: {
+    hash: {
+      indexTable: frames, // frames has just an extra index. No "external" index table for lookups.
+      sourceFieldName: 'hash',
+      ownerFieldName: 'id',
+      valueFieldName: 'hash',
+    },
   },
 };
