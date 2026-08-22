@@ -71,4 +71,4 @@ export interface FilterableFacet {
   frames: string[];
 }
 
-export type InitWorkerFn = (hostApi: ItemsHostApi) => Promise<ItemsSource>;
+export type InitWorkerFn = (hostApi: ItemsHostApi, remoteStorageUrl: string) => Promise<ItemsSource>;

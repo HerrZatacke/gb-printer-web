@@ -1,7 +1,7 @@
 'use client';
 import * as Comlink from 'comlink';
 import { ItemsSource } from 'gb-items-source';
-import { useInteractionsStore } from '@/stores/stores';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 import {
   type InitWorkerFn,
   type ItemsHostApi,
@@ -35,7 +35,10 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
         },
       };
 
-      return initWorker(Comlink.proxy(hostApi));
+      // Page needs refresh if this setting has been updated.
+      const { remoteStorageUrl } = useSettingsStore.getState();
+
+      return initWorker(Comlink.proxy(hostApi), remoteStorageUrl);
     })().catch((err) => {
       globalThis.__itemsSourcePromise = undefined;
       throw err;
