@@ -26,6 +26,7 @@ const getNextConfig = async (): Promise<NextConfig> => {
     trailingSlash: true,
     basePath,
     assetPrefix: basePath ? `${basePath}/` : '',
+    allowedDevOrigins: ['192.168.0.1'],
     // Might need to enable this again if the "forward-logs-shared.ts as source in console for all next logs"(https://github.com/vercel/next.js/issues/87822) Bug appears again
     // logging: {
     //   browserToTerminal: false,
