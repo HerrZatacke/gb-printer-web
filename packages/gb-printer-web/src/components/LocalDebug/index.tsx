@@ -6,6 +6,7 @@ import {
   Stack,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { EndpointUrls } from 'gb-items-db/src/endpointUrls';
 import {
   type UpdateImagesParams,
   type UpdateImageGroupsParams,
@@ -33,6 +34,8 @@ import { pluginsListQueryOptions } from '@/stores/items/queries/plugins';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
+
+const apiHost = 'http://localhost:3001';
 
 function Index() {
   const [shouldRender, setShouldRender] = useState(false);
@@ -103,7 +106,7 @@ function Index() {
       purge: true,
     };
     console.log('/images/update', JSON.stringify(updateImagesParams).length);
-    const resImages = await $fetch('http://localhost:3001/images/update', {
+    const resImages = await $fetch(`${apiHost}${EndpointUrls.POST_IMAGES_UPDATE}`, {
       method: 'post',
       body: updateImagesParams,
     });
@@ -114,7 +117,7 @@ function Index() {
       purge: true,
     };
     console.log('/imageGroups/update', JSON.stringify(updateImageGroupsParams).length);
-    const resImageGroups = await $fetch('http://localhost:3001/imageGroups/update', {
+    const resImageGroups = await $fetch(`${apiHost}${EndpointUrls.POST_IMAGEGROUPS_UPDATE}`, {
       method: 'post',
       body: updateImageGroupsParams,
     });
@@ -125,7 +128,7 @@ function Index() {
       purge: true,
     };
     console.log('/frames/update', JSON.stringify(updateFramesParams).length);
-    const resFrames = await $fetch('http://localhost:3001/frames/update', {
+    const resFrames = await $fetch(`${apiHost}${EndpointUrls.POST_FRAMES_UPDATE}`, {
       method: 'post',
       body: updateFramesParams,
     });
@@ -136,7 +139,7 @@ function Index() {
       purge: true,
     };
     console.log('/frameGroups/update', JSON.stringify(updateFrameGroupsParams).length);
-    const resFrameGroups = await $fetch('http://localhost:3001/frameGroups/update', {
+    const resFrameGroups = await $fetch(`${apiHost}${EndpointUrls.POST_FRAMEGROUPS_UPDATE}`, {
       method: 'post',
       body: updateFrameGroupsParams,
     });
@@ -147,7 +150,7 @@ function Index() {
       purge: true,
     };
     console.log('/plugins/update', JSON.stringify(updatePluginsParams).length);
-    const resPlugins = await $fetch('http://localhost:3001/plugins/update', {
+    const resPlugins = await $fetch(`${apiHost}${EndpointUrls.POST_PLUGINS_UPDATE}`, {
       method: 'post',
       body: updatePluginsParams,
     });
@@ -158,7 +161,7 @@ function Index() {
       purge: true,
     };
     console.log('/palettes/update', JSON.stringify(updatePalettesParams).length);
-    const resPalettes = await $fetch('http://localhost:3001/palettes/update', {
+    const resPalettes = await $fetch(`${apiHost}${EndpointUrls.POST_PALETTES_UPDATE}`, {
       method: 'post',
       body: updatePalettesParams,
     });
@@ -175,7 +178,7 @@ function Index() {
       };
       console.log('/binaryFrames/update', JSON.stringify(updateBinaryFramesParams).length);
       resBinaryFrames.push(
-        await $fetch('http://localhost:3001/binaryFrames/update', {
+        await $fetch(`${apiHost}${EndpointUrls.POST_BINARYFRAMES_UPDATE}`, {
           method: 'post',
           body: updateBinaryFramesParams,
         }),
@@ -192,7 +195,7 @@ function Index() {
       };
       console.log('/binaryImages/update', JSON.stringify(updateBinaryImagesParams).length);
       resBinaryImages.push(
-        await $fetch('http://localhost:3001/binaryImages/update', {
+        await $fetch(`${apiHost}${EndpointUrls.POST_BINARYIMAGES_UPDATE}`, {
           method: 'post',
           body: updateBinaryImagesParams,
         }),

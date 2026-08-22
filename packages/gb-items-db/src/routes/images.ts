@@ -13,37 +13,38 @@ import {
   type ItemsSourceTotalResponse,
   type UpdateImagesParams,
 } from 'gb-printer-schemas';
+import { EndpointUrls } from '@/endpointUrls';
 
 const imagesRoutes: FastifyPluginAsync = async (app) => {
-  app.post('/images', async (request): Promise<ItemsSourceResponse<Image>> => {
+  app.post(EndpointUrls.POST_IMAGES, async (request): Promise<ItemsSourceResponse<Image>> => {
     return app.itemsSource.getImages(request.body as GetImagesParams);
   });
 
-  app.post('/images/tags', async (): Promise<ItemsSourceTotalResponse<string>> => {
+  app.post(EndpointUrls.POST_IMAGES_TAGS, async (): Promise<ItemsSourceTotalResponse<string>> => {
     return app.itemsSource.getAllTags();
   });
 
-  app.post('/images/byHashes', async (request): Promise<ItemsSourceResponse<Image>> => {
+  app.post(EndpointUrls.POST_IMAGES_BYHASHES, async (request): Promise<ItemsSourceResponse<Image>> => {
     return app.itemsSource.getImagesByHashes(request.body as GetImagesByHashesParams);
   });
 
-  app.post('/images/byAnyHashes', async (request): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
+  app.post(EndpointUrls.POST_IMAGES_BYANYHASHES, async (request): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
     return app.itemsSource.getImagesByAnyHashes(request.body as GetImagesByAnyHashesParams);
   });
 
-  app.post('/images/hashesByGroupId', async (request): Promise<ItemsSourceTotalResponse<string>> => {
+  app.post(EndpointUrls.POST_IMAGES_HASHESBYGROUPID, async (request): Promise<ItemsSourceTotalResponse<string>> => {
     return app.itemsSource.getHashesByGroupId(request.body as GetHashesByGroupIdParams);
   });
 
-  app.post('/images/groupItemsByGroupId', async (request): Promise<ItemsSourceResponse<GroupItem>> => {
+  app.post(EndpointUrls.POST_IMAGES_GROUPITEMSBYGROUPID, async (request): Promise<ItemsSourceResponse<GroupItem>> => {
     return app.itemsSource.getGroupItemsByGroupId(request.body as GetGroupItemsByGroupIdParams);
   });
 
-  app.post('/images/update', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_IMAGES_UPDATE, async (request): Promise<void> => {
     return app.itemsSource.updateImages(request.body as UpdateImagesParams);
   });
 
-  app.post('/images/delete', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_IMAGES_DELETE, async (request): Promise<void> => {
     return app.itemsSource.deleteImagesByHashes(request.body as DeleteImagesByHashesParams);
   });
 };

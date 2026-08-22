@@ -5,17 +5,18 @@ import {
   type UpdateFrameGroupsParams,
   type DeleteFrameGroupsByIdsParams,
 } from 'gb-printer-schemas';
+import { EndpointUrls } from '@/endpointUrls';
 
 const frameGroupsRoutes: FastifyPluginAsync = async (app) => {
-  app.post('/frameGroups', async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
+  app.post(EndpointUrls.POST_FRAMEGROUPS, async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
     return app.itemsSource.getFrameGroups();
   });
 
-  app.post('/frameGroups/update', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_FRAMEGROUPS_UPDATE, async (request): Promise<void> => {
     return app.itemsSource.updateFrameGroups(request.body as UpdateFrameGroupsParams);
   });
 
-  app.post('/frameGroups/delete', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_FRAMEGROUPS_DELETE, async (request): Promise<void> => {
     return app.itemsSource.deleteFrameGroupsByIds(request.body as DeleteFrameGroupsByIdsParams);
   });
 

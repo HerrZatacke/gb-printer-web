@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "concurrently \"tsx watch src/index.ts\" \"tsc-alias --watch\"",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "concurrently": "catalog:",
+    "rimraf": "catalog:",
     "tsc-alias": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"

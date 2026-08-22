@@ -68,6 +68,7 @@
     "filenamify": "catalog:",
     "filesize": "catalog:",
     "gb-image-decoder": "catalog:",
+    "gb-items-db": "workspace:*",
     "gb-items-source": "workspace:*",
     "gb-palettes": "catalog:",
     "gb-printer-schemas": "workspace:*",

@@ -7,21 +7,22 @@ import {
   type UpdatePalettesParams,
   type ItemsSourceResponse,
 } from 'gb-printer-schemas';
+import { EndpointUrls } from '@/endpointUrls';
 
 const palettesRoutes: FastifyPluginAsync = async (app) => {
-  app.post('/palettes', async (): Promise<ItemsSourceTotalResponse<Palette>> => {
+  app.post(EndpointUrls.POST_PALETTES, async (): Promise<ItemsSourceTotalResponse<Palette>> => {
     return app.itemsSource.getPalettes();
   });
 
-  app.post('/palettes/byShortNames', async (request): Promise<ItemsSourceResponse<Palette>> => {
+  app.post(EndpointUrls.POST_PALETTES_BYSHORTNAMES, async (request): Promise<ItemsSourceResponse<Palette>> => {
     return app.itemsSource.getPalettesByShortNames(request.body as GetPalettesByShortNamesParams);
   });
 
-  app.post('/palettes/update', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_PALETTES_UPDATE, async (request): Promise<void> => {
     return app.itemsSource.updatePalettes(request.body as UpdatePalettesParams);
   });
 
-  app.post('/palettes/delete', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_PALETTES_DELETE, async (request): Promise<void> => {
     return app.itemsSource.deletePalettesByShortNames(request.body as DeletePalettesByShortNamesParams);
   });
 };

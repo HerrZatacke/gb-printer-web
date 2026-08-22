@@ -3,21 +3,22 @@ import {
   type ItemsStatsResponse,
   type ItemsUsageReponse,
 } from 'gb-printer-schemas';
+import { EndpointUrls } from '@/endpointUrls';
 
 const imagesRoutes: FastifyPluginAsync = async (app) => {
-  app.get('/health', () => {
+  app.get(EndpointUrls.GET_HEALTH, () => {
     return 'ok';
   });
 
-  app.get('/stats', async (): Promise<ItemsStatsResponse> => {
+  app.get(EndpointUrls.GET_STATS, async (): Promise<ItemsStatsResponse> => {
     return app.itemsSource.getStats();
   });
 
-  app.get('/maintenance', async (): Promise<void> => {
+  app.get(EndpointUrls.GET_MAINTENANCE, async (): Promise<void> => {
     return app.itemsSource.runMaintenance();
   });
 
-  app.get('/usages', async (): Promise<ItemsUsageReponse> => {
+  app.get(EndpointUrls.GET_USAGES, async (): Promise<ItemsUsageReponse> => {
     return app.itemsSource.getUsages();
   });
 };

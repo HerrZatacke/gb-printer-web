@@ -7,21 +7,22 @@ import {
   type DeleteBinaryItemsByHashesParams,
   type BinaryStoreItem,
 } from 'gb-printer-schemas';
+import { EndpointUrls } from '@/endpointUrls';
 
 const binaryImagesRoutes: FastifyPluginAsync = async (app) => {
-  app.post('/binaryImages/byHashes', async (request): Promise<ItemsSourceResponse<BinaryStoreItem>> => {
+  app.post(EndpointUrls.POST_BINARYIMAGES_BYHASHES, async (request): Promise<ItemsSourceResponse<BinaryStoreItem>> => {
     return app.itemsSource.getBinaryImagesByHashes(request.body as GetBinaryItemsByHashesParams);
   });
 
-  app.post('/binaryImages/hashes', async (): Promise<ItemsSourceTotalResponse<string>> => {
+  app.post(EndpointUrls.POST_BINARYIMAGES_HASHES, async (): Promise<ItemsSourceTotalResponse<string>> => {
     return app.itemsSource.getBinaryImageHashes();
   });
 
-  app.post('/binaryImages/update', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_BINARYIMAGES_UPDATE, async (request): Promise<void> => {
     return app.itemsSource.updateBinaryImages(request.body as UpdateBinaryItemsParams);
   });
 
-  app.post('/binaryImages/delete', async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_BINARYIMAGES_DELETE, async (request): Promise<void> => {
     return app.itemsSource.deleteBinaryImagesByHashes(request.body as DeleteBinaryItemsByHashesParams);
   });
 };
