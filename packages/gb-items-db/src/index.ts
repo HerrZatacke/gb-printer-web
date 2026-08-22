@@ -18,7 +18,7 @@ void app.register(fastifyStatic, { root: path.join(__dirname, '../public') });
 void app.register(AutoLoad, { dir: path.join(__dirname, 'routes') });
 await app.register(cors, {
   origin: (origin, cb) => {
-    const allowed = ['https://app.example.com', 'http://localhost:3000'];
+    const allowed = ['https://herrzatacke.github.io', 'http://localhost:3000', 'http://192.168.0.1:3000'];
     if (!origin || allowed.includes(origin)) {
       cb(null, true);
       return;
