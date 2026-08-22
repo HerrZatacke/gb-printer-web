@@ -18,6 +18,7 @@ import {
 } from 'gb-printer-schemas';
 import { $fetch } from 'ofetch';
 import { useCallback, useEffect, useState } from 'react';
+import { cleanDoubleSlashes } from 'ufo';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
@@ -35,11 +36,9 @@ import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
 
-const apiHost = 'http://localhost:3001';
-
 function Index() {
   const [shouldRender, setShouldRender] = useState(false);
-  const { enableDebug } = useSettingsStore();
+  const { enableDebug, remoteStorageUrl } = useSettingsStore();
   const { updateImageGroup } = useImageGroups({ tree: true, list: true });
   // const { updateImageGroup, imageGroupTree, imageGroups } = useImageGroups({ tree: true, list: true });
   const { navigateToImage, navigateToGroup } = useNavigationTools();
@@ -98,6 +97,10 @@ function Index() {
   }, [updateImageGroup, navigateToGroup]);
 
   const copyToLocalhost = useCallback(async () => {
+    if (!remoteStorageUrl) {
+      return;
+    }
+
     const start = performance.now();
 
     const { items: images } = await queryClient.fetchQuery(imagesListQueryOptions());
@@ -106,7 +109,7 @@ function Index() {
       purge: true,
     };
     console.log('/images/update', JSON.stringify(updateImagesParams).length);
-    const resImages = await $fetch(`${apiHost}${EndpointUrls.POST_IMAGES_UPDATE}`, {
+    const resImages = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_IMAGES_UPDATE}`), {
       method: 'post',
       body: updateImagesParams,
     });
@@ -117,7 +120,7 @@ function Index() {
       purge: true,
     };
     console.log('/imageGroups/update', JSON.stringify(updateImageGroupsParams).length);
-    const resImageGroups = await $fetch(`${apiHost}${EndpointUrls.POST_IMAGEGROUPS_UPDATE}`, {
+    const resImageGroups = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_IMAGEGROUPS_UPDATE}`), {
       method: 'post',
       body: updateImageGroupsParams,
     });
@@ -128,7 +131,7 @@ function Index() {
       purge: true,
     };
     console.log('/frames/update', JSON.stringify(updateFramesParams).length);
-    const resFrames = await $fetch(`${apiHost}${EndpointUrls.POST_FRAMES_UPDATE}`, {
+    const resFrames = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_FRAMES_UPDATE}`), {
       method: 'post',
       body: updateFramesParams,
     });
@@ -139,7 +142,7 @@ function Index() {
       purge: true,
     };
     console.log('/frameGroups/update', JSON.stringify(updateFrameGroupsParams).length);
-    const resFrameGroups = await $fetch(`${apiHost}${EndpointUrls.POST_FRAMEGROUPS_UPDATE}`, {
+    const resFrameGroups = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_FRAMEGROUPS_UPDATE}`), {
       method: 'post',
       body: updateFrameGroupsParams,
     });
@@ -150,7 +153,7 @@ function Index() {
       purge: true,
     };
     console.log('/plugins/update', JSON.stringify(updatePluginsParams).length);
-    const resPlugins = await $fetch(`${apiHost}${EndpointUrls.POST_PLUGINS_UPDATE}`, {
+    const resPlugins = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_PLUGINS_UPDATE}`), {
       method: 'post',
       body: updatePluginsParams,
     });
@@ -161,7 +164,7 @@ function Index() {
       purge: true,
     };
     console.log('/palettes/update', JSON.stringify(updatePalettesParams).length);
-    const resPalettes = await $fetch(`${apiHost}${EndpointUrls.POST_PALETTES_UPDATE}`, {
+    const resPalettes = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_PALETTES_UPDATE}`), {
       method: 'post',
       body: updatePalettesParams,
     });
@@ -178,7 +181,7 @@ function Index() {
       };
       console.log('/binaryFrames/update', JSON.stringify(updateBinaryFramesParams).length);
       resBinaryFrames.push(
-        await $fetch(`${apiHost}${EndpointUrls.POST_BINARYFRAMES_UPDATE}`, {
+        await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_BINARYFRAMES_UPDATE}`), {
           method: 'post',
           body: updateBinaryFramesParams,
         }),
@@ -195,7 +198,7 @@ function Index() {
       };
       console.log('/binaryImages/update', JSON.stringify(updateBinaryImagesParams).length);
       resBinaryImages.push(
-        await $fetch(`${apiHost}${EndpointUrls.POST_BINARYIMAGES_UPDATE}`, {
+        await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_BINARYIMAGES_UPDATE}`), {
           method: 'post',
           body: updateBinaryImagesParams,
         }),
@@ -213,7 +216,7 @@ function Index() {
       resBinaryImages,
       msg: `updated in ${Math.round(performance.now() - start)}ms`,
     });
-  }, [queryClient]);
+  }, [remoteStorageUrl, queryClient]);
 
   // const { images: allImages } = useImages({ list: true }); // All images
   // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
@@ -305,8 +308,8 @@ function Index() {
           <Button onClick={clearCaches}>
             clearCaches
           </Button>
-          <Button onClick={copyToLocalhost}>
-            Copy current items to localhost
+          <Button onClick={copyToLocalhost} disabled={!remoteStorageUrl}>
+            {`Copy current items to ${remoteStorageUrl || 'remote service'}`}
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}

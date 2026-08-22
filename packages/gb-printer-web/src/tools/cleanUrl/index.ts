@@ -1,14 +1,15 @@
 const cleanUrl = (dirtyUrl: string, protocol: string): string => {
-  if (!dirtyUrl.trim()) {
+  const trimmedDirtyUrl = dirtyUrl.trim();
+  if (!trimmedDirtyUrl.trim()) {
     return '';
   }
 
-  if (dirtyUrl === '/' && protocol !== 'ws') {
-    return dirtyUrl;
+  if (trimmedDirtyUrl === '/' && protocol !== 'ws') {
+    return trimmedDirtyUrl;
   }
 
-  const hasProtocol = !!dirtyUrl.match(new RegExp(`^${protocol}(s)?:\\/\\/`, 'gi'));
-  return `${hasProtocol ? '' : `${protocol}://`}${dirtyUrl}${dirtyUrl.endsWith('/') ? '' : '/'}`;
+  const hasProtocol = !!trimmedDirtyUrl.match(new RegExp(`^${protocol}(s)?:\\/\\/`, 'gi'));
+  return `${hasProtocol ? '' : `${protocol}://`}${trimmedDirtyUrl}${trimmedDirtyUrl.endsWith('/') ? '' : '/'}`;
 };
 
 export default cleanUrl;

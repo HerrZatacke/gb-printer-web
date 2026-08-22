@@ -10,6 +10,7 @@ import {
 import { filesize } from 'filesize';
 import { $fetch, type FetchError } from 'ofetch';
 import React, { useCallback, useEffect, useState } from 'react';
+import { cleanDoubleSlashes } from 'ufo';
 import Lightbox from '@/components/Lightbox';
 import {
   type EndpointSettings,
@@ -18,10 +19,11 @@ import {
   type MethodName,
 } from '@/components/Overlays/QueryTool/methods';
 import { getItemsSource } from '@/stores/items/client';
-import { useInteractionsStore } from '@/stores/stores';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 
 function QueryTool() {
   const { setShowQueryTool } = useInteractionsStore();
+  const { remoteStorageUrl } = useSettingsStore();
 
   const [endpoint, setEndpoint] = useState<MethodName | ''>('');
   const [currentSettings, setCurrentSettings] = useState<EndpointSettings | null>(null);
@@ -77,6 +79,10 @@ function QueryTool() {
   }, []);
 
   const requestRemote = useCallback(async (endpointName: MethodName, body?: Record<string, unknown>) => {
+    if (!remoteStorageUrl) {
+      return;
+    }
+
     let endpointPath = endpointSettings[endpointName].remotePath;
     const method = ['/stats', '/health', '/usages', '/maintenance'].includes(endpointPath) ? 'get' : 'post';
 
@@ -85,7 +91,7 @@ function QueryTool() {
       return;
     }
 
-    endpointPath = `http://localhost:3001${endpointPath}`;
+    endpointPath = cleanDoubleSlashes(`${remoteStorageUrl}${endpointPath}`);
 
     const start = performance.now();
     setRemoteResultIsError(false);
@@ -107,7 +113,7 @@ function QueryTool() {
     }
 
     setRemoteRequestDuration(performance.now() - start);
-  }, []);
+  }, [remoteStorageUrl]);
 
   const execute = useCallback(async () => {
     if (!endpoint) {
@@ -212,7 +218,7 @@ function QueryTool() {
         </Button>
 
         <Grid container spacing={4}>
-          <Grid size={6}>
+          <Grid size={Boolean(remoteStorageUrl) ? 6 : 12}>
             <Typography variant="caption">
               {[
                 localResult?.length ? filesize(localResult.length) : 'no result',
@@ -231,25 +237,27 @@ function QueryTool() {
               {localResult || 'no response'}
             </Paper>
           </Grid>
-          <Grid size={6}>
-            <Typography variant="caption">
-              {[
-                remoteResult?.length ? filesize(remoteResult.length) : 'no result',
-                remoteRequestDuration ? `${Math.round(remoteRequestDuration)}ms` : null,
-              ].filter(Boolean).join(' / ')}
-            </Typography>
-            <Paper
-              component="pre"
-              elevation={4}
-              sx={{
-                p: 2,
-                height: '30vh',
-                color: remoteResultIsError ? 'red' : 'inherit',
-              }}
-            >
-              {remoteResult || 'no response'}
-            </Paper>
-          </Grid>
+          {Boolean(remoteStorageUrl) && (
+            <Grid size={6}>
+              <Typography variant="caption">
+                {[
+                  remoteResult?.length ? filesize(remoteResult.length) : 'no result',
+                  remoteRequestDuration ? `${Math.round(remoteRequestDuration)}ms` : null,
+                ].filter(Boolean).join(' / ')}
+              </Typography>
+              <Paper
+                component="pre"
+                elevation={4}
+                sx={{
+                  p: 2,
+                  height: '30vh',
+                  color: remoteResultIsError ? 'red' : 'inherit',
+                }}
+              >
+                {remoteResult || 'no response'}
+              </Paper>
+            </Grid>
+          )}
         </Grid>
 
       </Stack>

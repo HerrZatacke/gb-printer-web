@@ -487,6 +487,8 @@
       "fr-FR": "Fransk – Frankrike (fr-FR)"
     },
     "preferredLocale": "Foretrukket språk",
+    "remoteStorageUrl": "URL for ekstern lagring",
+    "remoteStorageUrlHelper": "URL-en til tjenesten hvor dataene dine lagres (siden lastes på nytt så snart denne innstillingen endres)",
     "resetTrackingConsent": "Tilbakestill analyse-/sporingssamtykke (for øyeblikket {consentState, select, accepted {aktiv} other {inaktiv}})",
     "sortPalettes": "Sorter paletter"
   },

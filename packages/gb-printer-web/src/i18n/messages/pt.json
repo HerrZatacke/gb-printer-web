@@ -487,6 +487,8 @@
       "fr-FR": "Francês – França (fr-FR)"
     },
     "preferredLocale": "Idioma preferido",
+    "remoteStorageUrl": "URL de armazenamento remoto",
+    "remoteStorageUrlHelper": "O URL do serviço onde os teus dados são guardados (a página será recarregada assim que esta definição for alterada)",
     "resetTrackingConsent": "Repor consentimento de análise/rastreamento (atualmente {consentState, select, accepted {ativo} other {inativo}})",
     "sortPalettes": "Ordenar paletas"
   },

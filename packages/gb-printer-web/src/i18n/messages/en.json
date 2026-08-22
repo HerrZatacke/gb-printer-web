@@ -487,6 +487,8 @@
       "fr-FR": "French – France (fr-FR)"
     },
     "preferredLocale": "Preferred locale",
+    "remoteStorageUrl": "Remote storage URL",
+    "remoteStorageUrlHelper": "URL of the hosted service used to store your data (the page will reload after this setting is changed)",
     "resetTrackingConsent": "Reset Analytics/Tracking consent (currently {consentState, select, accepted {active} other {inactive}})",
     "sortPalettes": "Sort Palettes"
   },

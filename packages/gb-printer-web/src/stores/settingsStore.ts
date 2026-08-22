@@ -37,6 +37,7 @@ export interface Settings {
   pageSize: number;
   preferredLocale: string;
   printerUrls: string[];
+  remoteStorageUrl: string;
   savFrameTypes: string;
   savImportOrder: SavImportOrder;
   themeName: ThemeName;
@@ -68,6 +69,7 @@ interface Actions {
   setPageSize: (pageSize: number) => void;
   setPreferredLocale: (preferredLocale: string) => void;
   setPrinterUrls: (printerUrls: string[]) => void;
+  setRemoteStorageUrl: (remoteStorageUrl: string) => void;
   setSavFrameTypes: (savFrameTypes: string) => void;
   setSavImportOrder: (savImportOrder: SavImportOrder) => void;
   setThemeName: (themeName: ThemeName) => void;
@@ -118,6 +120,7 @@ export const createSettingsStore = () => (
         pageSize: 30,
         preferredLocale: getDefaultLocale(),
         printerUrls: [],
+        remoteStorageUrl: '',
         savFrameTypes: 'int',
         savImportOrder: SavImportOrder.CART_INDEX,
         themeName: ThemeName.BRIGHT,
@@ -143,6 +146,7 @@ export const createSettingsStore = () => (
         setLastBaudRate: (lastBaudRate: number) => set({ lastBaudRate }),
         setPageSize: (pageSize: number) => set({ pageSize }),
         setPrinterUrls: (printerUrls: string[]) => set({ printerUrls: printerUrls.map((url) => cleanUrl(url, 'http')) }),
+        setRemoteStorageUrl: (remoteStorageUrl: string) => set({ remoteStorageUrl }),
         setSavFrameTypes: (savFrameTypes: string) => set({ savFrameTypes }),
         setSavImportOrder: (savImportOrder: SavImportOrder) => set({ savImportOrder }),
         setThemeName: (themeName: ThemeName) => set({ themeName }),

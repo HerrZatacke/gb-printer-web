@@ -487,6 +487,8 @@
       "fr-FR": "Français – France (fr-FR)"
     },
     "preferredLocale": "Langue préférée",
+    "remoteStorageUrl": "URL de stockage distant",
+    "remoteStorageUrlHelper": "L'URL du service où tes données sont stockées (la page sera actualisée dès que ce paramètre est modifié)",
     "resetTrackingConsent": "Réinitialiser le consentement pour l'analyse/le suivi (actuellement {consentState, select, accepted {actif} other {inactif}})",
     "sortPalettes": "Trier les palettes"
   },

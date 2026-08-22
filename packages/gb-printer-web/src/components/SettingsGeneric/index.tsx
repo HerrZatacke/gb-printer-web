@@ -22,6 +22,7 @@ import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import { locales } from '@/i18n/locales';
 import { useSettingsStore } from '@/stores/stores';
+import cleanUrl from '@/tools/cleanUrl';
 
 interface ClickActionOption {
   translationKey: string;
@@ -54,6 +55,7 @@ function SettingsGeneric() {
     importPad,
     pageSize,
     preferredLocale,
+    remoteStorageUrl,
     savFrameTypes,
     savImportOrder,
     setEnableDebug,
@@ -65,6 +67,7 @@ function SettingsGeneric() {
     setImportPad,
     setPageSize,
     setPreferredLocale,
+    setRemoteStorageUrl,
     setSavFrameTypes,
     setSavImportOrder,
   } = useSettingsStore();
@@ -73,6 +76,7 @@ function SettingsGeneric() {
   const { setConsent, trackingAvailable, consentState } = useTracking();
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
+  const [remoteStorageUrlState, setRemoteStorageUrlState] = useState<string>(remoteStorageUrl);
   const [localeExampleText, setLocaleExampleText] = useState<string>('');
   const { formatter } = useDateFormat();
   const t = useTranslations('SettingsGeneric');
@@ -99,7 +103,6 @@ function SettingsGeneric() {
       }}
     >
       <TextField
-        id="settings-pagesize"
         label={t('galleryPageSize')}
         type="text"
         helperText={t('galleryPageSizeHelper')}
@@ -136,7 +139,6 @@ function SettingsGeneric() {
       <DownloadOptionsForm inDialog={false} />
 
       <TextField
-        id="settings-sav-frames"
         value={frameGroups.length ? savFrameTypes : ''}
         disabled={!frameGroups.length}
         label={t('importSavFrames')}
@@ -172,7 +174,6 @@ function SettingsGeneric() {
       </TextField>
 
       <TextField
-        id="settings-sav-order"
         value={savImportOrder}
         label={t('importSavOrder')}
         select
@@ -253,7 +254,6 @@ function SettingsGeneric() {
       />
 
       <TextField
-        id="settings-filename-style"
         value={sortPalettes}
         label={t('sortPalettes')}
         select
@@ -274,7 +274,6 @@ function SettingsGeneric() {
       </TextField>
 
       <TextField
-        id="settings-filename-style"
         value={preferredLocale}
         label={t('preferredLocale')}
         helperText={localeExampleText}
@@ -294,6 +293,19 @@ function SettingsGeneric() {
           ))
         }
       </TextField>
+
+      <TextField
+        label={t('remoteStorageUrl')}
+        type="text"
+        helperText={t('remoteStorageUrlHelper')}
+        value={remoteStorageUrlState}
+        onChange={(ev) => setRemoteStorageUrlState(ev.target.value)}
+        onBlur={async () => {
+          const newValue = cleanUrl(remoteStorageUrlState, 'http');
+          setRemoteStorageUrlState(newValue);
+          setRemoteStorageUrl(newValue);
+        }}
+      />
 
       <EnableWebUSB />
 
