@@ -59,8 +59,6 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
   const getEntriesByKeys = async (keys: TKey[]): Promise<RepositoryEntry<TValue, TKey>[]> => {
     const rows = await db.select().from(table).where(inArray(keyColumn, keys));
 
-    console.log(JSON.stringify({ rows }, null, 2));
-
     if (!hasKeyPath) {
       return rows as RepositoryEntry<TValue, TKey>[];
     }
