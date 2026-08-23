@@ -6,39 +6,19 @@ import {
   Stack,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { EndpointUrls } from 'gb-items-db/src/endpointUrls';
-import {
-  type UpdateImagesParams,
-  type UpdateImageGroupsParams,
-  type UpdateFramesParams,
-  type UpdateFrameGroupsParams,
-  type UpdatePalettesParams,
-  type UpdatePluginsParams,
-  type UpdateBinaryItemsParams,
-} from 'gb-printer-schemas';
-import { $fetch } from 'ofetch';
 import { useCallback, useEffect, useState } from 'react';
-import { cleanDoubleSlashes } from 'ufo';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { binaryFrameHashesQueryOptions, binaryFramesByHashesQueryOptions } from '@/stores/items/queries/binaryFrames';
-import { binaryImageHashesQueryOptions, binaryImagesByHashesQueryOptions } from '@/stores/items/queries/binaryImages';
 import { resetImageCaches } from '@/stores/items/queries/cacheResets';
-import { frameGroupsListQueryOptions } from '@/stores/items/queries/frameGroups';
-import { framesListQueryOptions } from '@/stores/items/queries/frames';
 import { runMaintenanceAction } from '@/stores/items/queries/global';
-import { imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups';
-import { imagesListQueryOptions } from '@/stores/items/queries/images';
-import { palettesListQueryOptions } from '@/stores/items/queries/palettes';
-import { pluginsListQueryOptions } from '@/stores/items/queries/plugins';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
 
 function Index() {
   const [shouldRender, setShouldRender] = useState(false);
-  const { enableDebug, remoteStorageUrl } = useSettingsStore();
+  const { enableDebug } = useSettingsStore();
   const { updateImageGroup } = useImageGroups({ tree: true, list: true });
   // const { updateImageGroup, imageGroupTree, imageGroups } = useImageGroups({ tree: true, list: true });
   const { navigateToImage, navigateToGroup } = useNavigationTools();
@@ -95,128 +75,6 @@ function Index() {
     await navigateToGroup(id, 0, false);
     console.log('updateImageGroup done');
   }, [updateImageGroup, navigateToGroup]);
-
-  const copyToLocalhost = useCallback(async () => {
-    if (!remoteStorageUrl) {
-      return;
-    }
-
-    const start = performance.now();
-
-    const { items: images } = await queryClient.fetchQuery(imagesListQueryOptions());
-    const updateImagesParams: UpdateImagesParams = {
-      images,
-      purge: true,
-    };
-    console.log('/images/update', JSON.stringify(updateImagesParams).length);
-    const resImages = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_IMAGES_UPDATE}`), {
-      method: 'post',
-      body: updateImagesParams,
-    });
-
-    const { items: imageGroups } = await queryClient.fetchQuery(imageGroupsListQueryOptions());
-    const updateImageGroupsParams: UpdateImageGroupsParams = {
-      imageGroups,
-      purge: true,
-    };
-    console.log('/imageGroups/update', JSON.stringify(updateImageGroupsParams).length);
-    const resImageGroups = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_IMAGEGROUPS_UPDATE}`), {
-      method: 'post',
-      body: updateImageGroupsParams,
-    });
-
-    const { items: frames } = await queryClient.fetchQuery(framesListQueryOptions());
-    const updateFramesParams: UpdateFramesParams = {
-      frames,
-      purge: true,
-    };
-    console.log('/frames/update', JSON.stringify(updateFramesParams).length);
-    const resFrames = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_FRAMES_UPDATE}`), {
-      method: 'post',
-      body: updateFramesParams,
-    });
-
-    const { items: frameGroups } = await queryClient.fetchQuery(frameGroupsListQueryOptions());
-    const updateFrameGroupsParams: UpdateFrameGroupsParams = {
-      frameGroups,
-      purge: true,
-    };
-    console.log('/frameGroups/update', JSON.stringify(updateFrameGroupsParams).length);
-    const resFrameGroups = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_FRAMEGROUPS_UPDATE}`), {
-      method: 'post',
-      body: updateFrameGroupsParams,
-    });
-
-    const { items: plugins } = await queryClient.fetchQuery(pluginsListQueryOptions());
-    const updatePluginsParams: UpdatePluginsParams = {
-      plugins,
-      purge: true,
-    };
-    console.log('/plugins/update', JSON.stringify(updatePluginsParams).length);
-    const resPlugins = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_PLUGINS_UPDATE}`), {
-      method: 'post',
-      body: updatePluginsParams,
-    });
-
-    const { items: palettes } = await queryClient.fetchQuery(palettesListQueryOptions());
-    const updatePalettesParams: UpdatePalettesParams = {
-      palettes,
-      purge: true,
-    };
-    console.log('/palettes/update', JSON.stringify(updatePalettesParams).length);
-    const resPalettes = await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_PALETTES_UPDATE}`), {
-      method: 'post',
-      body: updatePalettesParams,
-    });
-
-    const chunkSize = 1000;
-
-    const { items: frameHashes } = await queryClient.fetchQuery(binaryFrameHashesQueryOptions());
-    const { items: binaryFrames } = await queryClient.fetchQuery(binaryFramesByHashesQueryOptions(frameHashes));
-    const resBinaryFrames: string[] = [];
-    for (let i = 0; i < binaryFrames.length; i += chunkSize) {
-      const chunk = binaryFrames.slice(i, i + chunkSize);
-      const updateBinaryFramesParams: UpdateBinaryItemsParams = {
-        items: chunk,
-      };
-      console.log('/binaryFrames/update', JSON.stringify(updateBinaryFramesParams).length);
-      resBinaryFrames.push(
-        await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_BINARYFRAMES_UPDATE}`), {
-          method: 'post',
-          body: updateBinaryFramesParams,
-        }),
-      );
-    }
-
-    const { items: imageHashes } = await queryClient.fetchQuery(binaryImageHashesQueryOptions());
-    const { items: binaryImages } = await queryClient.fetchQuery(binaryImagesByHashesQueryOptions(imageHashes));
-    const resBinaryImages: string[] = [];
-    for (let i = 0; i < binaryImages.length; i += chunkSize) {
-      const chunk = binaryImages.slice(i, i + chunkSize);
-      const updateBinaryImagesParams: UpdateBinaryItemsParams = {
-        items: chunk,
-      };
-      console.log('/binaryImages/update', JSON.stringify(updateBinaryImagesParams).length);
-      resBinaryImages.push(
-        await $fetch(cleanDoubleSlashes(`${remoteStorageUrl}${EndpointUrls.POST_BINARYIMAGES_UPDATE}`), {
-          method: 'post',
-          body: updateBinaryImagesParams,
-        }),
-      );
-    }
-
-    console.log({
-      resImages,
-      resImageGroups,
-      resFrames,
-      resFrameGroups,
-      resPalettes,
-      resPlugins,
-      resBinaryFrames,
-      resBinaryImages,
-      msg: `updated in ${Math.round(performance.now() - start)}ms`,
-    });
-  }, [remoteStorageUrl, queryClient]);
 
   // const { images: allImages } = useImages({ list: true }); // All images
   // const { raw: rawImages1 } = useImages({ raw: { filters: { tags: ['testing'] }, sort: { field: 'created', direction: 'asc' }, page: 0, pageSize: 200 } });
@@ -307,9 +165,6 @@ function Index() {
           </Button>
           <Button onClick={clearCaches}>
             clearCaches
-          </Button>
-          <Button onClick={copyToLocalhost} disabled={!remoteStorageUrl}>
-            {`Copy current items to ${remoteStorageUrl || 'remote service'}`}
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}

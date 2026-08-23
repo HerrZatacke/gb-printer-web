@@ -39,6 +39,13 @@
     "closePrinterPage": "Chiudere pagina stampante",
     "openPrinterPage": "Apri pagina stampante"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Copia i dati locali nell'archiviazione esterna",
+    "purgeRemote": "Sostituisci i dati remoti con i dati locali",
+    "remoteStorageHeader": "Collega archiviazione esterna",
+    "remoteStorageUrl": "URL di archiviazione remota",
+    "remoteStorageUrlHelper": "L'URL del servizio dove vengono salvati i tuoi dati (la pagina verrà ricaricata non appena questa impostazione viene modificata)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {Nessun dispositivo connesso} =1 {Un dispositivo connesso:} other {# dispositivi connessi:}}",
     "copyToClipboard": "Copia negli appunti",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Inserisci solo il nome della sottocartella. Altrimenti, l'app risolverà completamente a «{fullAppPath}» all'interno del tuo Dropbox, il che probabilmente non è quello che intendevi."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Connetti allo spazio di archiviazione remoto",
     "enableDebug": "Mostra informazioni di debug",
     "exampleDateFormat": "Formato data di esempio: {format}",
     "forceMagicCheck": "Forza file .sav valido durante l'importazione",
@@ -487,8 +495,7 @@
       "fr-FR": "Francese – Francia (fr-FR)"
     },
     "preferredLocale": "Lingua preferita",
-    "remoteStorageUrl": "URL di archiviazione remota",
-    "remoteStorageUrlHelper": "L'URL del servizio dove vengono salvati i tuoi dati (la pagina verrà ricaricata non appena questa impostazione viene modificata)",
+    "removeRemoteStorage": "Rimuovi spazio di archiviazione remoto",
     "resetTrackingConsent": "Reimposta il consenso ad analisi/tracciamento (attualmente {consentState, select, accepted {attivo} other {inattivo}})",
     "sortPalettes": "Ordina le palette"
   },

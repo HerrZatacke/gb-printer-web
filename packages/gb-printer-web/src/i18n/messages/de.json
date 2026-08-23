@@ -39,6 +39,13 @@
     "closePrinterPage": "Druckerseite schließen",
     "openPrinterPage": "Druckerseite öffnen"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Lokale Daten in externen Speicher kopieren",
+    "purgeRemote": "Externe Daten durch lokale Daten ersetzen",
+    "remoteStorageHeader": "Externen Speicher verbinden",
+    "remoteStorageUrl": "Remote-Speicher-URL",
+    "remoteStorageUrlHelper": "Die URL des Dienstes, bei dem deine Daten gespeichert werden (die Seite wird neu geladen, sobald diese Einstellung geändert wurde)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {Keine verbundenen Geräte} =1 {Ein verbundenes Gerät:} other {# verbundene Geräte:}}",
     "copyToClipboard": "In Zwischenablage kopieren",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Gib nur den Namen des Unterordners ein. Andernfalls wird der Ordnerpfad vollständig zu „{fullAppPath}“ in Deiner Dropbox aufgelöst, was wahrscheinlich nicht das ist, was Du beabsichtigst."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Mit externem Speicher verbinden",
     "enableDebug": "Debug-Informationen anzeigen",
     "exampleDateFormat": "Beispiel-Datumsformat: {format}",
     "forceMagicCheck": "Gültige .sav-Datei beim Importieren erzwingen",
@@ -487,8 +495,7 @@
       "fr-FR": "Französisch – Frankreich (fr-FR)"
     },
     "preferredLocale": "Bevorzugte Sprache",
-    "remoteStorageUrl": "Remote-Speicher-URL",
-    "remoteStorageUrlHelper": "Die URL des Dienstes, bei dem deine Daten gespeichert werden (die Seite wird neu geladen, sobald diese Einstellung geändert wurde)",
+    "removeRemoteStorage": "Externen Speicher entfernen",
     "resetTrackingConsent": "Analyse-/Tracking-Einwilligung zurücksetzen (derzeit {consentState, select, accepted {aktiv} other {inaktiv}})",
     "sortPalettes": "Paletten sortieren"
   },

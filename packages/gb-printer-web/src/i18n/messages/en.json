@@ -39,6 +39,13 @@
     "closePrinterPage": "Close printer page",
     "openPrinterPage": "Open printer page"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Copy local data to remote storage",
+    "purgeRemote": "Replace remote data with local data",
+    "remoteStorageHeader": "Connect external storage",
+    "remoteStorageUrl": "Remote storage URL",
+    "remoteStorageUrlHelper": "URL of the hosted service used to store your data (the page will reload after this setting is changed)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {No connected devices} =1 {One connected device:} other {# connected devices:}}",
     "copyToClipboard": "Copy to clipboard",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Enter only the subfolder name. Otherwise, the app will fully resolve to “{fullAppPath}” within your Dropbox, which is probably not what you intended."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Connect to remote storage",
     "enableDebug": "Show debug info",
     "exampleDateFormat": "Example date format: {format}",
     "forceMagicCheck": "Force valid .sav file when importing",
@@ -487,8 +495,7 @@
       "fr-FR": "French – France (fr-FR)"
     },
     "preferredLocale": "Preferred locale",
-    "remoteStorageUrl": "Remote storage URL",
-    "remoteStorageUrlHelper": "URL of the hosted service used to store your data (the page will reload after this setting is changed)",
+    "removeRemoteStorage": "Remove remote storage",
     "resetTrackingConsent": "Reset Analytics/Tracking consent (currently {consentState, select, accepted {active} other {inactive}})",
     "sortPalettes": "Sort Palettes"
   },

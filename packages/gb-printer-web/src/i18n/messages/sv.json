@@ -39,6 +39,13 @@
     "closePrinterPage": "Stäng skrivarsida",
     "openPrinterPage": "Öppna skrivarsida"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Kopiera lokala data till extern lagring",
+    "purgeRemote": "Ersätt fjärrdata med lokala data",
+    "remoteStorageHeader": "Anslut extern lagring",
+    "remoteStorageUrl": "URL för fjärrlagring",
+    "remoteStorageUrlHelper": "URL:en till tjänsten där dina data lagras (sidan laddas om så snart denna inställning har ändrats)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {Inga anslutna enheter} =1 {En ansluten enhet:} other {# anslutna enheter:}}",
     "copyToClipboard": "Kopiera till urklipp",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Ange endast undermappens namn. Annars kommer appen att fullständigt lösa till ”{fullAppPath}” inom din Dropbox, vilket förmodligen inte är vad du avsåg."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Anslut till fjärrlagring",
     "enableDebug": "Visa debug-information",
     "exampleDateFormat": "Exempel datumformat: {format}",
     "forceMagicCheck": "Tvinga giltig .sav-fil vid import",
@@ -487,8 +495,7 @@
       "fr-FR": "Franska – Frankrike (fr-FR)"
     },
     "preferredLocale": "Föredraget språk",
-    "remoteStorageUrl": "URL för fjärrlagring",
-    "remoteStorageUrlHelper": "URL:en till tjänsten där dina data lagras (sidan laddas om så snart denna inställning har ändrats)",
+    "removeRemoteStorage": "Ta bort fjärrlagring",
     "resetTrackingConsent": "Återställ analys-/spårningssamtycke (för närvarande {consentState, select, accepted {aktiv} other {inaktiv}})",
     "sortPalettes": "Sortera paletter"
   },

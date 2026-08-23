@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
@@ -21,8 +22,7 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import { locales } from '@/i18n/locales';
-import { useSettingsStore } from '@/stores/stores';
-import cleanUrl from '@/tools/cleanUrl';
+import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
 
 interface ClickActionOption {
   translationKey: string;
@@ -72,11 +72,12 @@ function SettingsGeneric() {
     setSavImportOrder,
   } = useSettingsStore();
 
+  const { setShowRemoteStorageDialog } = useInteractionsStore();
+
   const { frameGroups } = useFrameGroups();
   const { setConsent, trackingAvailable, consentState } = useTracking();
 
   const [pageSizeState, setPageSizeState] = useState<string>(pageSize.toString(10));
-  const [remoteStorageUrlState, setRemoteStorageUrlState] = useState<string>(remoteStorageUrl);
   const [localeExampleText, setLocaleExampleText] = useState<string>('');
   const { formatter } = useDateFormat();
   const t = useTranslations('SettingsGeneric');
@@ -294,18 +295,23 @@ function SettingsGeneric() {
         }
       </TextField>
 
-      <TextField
-        label={t('remoteStorageUrl')}
-        type="text"
-        helperText={t('remoteStorageUrlHelper')}
-        value={remoteStorageUrlState}
-        onChange={(ev) => setRemoteStorageUrlState(ev.target.value)}
-        onBlur={async () => {
-          const newValue = cleanUrl(remoteStorageUrlState, 'http');
-          setRemoteStorageUrlState(newValue);
-          setRemoteStorageUrl(newValue);
-        }}
-      />
+      <ButtonGroup
+        variant="outlined"
+        color="secondary"
+      >
+        <Button
+          onClick={() => setShowRemoteStorageDialog(true)}
+          disabled={Boolean(remoteStorageUrl)}
+        >
+          {t('connectRemoteStorage')}
+        </Button>
+        <Button
+          onClick={() => setRemoteStorageUrl('')}
+          disabled={!remoteStorageUrl}
+        >
+          {t('removeRemoteStorage')}
+        </Button>
+      </ButtonGroup>
 
       <EnableWebUSB />
 

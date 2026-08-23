@@ -39,6 +39,13 @@
     "closePrinterPage": "Fermer la page de l’imprimante",
     "openPrinterPage": "Ouvrir la page de l’imprimante"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Copier les données locales vers le stockage externe",
+    "purgeRemote": "Remplacer les données distantes par les données locales",
+    "remoteStorageHeader": "Connecter un stockage externe",
+    "remoteStorageUrl": "URL de stockage distant",
+    "remoteStorageUrlHelper": "L'URL du service où tes données sont stockées (la page sera actualisée dès que ce paramètre est modifié)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {Aucun périphérique connecté} =1 {Un périphérique connecté :} other {# périphériques connectés :}}",
     "copyToClipboard": "Copier dans le presse-papiers",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Saisissez uniquement le nom du sous-dossier. Sinon, l'application résoudra complètement vers « {fullAppPath} » dans votre Dropbox, ce qui n'est probablement pas ce que vous aviez l'intention de faire."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Se connecter au stockage distant",
     "enableDebug": "Afficher les informations de débogage",
     "exampleDateFormat": "Format de date d'exemple : {format}",
     "forceMagicCheck": "Forcer un fichier .sav valide lors de l'importation",
@@ -487,8 +495,7 @@
       "fr-FR": "Français – France (fr-FR)"
     },
     "preferredLocale": "Langue préférée",
-    "remoteStorageUrl": "URL de stockage distant",
-    "remoteStorageUrlHelper": "L'URL du service où tes données sont stockées (la page sera actualisée dès que ce paramètre est modifié)",
+    "removeRemoteStorage": "Supprimer le stockage distant",
     "resetTrackingConsent": "Réinitialiser le consentement pour l'analyse/le suivi (actuellement {consentState, select, accepted {actif} other {inactif}})",
     "sortPalettes": "Trier les palettes"
   },
