@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
 import { Palette } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/stores/items/client';
@@ -73,14 +72,12 @@ export const paletteByShortNameQueryOptions = (shortName: string) => ({
   staleTime: STALE_TIME,
 });
 
-export const updatePalettesAction = async (queryClient: QueryClient, palettes: Palette[], purge = false): Promise<void> => {
+export const updatePalettesAction = async (palettes: Palette[], purge = false): Promise<void> => {
   const source = await getItemsSource();
   await source.updatePalettes({ palettes, purge });
-  await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
 };
 
-export const deletePalettesByShortNamesAction = async (queryClient: QueryClient, deleteShortNames: string[]): Promise<void> => {
+export const deletePalettesByShortNamesAction = async (deleteShortNames: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deletePalettesByShortNames({ shortNames: deleteShortNames });
-  await queryClient.invalidateQueries({ queryKey: palettesKeys.all });
 };

@@ -73,6 +73,7 @@ catalog:
   node-kmeans: ^1.1.9
   object-hash: ^3.0.0
   ofetch: ^1.5.1
+  ohash: ^2.0.12
   omggif: ^1.0.10
   pako: ^3.0.1
   promise-queue: ^2.2.5

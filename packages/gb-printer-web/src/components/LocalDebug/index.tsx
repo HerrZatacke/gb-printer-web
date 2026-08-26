@@ -5,12 +5,11 @@ import {
   Paper,
   Stack,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
+// import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { resetImageCaches } from '@/stores/items/queries/cacheResets';
 import { runMaintenanceAction } from '@/stores/items/queries/global';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
@@ -22,7 +21,7 @@ function Index() {
   const { updateImageGroup } = useImageGroups({ tree: true, list: true });
   // const { updateImageGroup, imageGroupTree, imageGroups } = useImageGroups({ tree: true, list: true });
   const { navigateToImage, navigateToGroup } = useNavigationTools();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   // useEffect(() => {
   //   console.log({ imageGroupTree });
@@ -44,11 +43,6 @@ function Index() {
   const runMaintenance = useCallback(async () => {
     await runMaintenanceAction();
   }, []);
-
-  const clearCaches = useCallback(async () => {
-    await resetImageCaches(queryClient, true);
-  }, [queryClient]);
-
 
   const createSubGroup = useCallback(async () => {
     console.log('calling updateImageGroup');
@@ -162,9 +156,6 @@ function Index() {
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
           <Button onClick={runMaintenance}>
             runMaintenance
-          </Button>
-          <Button onClick={clearCaches}>
-            clearCaches
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}

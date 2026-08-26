@@ -1,4 +1,5 @@
 import {
+  ItemStoreNames,
   SerializableImageGroupSchema,
   StoredSerializableImageGroupSchema,
   type DeleteImageGroupsByIdsParams,
@@ -90,8 +91,8 @@ export async function updateImageGroups(this: ItemsSourceInternal, { imageGroups
     })),
   );
 
-  await startMaintenanceTasks(this.repositories);
-  return mutationReponse([]);
+  const invalidations = await startMaintenanceTasks(this.repositories);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGEGROUPS }]);
 }
 
 const deleteImageGroupById = async (id: string, repositories: Repositories): Promise<void> => {
@@ -135,6 +136,6 @@ export async function deleteImageGroupsByIds(this: ItemsSourceInternal, { ids }:
     await deleteImageGroupById(id, repositories);
   }
 
-  await startMaintenanceTasks(repositories);
-  return mutationReponse([]);
+  const invalidations = await startMaintenanceTasks(repositories);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGEGROUPS }]);
 }

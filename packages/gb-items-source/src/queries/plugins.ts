@@ -1,4 +1,5 @@
 import {
+  ItemStoreNames,
   PluginSchema,
   type DeletePluginsByUrlsParams,
   type GetPluginsByUrlsParams,
@@ -55,12 +56,12 @@ export async function updatePlugins(this: ItemsSourceInternal, { plugins, purge 
       value: plugin,
     })),
   );
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.PLUGINS }]);
 }
 
 export async function deletePluginsByUrls(this: ItemsSourceInternal, { urls }: DeletePluginsByUrlsParams): Promise<ItemsMutationReponse> {
   const mutationReponse = getMutationReponse(performance.now());
   const { plugins: repository } = this.repositories;
   await repository.deleteByKeys(urls);
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.PLUGINS }]);
 }

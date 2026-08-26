@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
 import { Frame } from 'gb-printer-schemas';
 import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
@@ -66,14 +65,12 @@ export const framesByIdsQueryOptions = (ids: string[]) => {
   };
 };
 
-export const updateFramesAction = async (queryClient: QueryClient, frames: Frame[], purge = false): Promise<void> => {
+export const updateFramesAction = async (frames: Frame[], purge = false): Promise<void> => {
   const source = await getItemsSource();
   await source.updateFrames({ frames, purge });
-  await queryClient.invalidateQueries({ queryKey: framesKeys.all });
 };
 
-export const deleteFramesByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
+export const deleteFramesByIdsAction = async (deleteIds: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deleteFramesByIds({ ids: deleteIds });
-  await queryClient.invalidateQueries({ queryKey: framesKeys.all });
 };

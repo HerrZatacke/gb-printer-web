@@ -38,7 +38,7 @@ export const save = async (lines: string[]): Promise<string> => {
     dataHash,
     compressed,
   } = await compressAndHash(lines);
-  await updateBinaryImagesAction(getQueryClient(), [{ hash: dataHash, data: compressed }]);
+  await updateBinaryImagesAction([{ hash: dataHash, data: compressed }]);
   return dataHash;
 };
 
@@ -72,9 +72,9 @@ export const load = async (
 };
 
 export const deleteBinaryImage = async (dataHash: string): Promise<void> => {
-  await deleteBinaryImagesByHashesAction(getQueryClient(), [dataHash]);
+  await deleteBinaryImagesByHashesAction([dataHash]);
 };
 
 export const deleteBinaryFrame = async (dataHash: string): Promise<void> => {
-  await deleteBinaryFramesByHashesAction(getQueryClient(), [dataHash]);
+  await deleteBinaryFramesByHashesAction([dataHash]);
 };

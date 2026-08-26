@@ -1,4 +1,3 @@
-import { type QueryClient } from '@tanstack/react-query';
 import {
   type BinaryStoreItem,
   type ItemsSourceResponse,
@@ -84,17 +83,16 @@ export const createBinaryBlobQueries = (storeLabel: string, sourceApi: BinarySto
     };
   };
 
-  const updateAction = async (queryClient: QueryClient, items: BinaryStoreItem[]): Promise<void> => {
+  const updateAction = async (items: BinaryStoreItem[]): Promise<void> => {
     await sourceApi.update(items);
-    await queryClient.invalidateQueries({ queryKey: keys.all });
   };
 
-  const deleteByHashesAction = async (queryClient: QueryClient, hashes: string[]): Promise<void> => {
+  const deleteByHashesAction = async (hashes: string[]): Promise<void> => {
     await sourceApi.deleteByHashes(hashes);
-    await queryClient.invalidateQueries({ queryKey: keys.all });
   };
 
   return {
+    keys,
     hashesQueryOptions,
     byHashQueryOptions,
     byHashesQueryOptions,

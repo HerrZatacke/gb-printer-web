@@ -2,6 +2,7 @@ import { getItemsSource } from '@/stores/items/client';
 import { createBinaryBlobQueries } from '@/stores/items/queries/binaryStoreFactory';
 
 export const {
+  keys: binaryImagesKeys,
   hashesQueryOptions: binaryImageHashesQueryOptions,
   byHashQueryOptions: binaryImageByHashQueryOptions,
   byHashesQueryOptions: binaryImagesByHashesQueryOptions,

@@ -54,11 +54,11 @@ const mergeSettings = async (
   });
 
   if (binaryImageEntries.length > 0) {
-    await updateBinaryImagesAction(queryClient, binaryImageEntries);
+    await updateBinaryImagesAction(binaryImageEntries);
   }
 
   if (binaryFrameEntries.length > 0) {
-    await updateBinaryFramesAction(queryClient, binaryFrameEntries);
+    await updateBinaryFramesAction(binaryFrameEntries);
   }
 
   // ToDo: check for cases which need to "purge" the target table/store on update
@@ -94,7 +94,7 @@ export const useImportExportSettings = (): ImportExportSettings => {
   const downloadSettings = useCallback(async (what: ExportTypes, selectedFrameGroup = ''): Promise<void> => {
     const settingsFile = await getSettingsFile(what, selectedFrameGroup);
 
-    download(null)([{
+    void download(null)([{
       blob: settingsFile,
       filename: settingsFile.name,
     }]);

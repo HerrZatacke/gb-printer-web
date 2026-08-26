@@ -1,4 +1,4 @@
-import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { type Palette } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import {
@@ -23,8 +23,6 @@ export interface UsePalettesOptions {
 }
 
 export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalettes => {
-  const queryClient = useQueryClient();
-
   const listQuery = useQuery({
     ...palettesListQueryOptions(),
     enabled: Boolean(list),
@@ -40,12 +38,12 @@ export const usePalettes = ({ list, shortNames }: UsePalettesOptions): UsePalett
   });
 
   const updatePalettes = useCallback(async (palettes: Palette[], purge = false): Promise<void> => {
-    await updatePalettesAction(queryClient, palettes, purge);
-  }, [queryClient]);
+    await updatePalettesAction(palettes, purge);
+  }, []);
 
   const deletePalettesByShortNames = useCallback(async (deleteShortNames: string[]): Promise<void> => {
-    await deletePalettesByShortNamesAction(queryClient, deleteShortNames);
-  }, [queryClient]);
+    await deletePalettesByShortNamesAction(deleteShortNames);
+  }, []);
 
   return {
     palettes: listQuery.data?.items ?? [],

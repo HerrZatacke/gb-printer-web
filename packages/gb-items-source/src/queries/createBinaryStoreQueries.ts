@@ -60,9 +60,7 @@ export const createBinaryStoreQueries = (
       parsedItems.map((parsedItem) => ({ key: parsedItem.hash, value: parsedItem.data })),
     );
 
-    return mutationReponse([{
-      collection: repositoryKey,
-    }]);
+    return mutationReponse([{ collection: repositoryKey }]);
   }
 
   async function deleteByHashes(this: ItemsSourceInternal, { hashes }: DeleteBinaryItemsByHashesParams): Promise<ItemsMutationReponse> {
@@ -70,9 +68,7 @@ export const createBinaryStoreQueries = (
     const { [repositoryKey]: repository } = this.repositories;
     await repository.deleteByKeys(hashes);
 
-    return mutationReponse([{
-      collection: repositoryKey,
-    }]);
+    return mutationReponse([{ collection: repositoryKey }]);
   }
 
   return { getByHashes, getHashes, update, deleteByHashes };

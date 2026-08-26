@@ -1,5 +1,6 @@
 import {
   FrameSchema,
+  ItemStoreNames,
   type DeleteFramesByIdsParams,
   type Frame,
   type GetFramesByHashesParams,
@@ -73,12 +74,12 @@ export async function updateFrames(this: ItemsSourceInternal, { frames, purge }:
       value: frame,
     })),
   );
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.FRAMES }]);
 }
 
 export async function deleteFramesByIds(this: ItemsSourceInternal, { ids }: DeleteFramesByIdsParams): Promise<ItemsMutationReponse> {
   const mutationReponse = getMutationReponse(performance.now());
   const { frames: repository } = this.repositories;
   await repository.deleteByKeys(ids);
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.FRAMES }]);
 }

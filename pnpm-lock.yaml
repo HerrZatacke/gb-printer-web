@@ -192,6 +192,9 @@ catalogs:
     ofetch:
       specifier: ^1.5.1
       version: 1.5.1
+    ohash:
+      specifier: ^2.0.12
+      version: 2.0.12
     omggif:
       specifier: ^1.0.10
       version: 1.0.10
@@ -305,6 +308,9 @@ importers:
       gb-printer-schemas:
         specifier: workspace:*
         version: link:../gb-printer-schemas
+      ohash:
+        specifier: 'catalog:'
+        version: 2.0.12
       ufo:
         specifier: 'catalog:'
         version: 1.6.4
@@ -332,7 +338,7 @@ importers:
         version: 1.11.21
       gb-image-decoder:
         specifier: 'catalog:'
-        version: 2.0.4(ohash@2.0.11)
+        version: 2.0.4(ohash@2.0.12)
       gb-palettes:
         specifier: 'catalog:'
         version: 1.0.14
@@ -477,7 +483,7 @@ importers:
         version: 11.0.22
       gb-image-decoder:
         specifier: 'catalog:'
-        version: 2.0.4(ohash@2.0.11)
+        version: 2.0.4(ohash@2.0.12)
       gb-items-source:
         specifier: workspace:*
         version: link:../gb-items-source
@@ -2899,6 +2905,7 @@ packages:
   eslint@9.39.5:
     resolution: {integrity: sha512-DgZS62aPLXKlnxILS/AYCoRvHaZeXceIzlXPkkGGzJWSow1aEk0lbTlxUSlyjC8jcaKxAdOnTDz+o1JFSBsyjw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -3738,8 +3745,8 @@ packages:
   ofetch@1.5.1:
     resolution: {integrity: sha512-2W4oUZlVaqAPAil6FUg/difl6YhqhUR7x2eZY4bQCko22UXg3hptq9KLQdqFClV+Wu85UX7hNtdGTngi/1BxcA==}
 
-  ohash@2.0.11:
-    resolution: {integrity: sha512-RdR9FQrFwNBNXAr4GixM8YaRZRJ5PUWbKYbE5eOsrwAjJW0q2REGcf79oYPsLyskQCZG1PLN+S/K1V00joZAoQ==}
+  ohash@2.0.12:
+    resolution: {integrity: sha512-65S/5gk9YSsaRjcyf7Nfa6h/d3E8/1gslpXfI4W7Dxn/oap8IKRuNT5VXkLQ1YFKIEg4apRY4Pj6aiwFzrDdmw==}
 
   omggif@1.0.10:
     resolution: {integrity: sha512-LMJTtvgc/nugXj0Vcrrs68Mn2D1r0zf630VNtqtpI1FEO7e+O9FP4gqs9AcnBaSEeoHIPm28u6qgPR0oyEpGSw==}
@@ -7176,9 +7183,9 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  gb-image-decoder@2.0.4(ohash@2.0.11):
+  gb-image-decoder@2.0.4(ohash@2.0.12):
     dependencies:
-      ohash: 2.0.11
+      ohash: 2.0.12
 
   gb-palettes@1.0.14: {}
 
@@ -7849,7 +7856,7 @@ snapshots:
       node-fetch-native: 1.6.7
       ufo: 1.6.4
 
-  ohash@2.0.11: {}
+  ohash@2.0.12: {}
 
   omggif@1.0.10: {}
 

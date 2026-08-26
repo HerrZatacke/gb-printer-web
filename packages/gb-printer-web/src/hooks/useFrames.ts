@@ -1,4 +1,4 @@
-import { useQuery, keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Frame } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import {
@@ -23,8 +23,6 @@ export interface UseFramesOptions {
 }
 
 export const useFrames = ({ list, ids }: UseFramesOptions): UseFrames => {
-  const queryClient = useQueryClient();
-
   const listQuery = useQuery({
     ...framesListQueryOptions(),
     enabled: Boolean(list),
@@ -40,12 +38,12 @@ export const useFrames = ({ list, ids }: UseFramesOptions): UseFrames => {
   });
 
   const updateFrames = useCallback(async (frames: Frame[], purge = false): Promise<void> => {
-    await updateFramesAction(queryClient, frames, purge);
-  }, [queryClient]);
+    await updateFramesAction(frames, purge);
+  }, []);
 
   const deleteFramesByIds = useCallback(async (deleteIds: string[]): Promise<void> => {
-    await deleteFramesByIdsAction(queryClient, deleteIds);
-  }, [queryClient]);
+    await deleteFramesByIdsAction(deleteIds);
+  }, []);
 
   return {
     frames: listQuery.data?.items ?? [],

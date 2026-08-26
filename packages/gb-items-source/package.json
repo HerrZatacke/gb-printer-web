@@ -14,6 +14,7 @@
     "comlink": "catalog:",
     "gb-palettes": "catalog:",
     "gb-printer-schemas": "workspace:*",
+    "ohash": "catalog:",
     "ufo": "catalog:",
     "zod": "catalog:"
   },
