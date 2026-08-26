@@ -106,7 +106,7 @@ const resolveGroupAggregates = (
 export const populateGroupAggregates = async (
   repositories: Repositories,
 ): Promise<void> => {
-  const groups = await repositories.imageGroups.getAll();
+  const groups = await repositories.imagegroups.getAll();
   const images = await repositories.images.getAll();
 
   const groupsById = new Map(groups.map((group) => [group.id, group]));
@@ -129,7 +129,7 @@ export const populateGroupAggregates = async (
     return { ...group, ...aggregates, coverImage };
   });
 
-  await repositories.imageGroups.put(
+  await repositories.imagegroups.put(
     updatedGroups.map((group) => ({ key: group.id, value: group })),
   );
 };

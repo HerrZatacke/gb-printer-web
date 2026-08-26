@@ -1,5 +1,6 @@
 import { type ItemsSource } from 'gb-items-source';
 import {
+  ItemStoreNames,
   type Frame,
   type FrameGroup,
   type Palette,
@@ -11,26 +12,26 @@ import {
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 
 export interface ItemsDB extends DBSchema {
-  binaryframes: {
+  [ItemStoreNames.BINARYFRAMES]: {
     key: string;
     value: string;
   };
-  binaryimages: {
+  [ItemStoreNames.BINARYIMAGES]: {
     key: string;
     value: string;
   };
-  frames: {
+  [ItemStoreNames.FRAMES]: {
     key: string;
     value: Frame;
     indexes: {
       hash: string;
     };
   };
-  framegroups: {
+  [ItemStoreNames.FRAMEGROUPS]: {
     key: string;
     value: FrameGroup;
   };
-  images: {
+  [ItemStoreNames.IMAGES]: {
     key: string;
     value: StoredImage;
     indexes: {
@@ -38,15 +39,15 @@ export interface ItemsDB extends DBSchema {
       referencedHashes: string;
     };
   };
-  imagegroups: {
+  [ItemStoreNames.IMAGEGROUPS]: {
     key: string;
     value: StoredSerializableImageGroup;
   };
-  palettes: {
+  [ItemStoreNames.PALETTES]: {
     key: string;
     value: Palette;
   };
-  plugins: {
+  [ItemStoreNames.PLUGINS]: {
     key: string;
     value: Plugin;
   };

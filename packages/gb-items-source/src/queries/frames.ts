@@ -6,9 +6,10 @@ import {
   type GetFramesByIdsParams,
   type ItemsSourceTotalResponse,
   type UpdateFramesParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getAddTotal } from '@/queries/helpers/generic';
+import { getAddTotal, getMutationReponse } from '@/queries/helpers/generic';
 import { type ItemsSourceInternal } from '@/types';
 
 export async function getFrames(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Frame>> {
@@ -56,7 +57,8 @@ export async function getFramesByHashes(this: ItemsSourceInternal, { hashes }: G
   return addPaging(filteredFrames);
 }
 
-export async function updateFrames(this: ItemsSourceInternal, { frames, purge }: UpdateFramesParams): Promise<void> {
+export async function updateFrames(this: ItemsSourceInternal, { frames, purge }: UpdateFramesParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const parsedFrames = z.array(FrameSchema).parse(frames);
 
   const { frames: repository } = this.repositories;
@@ -71,9 +73,12 @@ export async function updateFrames(this: ItemsSourceInternal, { frames, purge }:
       value: frame,
     })),
   );
+  return mutationReponse([]);
 }
 
-export async function deleteFramesByIds(this: ItemsSourceInternal, { ids }: DeleteFramesByIdsParams): Promise<void> {
+export async function deleteFramesByIds(this: ItemsSourceInternal, { ids }: DeleteFramesByIdsParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const { frames: repository } = this.repositories;
   await repository.deleteByKeys(ids);
+  return mutationReponse([]);
 }

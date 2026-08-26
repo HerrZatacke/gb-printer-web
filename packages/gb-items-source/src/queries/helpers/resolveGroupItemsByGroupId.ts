@@ -35,7 +35,7 @@ export const resolveGroupItemsByGroupId = async (
 
   const facetMatcher = await getFacetMatcher(filters);
 
-  const { imageGroups: imageGroupsRepository } = repositories;
+  const { imagegroups: imageGroupsRepository } = repositories;
 
   const imageGroup: StoredSerializableImageGroup | undefined = await imageGroupsRepository.getByKey(groupId);
 

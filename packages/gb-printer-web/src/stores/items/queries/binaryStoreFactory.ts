@@ -3,6 +3,7 @@ import {
   type BinaryStoreItem,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
@@ -11,8 +12,8 @@ import { STALE_TIME } from '@/stores/items/queries/consts';
 interface BinaryStoreSourceApi {
   getByHashes: (hashes: string[]) => Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getHashes: () => Promise<ItemsSourceTotalResponse<string>>;
-  update: (items: BinaryStoreItem[]) => Promise<void>;
-  deleteByHashes: (hashes: string[]) => Promise<void>;
+  update: (items: BinaryStoreItem[]) => Promise<ItemsMutationReponse>;
+  deleteByHashes: (hashes: string[]) => Promise<ItemsMutationReponse>;
 }
 
 export const createBinaryBlobQueries = (storeLabel: string, sourceApi: BinaryStoreSourceApi) => {

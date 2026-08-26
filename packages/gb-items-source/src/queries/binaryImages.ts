@@ -1,4 +1,4 @@
-import { BinaryStoreItemSchema } from 'gb-printer-schemas';
+import { ItemStoreNames, BinaryStoreItemSchema } from 'gb-printer-schemas';
 import { createBinaryStoreQueries } from '@/queries/createBinaryStoreQueries';
 
 export const {
@@ -6,4 +6,4 @@ export const {
   getHashes: getBinaryImageHashes,
   update: updateBinaryImages,
   deleteByHashes: deleteBinaryImagesByHashes,
-} = createBinaryStoreQueries('binaryImages', BinaryStoreItemSchema);
+} = createBinaryStoreQueries(ItemStoreNames.BINARYIMAGES, BinaryStoreItemSchema);

@@ -8,6 +8,7 @@ import {
   type StoredSerializableImageGroup,
   type TreeImageGroup,
   type UpdateImageGroupsParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import z from 'zod';
 import { startMaintenanceTasks } from '@/maintenance';
@@ -15,7 +16,7 @@ import { applyFullSlugs } from '@/queries/helpers/applyFullSlugs';
 import { applyImageTotals } from '@/queries/helpers/applyImageTotals';
 import { buildTree } from '@/queries/helpers/buildTree';
 import { createTreeRoot } from '@/queries/helpers/createTreeRoot';
-import { getAddTotal } from '@/queries/helpers/generic';
+import { getAddTotal, getMutationReponse } from '@/queries/helpers/generic';
 import { resolveOwnership } from '@/queries/helpers/resolveOwnership';
 import sortBy from '@/temptools/sortby';
 import unique from '@/temptools/unique';
@@ -24,7 +25,7 @@ import { type Repositories, type ItemsSourceInternal } from '@/types';
 const sortById = sortBy<StoredSerializableImageGroup>('id');
 
 export async function getImageGroupsList(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<SerializableImageGroup>> {
-  const { imageGroups: repository } = this.repositories;
+  const { imagegroups: repository } = this.repositories;
   const start = performance.now();
 
   const imageGroups = await repository.getAll();
@@ -40,8 +41,8 @@ export async function getImageGroupsFullTree(this: ItemsSourceInternal): Promise
   const start = performance.now();
 
   const [imageGroups, totalCount, allImageIds] = await Promise.all([
-    repositories.imageGroups.getAll(),
-    repositories.imageGroups.count(),
+    repositories.imagegroups.getAll(),
+    repositories.imagegroups.count(),
     repositories.images.getAllKeys(),
   ]);
 
@@ -73,8 +74,9 @@ export async function getImageGroupsFullTree(this: ItemsSourceInternal): Promise
   };
 }
 
-export async function updateImageGroups(this: ItemsSourceInternal, { imageGroups, purge }: UpdateImageGroupsParams): Promise<void> {
-  const { imageGroups: repository } = this.repositories;
+export async function updateImageGroups(this: ItemsSourceInternal, { imageGroups, purge }: UpdateImageGroupsParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
+  const { imagegroups: repository } = this.repositories;
   const parsedGroups = z.array(StoredSerializableImageGroupSchema).parse(imageGroups);
 
   if (purge) {
@@ -89,10 +91,11 @@ export async function updateImageGroups(this: ItemsSourceInternal, { imageGroups
   );
 
   await startMaintenanceTasks(this.repositories);
+  return mutationReponse([]);
 }
 
 const deleteImageGroupById = async (id: string, repositories: Repositories): Promise<void> => {
-  const { imageGroups: repository } = repositories;
+  const { imagegroups: repository } = repositories;
 
   const allGroups = await repository.getAll();
   const groupsById = new Map(allGroups.map((g) => [g.id, g]));
@@ -124,7 +127,8 @@ const deleteImageGroupById = async (id: string, repositories: Repositories): Pro
   await repository.deleteByKeys([id]);
 };
 
-export async function deleteImageGroupsByIds(this: ItemsSourceInternal, { ids }: DeleteImageGroupsByIdsParams): Promise<void> {
+export async function deleteImageGroupsByIds(this: ItemsSourceInternal, { ids }: DeleteImageGroupsByIdsParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const { repositories } = this;
 
   for (const id of ids) {
@@ -132,4 +136,5 @@ export async function deleteImageGroupsByIds(this: ItemsSourceInternal, { ids }:
   }
 
   await startMaintenanceTasks(repositories);
+  return mutationReponse([]);
 }
