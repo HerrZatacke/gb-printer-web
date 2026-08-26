@@ -1,5 +1,5 @@
 import  { type SQLiteTable } from 'drizzle-orm/sqlite-core';
-import { StoreNames } from 'gb-items-source';
+import { ItemStoreNames } from 'gb-printer-schemas';
 import {
   binaryFrames,
   binaryImages,
@@ -11,13 +11,13 @@ import {
   plugins,
 } from '@/db/schema';
 
-export const tableByStoreName: Record<StoreNames, SQLiteTable | null> = {
-  [StoreNames.BINARYFRAMES]: binaryFrames,
-  [StoreNames.BINARYIMAGES]: binaryImages,
-  [StoreNames.FRAMES]: frames,
-  [StoreNames.FRAMEGROUPS]: frameGroups,
-  [StoreNames.IMAGEGROUPS]: imageGroups,
-  [StoreNames.IMAGES]: images,
-  [StoreNames.PALETTES]: palettes,
-  [StoreNames.PLUGINS]: plugins,
+export const tableByStoreName: Record<ItemStoreNames, SQLiteTable | null> = {
+  [ItemStoreNames.BINARYFRAMES]: binaryFrames,
+  [ItemStoreNames.BINARYIMAGES]: binaryImages,
+  [ItemStoreNames.FRAMES]: frames,
+  [ItemStoreNames.FRAMEGROUPS]: frameGroups,
+  [ItemStoreNames.IMAGEGROUPS]: imageGroups,
+  [ItemStoreNames.IMAGES]: images,
+  [ItemStoreNames.PALETTES]: palettes,
+  [ItemStoreNames.PLUGINS]: plugins,
 };

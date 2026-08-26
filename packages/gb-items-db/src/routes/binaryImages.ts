@@ -6,6 +6,7 @@ import {
   type UpdateBinaryItemsParams,
   type DeleteBinaryItemsByHashesParams,
   type BinaryStoreItem,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import { EndpointUrls } from '@/endpointUrls';
 
@@ -18,11 +19,11 @@ const binaryImagesRoutes: FastifyPluginAsync = async (app) => {
     return app.itemsSource.getBinaryImageHashes();
   });
 
-  app.post(EndpointUrls.POST_BINARYIMAGES_UPDATE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_BINARYIMAGES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.updateBinaryImages(request.body as UpdateBinaryItemsParams);
   });
 
-  app.post(EndpointUrls.POST_BINARYIMAGES_DELETE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_BINARYIMAGES_DELETE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.deleteBinaryImagesByHashes(request.body as DeleteBinaryItemsByHashesParams);
   });
 };

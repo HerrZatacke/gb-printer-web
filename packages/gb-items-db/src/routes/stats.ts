@@ -1,5 +1,6 @@
 import { type FastifyPluginAsync } from 'fastify';
 import {
+  type ItemsMutationReponse,
   type ItemsStatsResponse,
   type ItemsUsageReponse,
 } from 'gb-printer-schemas';
@@ -14,7 +15,7 @@ const imagesRoutes: FastifyPluginAsync = async (app) => {
     return app.itemsSource.getStats();
   });
 
-  app.get(EndpointUrls.GET_MAINTENANCE, async (): Promise<void> => {
+  app.get(EndpointUrls.GET_MAINTENANCE, async (): Promise<ItemsMutationReponse> => {
     return app.itemsSource.runMaintenance();
   });
 

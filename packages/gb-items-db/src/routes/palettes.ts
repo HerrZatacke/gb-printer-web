@@ -6,6 +6,7 @@ import {
   type GetPalettesByShortNamesParams,
   type UpdatePalettesParams,
   type ItemsSourceResponse,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import { EndpointUrls } from '@/endpointUrls';
 
@@ -18,11 +19,11 @@ const palettesRoutes: FastifyPluginAsync = async (app) => {
     return app.itemsSource.getPalettesByShortNames(request.body as GetPalettesByShortNamesParams);
   });
 
-  app.post(EndpointUrls.POST_PALETTES_UPDATE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_PALETTES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.updatePalettes(request.body as UpdatePalettesParams);
   });
 
-  app.post(EndpointUrls.POST_PALETTES_DELETE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_PALETTES_DELETE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.deletePalettesByShortNames(request.body as DeletePalettesByShortNamesParams);
   });
 };

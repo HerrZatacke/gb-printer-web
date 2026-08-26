@@ -6,6 +6,7 @@ import {
   type ItemsSourceResponse,
   type GetPluginsByUrlsParams,
   type DeletePluginsByUrlsParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import { EndpointUrls } from '@/endpointUrls';
 
@@ -18,11 +19,11 @@ const pluginsRoutes: FastifyPluginAsync = async (app) => {
     return app.itemsSource.getPluginsByUrls(request.body as GetPluginsByUrlsParams);
   });
 
-  app.post(EndpointUrls.POST_PLUGINS_UPDATE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_PLUGINS_UPDATE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.updatePlugins(request.body as UpdatePluginsParams);
   });
 
-  app.post(EndpointUrls.POST_PLUGINS_DELETE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_PLUGINS_DELETE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.deletePluginsByUrls(request.body as DeletePluginsByUrlsParams);
   });
 };

@@ -10,17 +10,18 @@ import {
   binaryImagesConfig,
   binaryFramesConfig,
 } from 'gb-items-source';
+import { ItemStoreNames } from 'gb-printer-schemas';
 import { createDrizzleRepository, createIndexedDrizzleRepository } from '@/repository/createDrizzleRepository ';
 
 export const createRepositories = (
   db: BetterSQLite3Database,
 ): Repositories => ({
-  images: createIndexedDrizzleRepository(db, imagesConfig),
-  frames: createIndexedDrizzleRepository(db, framesConfig),
-  frameGroups: createDrizzleRepository(db, frameGroupsConfig),
-  imageGroups: createDrizzleRepository(db, imageGroupsConfig),
-  palettes: createDrizzleRepository(db, palettesConfig),
-  plugins: createDrizzleRepository(db, pluginsConfig),
-  binaryImages: createDrizzleRepository(db, binaryImagesConfig),
-  binaryFrames: createDrizzleRepository(db, binaryFramesConfig),
+  [ItemStoreNames.IMAGES]: createIndexedDrizzleRepository(db, imagesConfig),
+  [ItemStoreNames.FRAMES]: createIndexedDrizzleRepository(db, framesConfig),
+  [ItemStoreNames.FRAMEGROUPS]: createDrizzleRepository(db, frameGroupsConfig),
+  [ItemStoreNames.IMAGEGROUPS]: createDrizzleRepository(db, imageGroupsConfig),
+  [ItemStoreNames.PALETTES]: createDrizzleRepository(db, palettesConfig),
+  [ItemStoreNames.PLUGINS]: createDrizzleRepository(db, pluginsConfig),
+  [ItemStoreNames.BINARYIMAGES]: createDrizzleRepository(db, binaryImagesConfig),
+  [ItemStoreNames.BINARYFRAMES]: createDrizzleRepository(db, binaryFramesConfig),
 });

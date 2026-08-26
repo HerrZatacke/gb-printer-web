@@ -6,6 +6,7 @@ import {
   type RootItemSourceResponse,
   type DeleteImageGroupsByIdsParams,
   type UpdateImageGroupsParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import { EndpointUrls } from '@/endpointUrls';
 
@@ -18,11 +19,11 @@ const imageGroupsRoutes: FastifyPluginAsync = async (app) => {
     return app.itemsSource.getImageGroupsFullTree();
   });
 
-  app.post(EndpointUrls.POST_IMAGEGROUPS_UPDATE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_IMAGEGROUPS_UPDATE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.updateImageGroups(request.body as UpdateImageGroupsParams);
   });
 
-  app.post(EndpointUrls.POST_IMAGEGROUPS_DELETE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_IMAGEGROUPS_DELETE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.deleteImageGroupsByIds(request.body as DeleteImageGroupsByIdsParams);
   });
 

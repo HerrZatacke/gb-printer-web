@@ -6,6 +6,7 @@ import {
   type GetFramesByIdsParams,
   type UpdateFramesParams,
   type DeleteFramesByIdsParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import { EndpointUrls } from '@/endpointUrls';
 
@@ -22,11 +23,11 @@ const framesRoutes: FastifyPluginAsync = async (app) => {
     return app.itemsSource.getFramesByIds(request.body as GetFramesByIdsParams);
   });
 
-  app.post(EndpointUrls.POST_FRAMES_UPDATE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_FRAMES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.updateFrames(request.body as UpdateFramesParams);
   });
 
-  app.post(EndpointUrls.POST_FRAMES_DELETE, async (request): Promise<void> => {
+  app.post(EndpointUrls.POST_FRAMES_DELETE, async (request): Promise<ItemsMutationReponse> => {
     return app.itemsSource.deleteFramesByIds(request.body as DeleteFramesByIdsParams);
   });
 };

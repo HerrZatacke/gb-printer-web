@@ -2,9 +2,7 @@ import {
   SQLiteColumn,
   type SQLiteTable,
 } from 'drizzle-orm/sqlite-core';
-import  {
-  StoreNames,
-} from 'gb-items-source';
+import { ItemStoreNames } from 'gb-printer-schemas';
 import {
   imageReferences,
   imageTags,
@@ -23,8 +21,8 @@ export interface WithColumns {
   valueColumn: SQLiteColumn;
 }
 
-export const indexesByStoreName: Partial<Record<StoreNames, Record<string, IndexDefinition>>> = {
-  [StoreNames.IMAGES]: {
+export const indexesByStoreName: Partial<Record<ItemStoreNames, Record<string, IndexDefinition>>> = {
+  [ItemStoreNames.IMAGES]: {
     tags: {
       indexTable: imageTags,
       sourceFieldName: 'tags',
@@ -38,7 +36,7 @@ export const indexesByStoreName: Partial<Record<StoreNames, Record<string, Index
       valueFieldName: 'referencedHash',
     },
   },
-  [StoreNames.FRAMES]: {
+  [ItemStoreNames.FRAMES]: {
     hash: {
       indexTable: frames, // frames has just an extra index. No "external" index table for lookups.
       sourceFieldName: 'hash',
