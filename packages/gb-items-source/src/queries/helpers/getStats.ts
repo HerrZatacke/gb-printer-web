@@ -20,14 +20,14 @@ export async function getStats(this: ItemsSourceInternal): Promise<ItemsStatsRes
     binaryImages,
     binaryFrames,
   ] = await Promise.all([
-    repositories.frameGroups.count(),
+    repositories.framegroups.count(),
     repositories.frames.count(),
-    repositories.imageGroups.count(),
+    repositories.imagegroups.count(),
     repositories.images.count(),
     repositories.palettes.count(),
     repositories.plugins.count(),
-    repositories.binaryImages.count(),
-    repositories.binaryFrames.count(),
+    repositories.binaryimages.count(),
+    repositories.binaryframes.count(),
   ]);
 
   const duration = performance.now() - startTime;

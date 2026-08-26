@@ -66,13 +66,13 @@ const runPass = async (
     const { group: sanitized, didChange } = sanitizeGroup(group, validImageHashes, validGroupIds);
 
     if (isEmptyGroup(sanitized)) {
-      await repositories.imageGroups.deleteByKeys([sanitized.id]);
+      await repositories.imagegroups.deleteByKeys([sanitized.id]);
       hasDeletedAny = true;
       continue;
     }
 
     if (didChange) {
-      await repositories.imageGroups.put([
+      await repositories.imagegroups.put([
         {
           key: sanitized.id,
           value: sanitized,
@@ -89,7 +89,7 @@ export const reconcileImageGroups = async (
 ): Promise<void> => {
   const startPasses = performance.now();
   const validImageHashes = new Set(await repositories.images.getAllKeys());
-  const groups = await repositories.imageGroups.getAll();
+  const groups = await repositories.imagegroups.getAll();
 
   let pass = 0;
   for (; pass < MAX_PASSES; pass += 1) {

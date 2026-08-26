@@ -1,7 +1,8 @@
-import { type RepositoryEntry, StoreNames } from '@/types';
+import { ItemStoreNames } from 'gb-printer-schemas';
+import { type RepositoryEntry } from '@/types';
 
 export interface EntityConfig<TValue, TKey extends string = string> {
-  storeName: StoreNames;
+  storeName: ItemStoreNames;
   // true for keyPath stores (images, frames, imagegroups, palettes, plugins,
   // framegroups) where idb reads the key off the value itself.
   // false for out-of-line-key stores (binaryimages, binaryframes)

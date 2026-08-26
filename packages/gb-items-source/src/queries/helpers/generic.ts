@@ -1,4 +1,9 @@
-import { type ItemsSourceResponse, type ItemsSourceTotalResponse } from 'gb-printer-schemas';
+import {
+  type ItemsSourceResponse,
+  type ItemsSourceTotalResponse,
+  type ItemsInvalidation,
+  type ItemsMutationReponse,
+} from 'gb-printer-schemas';
 import { type ZodType } from 'zod';
 
 export const getAddPaging = <T>(
@@ -41,6 +46,17 @@ export const getAddTotal = <T>(
   return {
     items: parsedItems,
     total,
+    duration: performance.now() - startTime,
+  };
+};
+
+export const getMutationReponse = (
+  startTime: number,
+) => (
+  invalidations: ItemsInvalidation[],
+): ItemsMutationReponse => {
+  return {
+    invalidations,
     duration: performance.now() - startTime,
   };
 };

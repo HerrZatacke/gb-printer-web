@@ -1,4 +1,5 @@
 import z from 'zod';
+import { ItemStoreNames } from '@/schemas/api/consts';
 import { ItemsReferenceListSchema } from '@/schemas/items/ItemsReferenceList';
 
 export interface ItemsSourcePaging {
@@ -62,5 +63,15 @@ export interface ItemsUsageTotals {
 
 export interface ItemsUsageReponse {
   totals: ItemsUsageTotals;
+  duration: number;
+}
+
+export interface ItemsInvalidation {
+  collection: ItemStoreNames;
+  identifier?: string;
+}
+
+export interface ItemsMutationReponse {
+  invalidations: ItemsInvalidation[];
   duration: number;
 }

@@ -7,9 +7,10 @@ import {
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
   type UpdatePalettesParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { getAddPaging, getAddTotal, getMutationReponse } from '@/queries/helpers/generic';
 import { type ItemsSourceInternal } from '@/types';
 
 
@@ -62,7 +63,8 @@ export async function getPalettes(this: ItemsSourceInternal): Promise<ItemsSourc
   return addPaging(withPredefined);
 }
 
-export async function updatePalettes(this: ItemsSourceInternal, { palettes, purge }: UpdatePalettesParams): Promise<void> {
+export async function updatePalettes(this: ItemsSourceInternal, { palettes, purge }: UpdatePalettesParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const { palettes: repository } = this.repositories;
   const predefinedPaletteShortNames = new Set(predefinedPalettes.map(({ shortName }) => shortName));
 
@@ -80,9 +82,12 @@ export async function updatePalettes(this: ItemsSourceInternal, { palettes, purg
       value: palette,
     })),
   );
+  return mutationReponse([]);
 }
 
-export async function deletePalettesByShortNames(this: ItemsSourceInternal, { shortNames }: DeletePalettesByShortNamesParams): Promise<void> {
+export async function deletePalettesByShortNames(this: ItemsSourceInternal, { shortNames }: DeletePalettesByShortNamesParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const { palettes: repository } = this.repositories;
   await repository.deleteByKeys(shortNames);
+  return mutationReponse([]);
 }
