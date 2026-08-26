@@ -20,11 +20,12 @@ import {
   type StoredImage,
   type UpdateImagesParams,
   type TreeImageGroup,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import z from 'zod';
 import { startMaintenanceTasks } from '@/maintenance';
 import { facetFromImage, getFacetMatcher } from '@/queries/filters';
-import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { getAddPaging, getAddTotal, getMutationReponse } from '@/queries/helpers/generic';
 import { resolveAndFilterImages } from '@/queries/helpers/resolveAndFilterImages';
 import { resolveGroupItemsByGroupId } from '@/queries/helpers/resolveGroupItemsByGroupId';
 import sortBy from '@/temptools/sortby';
@@ -177,7 +178,8 @@ export async function getAllTags(this: ItemsSourceInternal): Promise<ItemsSource
   return addPaging(uniqueTags);
 }
 
-export async function updateImages(this: ItemsSourceInternal, { images, purge }: UpdateImagesParams): Promise<void> {
+export async function updateImages(this: ItemsSourceInternal, { images, purge }: UpdateImagesParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const parsedImages = z.array(StoredImageSchema).parse(images);
   const { images: repository } = this.repositories;
 
@@ -193,11 +195,14 @@ export async function updateImages(this: ItemsSourceInternal, { images, purge }:
   );
 
   await startMaintenanceTasks(this.repositories);
+  return mutationReponse([]);
 }
 
-export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }: DeleteImagesByHashesParams): Promise<void> {
+export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }: DeleteImagesByHashesParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const { images: repository } = this.repositories;
   await repository.deleteByKeys(hashes);
 
   await startMaintenanceTasks(this.repositories);
+  return mutationReponse([]);
 }

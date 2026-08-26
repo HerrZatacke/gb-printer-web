@@ -9,6 +9,7 @@ import {
   binaryImagesConfig,
   binaryFramesConfig,
 } from 'gb-items-source';
+import { ItemStoreNames } from 'gb-printer-schemas';
 import { type IDBPDatabase } from 'idb';
 import {
   createIdbRepository,
@@ -17,12 +18,12 @@ import {
 import { type ItemsDB } from '@/workers/itemsIndexedDbWorker/types';
 
 export const createRepositories = (db: IDBPDatabase<ItemsDB>): Repositories => ({
-  images: createIndexedIdbRepository(db, imagesConfig),
-  frames: createIndexedIdbRepository(db, framesConfig),
-  frameGroups: createIdbRepository(db, frameGroupsConfig),
-  imageGroups: createIdbRepository(db, imageGroupsConfig),
-  palettes: createIdbRepository(db, palettesConfig),
-  plugins: createIdbRepository(db, pluginsConfig),
-  binaryImages: createIdbRepository(db, binaryImagesConfig),
-  binaryFrames: createIdbRepository(db, binaryFramesConfig),
+  [ItemStoreNames.IMAGES]: createIndexedIdbRepository(db, imagesConfig),
+  [ItemStoreNames.FRAMES]: createIndexedIdbRepository(db, framesConfig),
+  [ItemStoreNames.FRAMEGROUPS]: createIdbRepository(db, frameGroupsConfig),
+  [ItemStoreNames.IMAGEGROUPS]: createIdbRepository(db, imageGroupsConfig),
+  [ItemStoreNames.PALETTES]: createIdbRepository(db, palettesConfig),
+  [ItemStoreNames.PLUGINS]: createIdbRepository(db, pluginsConfig),
+  [ItemStoreNames.BINARYIMAGES]: createIdbRepository(db, binaryImagesConfig),
+  [ItemStoreNames.BINARYFRAMES]: createIdbRepository(db, binaryFramesConfig),
 });

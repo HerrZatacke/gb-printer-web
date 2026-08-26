@@ -30,7 +30,7 @@ Connectez-vous directement aux périphériques de projets communautaires en util
 Connectez un émulateur d'imprimante via WebSerial pour imprimer depuis votre Game Boy Camera directement vers l'application web :
 - [arduino-gameboy-printer-emulator](https://github.com/mofosyne/arduino-gameboy-printer-emulator) – Émulateur basé sur Arduino par mofosyne
 - [pico-gb-printer](https://github.com/untoxa/pico-gb-printer/) – Implémentation Raspberry Pi Pico par untoxa
-- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Implémentation Arduino Nano par Rafael Zenaro
+- [NeoGB-Printer](https://github.com/zenaror/NeoGB-Printer) – Implémentation ESP32 par Rafael Zenaro
 - [wifi-gbp-emulator](https://github.com/HerrZatacke/wifi-gbp-emulator) – Émulateur WiFi ESP8266 avec serveur web intégré qui peut héberger cette webapp
 
 ## [Import](/import)

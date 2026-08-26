@@ -1,4 +1,5 @@
 import {
+  ItemStoreNames,
   type BinaryStoreItem,
   type DeleteBinaryItemsByHashesParams,
   type DeleteFrameGroupsByIdsParams,
@@ -21,6 +22,7 @@ import {
   type GetPluginsByUrlsParams,
   type GroupItem,
   type Image,
+  type ItemsMutationReponse,
   type ItemsReferenceList,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
@@ -44,7 +46,7 @@ import {
 } from 'gb-printer-schemas';
 
 export interface ItemsSource {
-  runMaintenance(): Promise<void>;
+  runMaintenance(): Promise<ItemsMutationReponse>;
   getStats(): Promise<ItemsStatsResponse>;
   getUsages(): Promise<ItemsUsageReponse>;
 
@@ -54,43 +56,43 @@ export interface ItemsSource {
   getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(params: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByAnyHashes(params: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
-  updateImages(params: UpdateImagesParams): Promise<void>;
-  deleteImagesByHashes(params: DeleteImagesByHashesParams): Promise<void>;
+  updateImages(params: UpdateImagesParams): Promise<ItemsMutationReponse>;
+  deleteImagesByHashes(params: DeleteImagesByHashesParams): Promise<ItemsMutationReponse>;
 
   getImageGroupsFullTree(): Promise<RootItemSourceResponse<TreeImageGroup>>;
   getImageGroupsList(): Promise<ItemsSourceTotalResponse<SerializableImageGroup>>;
-  updateImageGroups(params: UpdateImageGroupsParams): Promise<void>;
-  deleteImageGroupsByIds(params: DeleteImageGroupsByIdsParams): Promise<void>;
+  updateImageGroups(params: UpdateImageGroupsParams): Promise<ItemsMutationReponse>;
+  deleteImageGroupsByIds(params: DeleteImageGroupsByIdsParams): Promise<ItemsMutationReponse>;
 
   getFrames(): Promise<ItemsSourceTotalResponse<Frame>>;
   getFramesByHashes(params: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>>;
   getFramesByIds(params: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>>;
-  updateFrames(params: UpdateFramesParams): Promise<void>;
-  deleteFramesByIds(params: DeleteFramesByIdsParams): Promise<void>;
+  updateFrames(params: UpdateFramesParams): Promise<ItemsMutationReponse>;
+  deleteFramesByIds(params: DeleteFramesByIdsParams): Promise<ItemsMutationReponse>;
 
   getFrameGroups(): Promise<ItemsSourceTotalResponse<FrameGroup>>;
-  updateFrameGroups(params: UpdateFrameGroupsParams): Promise<void>;
-  deleteFrameGroupsByIds(params: DeleteFrameGroupsByIdsParams): Promise<void>;
+  updateFrameGroups(params: UpdateFrameGroupsParams): Promise<ItemsMutationReponse>;
+  deleteFrameGroupsByIds(params: DeleteFrameGroupsByIdsParams): Promise<ItemsMutationReponse>;
 
   getPalettes() : Promise<ItemsSourceTotalResponse<Palette>>;
   getPalettesByShortNames(params: GetPalettesByShortNamesParams) : Promise<ItemsSourceResponse<Palette>>;
-  updatePalettes(params: UpdatePalettesParams): Promise<void>;
-  deletePalettesByShortNames(params: DeletePalettesByShortNamesParams): Promise<void>;
+  updatePalettes(params: UpdatePalettesParams): Promise<ItemsMutationReponse>;
+  deletePalettesByShortNames(params: DeletePalettesByShortNamesParams): Promise<ItemsMutationReponse>;
 
   getPlugins(): Promise<ItemsSourceTotalResponse<Plugin>>;
   getPluginsByUrls(params: GetPluginsByUrlsParams): Promise<ItemsSourceResponse<Plugin>>;
-  updatePlugins(params: UpdatePluginsParams): Promise<void>;
-  deletePluginsByUrls(params: DeletePluginsByUrlsParams): Promise<void>;
+  updatePlugins(params: UpdatePluginsParams): Promise<ItemsMutationReponse>;
+  deletePluginsByUrls(params: DeletePluginsByUrlsParams): Promise<ItemsMutationReponse>;
 
   getBinaryImagesByHashes(params: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getBinaryImageHashes(): Promise<ItemsSourceTotalResponse<string>>;
-  updateBinaryImages(params: UpdateBinaryItemsParams): Promise<void>;
-  deleteBinaryImagesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<void>;
+  updateBinaryImages(params: UpdateBinaryItemsParams): Promise<ItemsMutationReponse>;
+  deleteBinaryImagesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<ItemsMutationReponse>;
 
   getBinaryFramesByHashes(params: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getBinaryFrameHashes(): Promise<ItemsSourceTotalResponse<string>>;
-  updateBinaryFrames(params: UpdateBinaryItemsParams): Promise<void>;
-  deleteBinaryFramesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<void>;
+  updateBinaryFrames(params: UpdateBinaryItemsParams): Promise<ItemsMutationReponse>;
+  deleteBinaryFramesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<ItemsMutationReponse>;
 }
 
 export interface FilterableFacet {
@@ -99,18 +101,6 @@ export interface FilterableFacet {
   palettes: string[];
   frames: string[];
 }
-
-export const StoreNames = {
-  IMAGES: 'images',
-  FRAMES: 'frames',
-  FRAMEGROUPS: 'framegroups',
-  IMAGEGROUPS: 'imagegroups',
-  PALETTES: 'palettes',
-  PLUGINS: 'plugins',
-  BINARYIMAGES: 'binaryimages',
-  BINARYFRAMES: 'binaryframes',
-} as const;
-export type StoreNames = (typeof StoreNames)[keyof typeof StoreNames];
 
 export interface RepositoryEntry<TValue, TKey extends string = string> {
   key: TKey;
@@ -135,15 +125,15 @@ export interface IndexedItemRepository<TValue, TKey extends string = string>
   getDistinctIndexValues(indexName: string): Promise<string[]>;
 }
 
-export interface Repositories {
-  images: IndexedItemRepository<StoredImage>;
-  frames: IndexedItemRepository<Frame>;
-  frameGroups: ItemRepository<FrameGroup>;
-  imageGroups: ItemRepository<StoredSerializableImageGroup>;
-  palettes: ItemRepository<Palette>;
-  plugins: ItemRepository<Plugin>;
-  binaryImages: ItemRepository<string>;
-  binaryFrames: ItemRepository<string>;
+export type Repositories = {
+  [ItemStoreNames.IMAGES]: IndexedItemRepository<StoredImage>;
+  [ItemStoreNames.FRAMES]: IndexedItemRepository<Frame>;
+  [ItemStoreNames.FRAMEGROUPS]: ItemRepository<FrameGroup>;
+  [ItemStoreNames.IMAGEGROUPS]: ItemRepository<StoredSerializableImageGroup>;
+  [ItemStoreNames.PALETTES]: ItemRepository<Palette>;
+  [ItemStoreNames.PLUGINS]: ItemRepository<Plugin>;
+  [ItemStoreNames.BINARYIMAGES]: ItemRepository<string>;
+  [ItemStoreNames.BINARYFRAMES]: ItemRepository<string>;
 }
 
 export interface WithRepositories {

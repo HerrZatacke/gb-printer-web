@@ -1,16 +1,21 @@
 import {
+  ItemStoreNames,
   type BinaryStoreItem,
   type DeleteBinaryItemsByHashesParams,
   type GetBinaryItemsByHashesParams,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
   type UpdateBinaryItemsParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import z, { type ZodType } from 'zod';
-import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { getAddPaging, getAddTotal, getMutationReponse } from '@/queries/helpers/generic';
 import { type ItemsSourceInternal } from '@/types';
 
-export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binaryFrames', schema: ZodType<BinaryStoreItem>) => {
+export const createBinaryStoreQueries = (
+  repositoryKey: typeof ItemStoreNames.BINARYIMAGES | typeof ItemStoreNames.BINARYFRAMES,
+  schema: ZodType<BinaryStoreItem>,
+) => {
   async function getByHashes(this: ItemsSourceInternal, { hashes }: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>> {
     const { [repositoryKey]: repository } = this.repositories;
     const start = performance.now();
@@ -46,18 +51,28 @@ export const createBinaryStoreQueries = (repositoryKey: 'binaryImages' | 'binary
     return addPaging(hashes);
   }
 
-  async function update(this: ItemsSourceInternal, { items }: UpdateBinaryItemsParams): Promise<void> {
+  async function update(this: ItemsSourceInternal, { items }: UpdateBinaryItemsParams): Promise<ItemsMutationReponse> {
+    const mutationReponse = getMutationReponse(performance.now());
     const parsedItems = z.array(schema).parse(items);
     const { [repositoryKey]: repository } = this.repositories;
 
     await repository.put(
       parsedItems.map((parsedItem) => ({ key: parsedItem.hash, value: parsedItem.data })),
     );
+
+    return mutationReponse([{
+      collection: repositoryKey,
+    }]);
   }
 
-  async function deleteByHashes(this: ItemsSourceInternal, { hashes }: DeleteBinaryItemsByHashesParams): Promise<void> {
+  async function deleteByHashes(this: ItemsSourceInternal, { hashes }: DeleteBinaryItemsByHashesParams): Promise<ItemsMutationReponse> {
+    const mutationReponse = getMutationReponse(performance.now());
     const { [repositoryKey]: repository } = this.repositories;
     await repository.deleteByKeys(hashes);
+
+    return mutationReponse([{
+      collection: repositoryKey,
+    }]);
   }
 
   return { getByHashes, getHashes, update, deleteByHashes };

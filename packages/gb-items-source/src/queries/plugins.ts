@@ -6,9 +6,10 @@ import {
   type ItemsSourceTotalResponse,
   type Plugin,
   type UpdatePluginsParams,
+  type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import z from 'zod';
-import { getAddPaging, getAddTotal } from '@/queries/helpers/generic';
+import { getAddPaging, getAddTotal, getMutationReponse } from '@/queries/helpers/generic';
 import { type ItemsSourceInternal } from '@/types';
 
 export async function getPlugins(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<Plugin>> {
@@ -39,7 +40,8 @@ export async function getPluginsByUrls(this: ItemsSourceInternal, { urls }: GetP
   return addPaging(filteredPlugins);
 }
 
-export async function updatePlugins(this: ItemsSourceInternal, { plugins, purge }: UpdatePluginsParams): Promise<void> {
+export async function updatePlugins(this: ItemsSourceInternal, { plugins, purge }: UpdatePluginsParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const parsedPlugins = z.array(PluginSchema).parse(plugins);
   const { plugins: repository } = this.repositories;
 
@@ -53,9 +55,12 @@ export async function updatePlugins(this: ItemsSourceInternal, { plugins, purge 
       value: plugin,
     })),
   );
+  return mutationReponse([]);
 }
 
-export async function deletePluginsByUrls(this: ItemsSourceInternal, { urls }: DeletePluginsByUrlsParams): Promise<void> {
+export async function deletePluginsByUrls(this: ItemsSourceInternal, { urls }: DeletePluginsByUrlsParams): Promise<ItemsMutationReponse> {
+  const mutationReponse = getMutationReponse(performance.now());
   const { plugins: repository } = this.repositories;
   await repository.deleteByKeys(urls);
+  return mutationReponse([]);
 }

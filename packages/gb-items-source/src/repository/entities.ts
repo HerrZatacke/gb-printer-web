@@ -1,4 +1,5 @@
 import {
+  ItemStoreNames,
   type Frame,
   type FrameGroup,
   type Palette,
@@ -7,51 +8,50 @@ import {
   type StoredSerializableImageGroup,
 } from 'gb-printer-schemas';
 import { type EntityConfig } from '@/repository/entityConfig';
-import { StoreNames } from '@/types';
 
 export const imagesConfig: EntityConfig<StoredImage> = {
-  storeName: StoreNames.IMAGES,
+  storeName: ItemStoreNames.IMAGES,
   hasKeyPath: true,
   keyOf: (image) => image.hash,
 };
 
 export const framesConfig: EntityConfig<Frame> = {
-  storeName: StoreNames.FRAMES,
+  storeName: ItemStoreNames.FRAMES,
   hasKeyPath: true,
   keyOf: (frame) => frame.id,
 };
 
 export const frameGroupsConfig: EntityConfig<FrameGroup> = {
-  storeName: StoreNames.FRAMEGROUPS,
+  storeName: ItemStoreNames.FRAMEGROUPS,
   hasKeyPath: true,
   keyOf: (frameGroup) => frameGroup.id,
 };
 
 export const imageGroupsConfig: EntityConfig<StoredSerializableImageGroup> = {
-  storeName: StoreNames.IMAGEGROUPS,
+  storeName: ItemStoreNames.IMAGEGROUPS,
   hasKeyPath: true,
   keyOf: (imageGroup) => imageGroup.id,
 };
 
 export const palettesConfig: EntityConfig<Palette> = {
-  storeName: StoreNames.PALETTES,
+  storeName: ItemStoreNames.PALETTES,
   hasKeyPath: true,
   keyOf: (palette) => palette.shortName,
 };
 
 export const pluginsConfig: EntityConfig<Plugin> = {
-  storeName: StoreNames.PLUGINS,
+  storeName: ItemStoreNames.PLUGINS,
   hasKeyPath: true,
   keyOf: (plugin) => plugin.url,
 };
 
 export const binaryImagesConfig: EntityConfig<string> = {
-  storeName: StoreNames.BINARYIMAGES,
+  storeName: ItemStoreNames.BINARYIMAGES,
   hasKeyPath: false,
 };
 
 export const binaryFramesConfig: EntityConfig<string> = {
-  storeName: StoreNames.BINARYFRAMES,
+  storeName: ItemStoreNames.BINARYFRAMES,
   hasKeyPath: false,
 };
 

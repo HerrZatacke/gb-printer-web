@@ -40,3 +40,15 @@ export const ImageSortField = {
 } as const;
 export const ImageSortFieldSchema = z.enum(ImageSortField);
 export type ImageSortField = z.infer<typeof ImageSortFieldSchema>;
+
+export const ItemStoreNames = {
+  IMAGES: 'images',
+  FRAMES: 'frames',
+  FRAMEGROUPS: 'framegroups',
+  IMAGEGROUPS: 'imagegroups',
+  PALETTES: 'palettes',
+  PLUGINS: 'plugins',
+  BINARYIMAGES: 'binaryimages',
+  BINARYFRAMES: 'binaryframes',
+} as const;
+export type ItemStoreNames = (typeof ItemStoreNames)[keyof typeof ItemStoreNames];

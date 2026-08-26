@@ -125,7 +125,6 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
     hash,
     invertFramePalette,
     invertPalette,
-    loadImageTiles,
     lockFrame,
     overrides,
     usedFramePalette,
