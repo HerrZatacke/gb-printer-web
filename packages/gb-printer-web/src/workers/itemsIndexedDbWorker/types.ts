@@ -7,7 +7,7 @@ import {
   type Plugin,
   type SpecialTags,
   type StoredImage,
-  type StoredSerializableImageGroup,
+  type StoredSerializableImageGroup, type ItemsInvalidation,
 } from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
 
@@ -72,4 +72,6 @@ export interface FilterableFacet {
   frames: string[];
 }
 
-export type InitWorkerFn = (hostApi: ItemsHostApi, withDebug?: boolean) => Promise<ItemsSource>;
+export type RunInvalidationsFn = (invalidations: ItemsInvalidation[]) => Promise<void>;
+
+export type InitWorkerFn = (hostApi: ItemsHostApi, runInvalidations: RunInvalidationsFn, withDebug?: boolean) => Promise<ItemsSource>;

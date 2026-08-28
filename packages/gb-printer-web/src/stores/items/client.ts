@@ -3,7 +3,6 @@ import * as Comlink from 'comlink';
 import { ItemsSource } from 'gb-items-source';
 import {
   ItemStoreNames,
-  type ItemsMutationReponse,
   type ItemsInvalidation,
 } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
@@ -22,82 +21,60 @@ import unique from '@/tools/unique';
 import {
   type InitWorkerFn,
   type ItemsHostApi,
+  type RunInvalidationsFn,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 declare global {
   var __itemsSourcePromise: Promise<ItemsSource> | undefined;
 }
 
-const runInvalidations = async (invalidations: ItemsInvalidation[]) => {
+const runInvalidations: RunInvalidationsFn = async (invalidations: ItemsInvalidation[]): Promise<void> => {
   const keys = unique<ItemStoreNames>(invalidations.map(({ collection }): ItemStoreNames => collection));
   const queryClient = getQueryClient();
-  return keys.map(async (key: ItemStoreNames): Promise<void | void[]> => {
-    switch (key) {
-      case ItemStoreNames.IMAGES: {
-        return queryClient.resetQueries({ queryKey: imagesKeys.all });
-      }
 
-      case ItemStoreNames.FRAMES: {
-        return queryClient.invalidateQueries({ queryKey: framesKeys.all });
-      }
-
-      case ItemStoreNames.FRAMEGROUPS: {
-        return queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
-      }
-
-      case ItemStoreNames.IMAGEGROUPS: {
-        return Promise.all([
-          queryClient.resetQueries({ queryKey: imagesKeys.imagesByGroupKeys }),
-          queryClient.resetQueries({ queryKey: imageGroupsKeys.all }),
-        ]);
-      }
-
-      case ItemStoreNames.PALETTES: {
-        return queryClient.invalidateQueries({ queryKey: palettesKeys.all });
-      }
-
-      case ItemStoreNames.PLUGINS: {
-        return queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
-      }
-
-      case ItemStoreNames.BINARYIMAGES: {
-        return queryClient.invalidateQueries({ queryKey: binaryImagesKeys.all });
-      }
-
-      case ItemStoreNames.BINARYFRAMES: {
-        return queryClient.invalidateQueries({ queryKey: binaryFramesKeys.all });
-      }
-
-      default:
-        console.info(`unknown invalidation: "${key}"`);
-    }
-  });
-};
-
-const isMutationResult = (result: unknown): result is ItemsMutationReponse => {
-  return typeof result === 'object' && result !== null && Array.isArray((result as { invalidations: unknown }).invalidations);
-};
-
-const withInvalidationDispatch = (source: ItemsSource): ItemsSource => {
-  return new Proxy(source, {
-    get(target, prop, receiver) {
-      const value = Reflect.get(target, prop, receiver);
-
-      if (typeof value !== 'function') {
-        return value;
-      }
-
-      return async (...args: unknown[]) => {
-        const result = await value.apply(target, args);
-
-        if (isMutationResult(result)) {
-          void runInvalidations(result.invalidations);
+  await Promise.all(
+    keys.map(async (key: ItemStoreNames): Promise<void | void[]> => {
+      switch (key) {
+        case ItemStoreNames.IMAGES: {
+          return queryClient.resetQueries({ queryKey: imagesKeys.all });
         }
 
-        return result;
-      };
-    },
-  });
+        case ItemStoreNames.FRAMES: {
+          return queryClient.invalidateQueries({ queryKey: framesKeys.all });
+        }
+
+        case ItemStoreNames.FRAMEGROUPS: {
+          return queryClient.invalidateQueries({ queryKey: frameGroupsKeys.all });
+        }
+
+        case ItemStoreNames.IMAGEGROUPS: {
+          return Promise.all([
+            queryClient.resetQueries({ queryKey: imagesKeys.imagesByGroupKeys }),
+            queryClient.resetQueries({ queryKey: imageGroupsKeys.all }),
+          ]);
+        }
+
+        case ItemStoreNames.PALETTES: {
+          return queryClient.invalidateQueries({ queryKey: palettesKeys.all });
+        }
+
+        case ItemStoreNames.PLUGINS: {
+          return queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
+        }
+
+        case ItemStoreNames.BINARYIMAGES: {
+          return queryClient.invalidateQueries({ queryKey: binaryImagesKeys.all });
+        }
+
+        case ItemStoreNames.BINARYFRAMES: {
+          return queryClient.invalidateQueries({ queryKey: binaryFramesKeys.all });
+        }
+
+        default:
+          console.info(`unknown invalidation: "${key}"`);
+      }
+    }),
+  );
 };
 
 export const getItemsSource = async (): Promise<ItemsSource> => {
@@ -126,8 +103,11 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
 
       const debug = false;
 
-      const instance = await initWorker(Comlink.proxy(hostApi), debug);
-      return withInvalidationDispatch(instance);
+      return initWorker(
+        Comlink.proxy(hostApi),
+        Comlink.proxy(runInvalidations),
+        debug,
+      );
     })().catch((err) => {
       globalThis.__itemsSourcePromise = undefined;
       throw err;

@@ -11,10 +11,10 @@ import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
 import { runMaintenanceAction } from '@/stores/items/queries/global';
+import { updateImagesAction } from '@/stores/items/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
-import { updateImagesAction } from '@/stores/items/queries/images';
 
 function Index() {
   const [shouldRender, setShouldRender] = useState(false);
@@ -42,7 +42,7 @@ function Index() {
   }, [enableDebug]);
 
   const dummyImageUpdate = useCallback(async () => {
-    const result = await updateImagesAction(queryClient, [], false);
+    await updateImagesAction(queryClient, [], false);
   }, [queryClient]);
 
   const createSubGroup = useCallback(async () => {
