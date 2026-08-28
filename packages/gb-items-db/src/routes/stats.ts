@@ -6,7 +6,7 @@ import {
 } from 'gb-printer-schemas';
 import { EndpointUrls } from '@/endpointUrls';
 
-const imagesRoutes: FastifyPluginAsync = async (app) => {
+const statsRoutes: FastifyPluginAsync = async (app) => {
   app.get(EndpointUrls.GET_HEALTH, () => {
     return 'ok';
   });
@@ -15,8 +15,10 @@ const imagesRoutes: FastifyPluginAsync = async (app) => {
     return app.itemsSource.getStats();
   });
 
-  app.get(EndpointUrls.GET_MAINTENANCE, async (): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.runMaintenance();
+  app.get(EndpointUrls.GET_MAINTENANCE, async (request): Promise<ItemsMutationReponse> => {
+    const response = app.itemsSource.runMaintenance();
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.get(EndpointUrls.GET_USAGES, async (): Promise<ItemsUsageReponse> => {
@@ -24,4 +26,4 @@ const imagesRoutes: FastifyPluginAsync = async (app) => {
   });
 };
 
-export default imagesRoutes;
+export default statsRoutes;

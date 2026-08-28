@@ -14,11 +14,15 @@ const frameGroupsRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_FRAMEGROUPS_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updateFrameGroups(request.body as UpdateFrameGroupsParams);
+    const response = app.itemsSource.updateFrameGroups(request.body as UpdateFrameGroupsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_FRAMEGROUPS_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deleteFrameGroupsByIds(request.body as DeleteFrameGroupsByIdsParams);
+    const response = app.itemsSource.deleteFrameGroupsByIds(request.body as DeleteFrameGroupsByIdsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
 };

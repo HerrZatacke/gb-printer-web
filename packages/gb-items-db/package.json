@@ -16,7 +16,9 @@
     "@fastify/autoload": "catalog:",
     "@fastify/cors": "catalog:",
     "@fastify/static": "catalog:",
+    "@fastify/websocket": "catalog:",
     "@types/better-sqlite3": "catalog:",
+    "@types/ws": "catalog:",
     "better-sqlite3":  "catalog:",
     "drizzle-kit":  "catalog:",
     "drizzle-orm": "catalog:",
@@ -26,6 +28,7 @@
     "gb-items-source": "workspace:*",
     "gb-palettes": "catalog:",
     "gb-printer-schemas": "workspace:*",
+    "ws": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

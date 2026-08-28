@@ -20,11 +20,15 @@ const imageGroupsRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_IMAGEGROUPS_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updateImageGroups(request.body as UpdateImageGroupsParams);
+    const response = app.itemsSource.updateImageGroups(request.body as UpdateImageGroupsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_IMAGEGROUPS_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deleteImageGroupsByIds(request.body as DeleteImageGroupsByIdsParams);
+    const response = app.itemsSource.deleteImageGroupsByIds(request.body as DeleteImageGroupsByIdsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
 };

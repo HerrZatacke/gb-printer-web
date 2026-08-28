@@ -42,11 +42,15 @@ const imagesRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_IMAGES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updateImages(request.body as UpdateImagesParams);
+    const response = app.itemsSource.updateImages(request.body as UpdateImagesParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_IMAGES_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deleteImagesByHashes(request.body as DeleteImagesByHashesParams);
+    const response = app.itemsSource.deleteImagesByHashes(request.body as DeleteImagesByHashesParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 };
 

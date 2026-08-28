@@ -20,11 +20,15 @@ const binaryFramesRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_BINARYFRAMES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updateBinaryFrames(request.body as UpdateBinaryItemsParams);
+    const response = app.itemsSource.updateBinaryFrames(request.body as UpdateBinaryItemsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_BINARYFRAMES_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deleteBinaryFramesByHashes(request.body as DeleteBinaryItemsByHashesParams);
+    const response = app.itemsSource.deleteBinaryFramesByHashes(request.body as DeleteBinaryItemsByHashesParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 };
 

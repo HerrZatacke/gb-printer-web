@@ -20,11 +20,15 @@ const palettesRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_PALETTES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updatePalettes(request.body as UpdatePalettesParams);
+    const response = app.itemsSource.updatePalettes(request.body as UpdatePalettesParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_PALETTES_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deletePalettesByShortNames(request.body as DeletePalettesByShortNamesParams);
+    const response = app.itemsSource.deletePalettesByShortNames(request.body as DeletePalettesByShortNamesParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 };
 

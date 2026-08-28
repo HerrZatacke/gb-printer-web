@@ -1,4 +1,6 @@
 export const EndpointUrls = {
+  WS_INVALIDATIONS: '/invalidations',
+
   GET_HEALTH: '/health',
   GET_STATS: '/stats',
   GET_MAINTENANCE: '/maintenance',

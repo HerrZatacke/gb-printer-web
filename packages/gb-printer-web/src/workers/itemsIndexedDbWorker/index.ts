@@ -1,20 +1,17 @@
 import * as Comlink from 'comlink';
 import { type ItemsSource, ItemsSourceApi } from 'gb-items-source';
-import { ItemsMutationReponse } from 'gb-printer-schemas';
 import { openAndPrepareDb } from '@/workers/itemsIndexedDbWorker/db';
 import { RemoteItemsSource } from '@/workers/itemsIndexedDbWorker/RemoteItemsSource';
+import { isMutationResult } from '@/workers/itemsIndexedDbWorker/tools/isMutationResult';
 import {
   type InitWorkerFn,
-  type ItemsHostApi, RunInvalidationsFn,
+  type ItemsHostApi,
+  type RunInvalidationsFn,
 } from '@/workers/itemsIndexedDbWorker/types';
 
 if (self.constructor.name !== 'DedicatedWorkerGlobalScope') {
   throw new Error(`worker is executing outside a worker context (is: "${self.constructor.name}")`);
 }
-
-const isMutationResult = (result: unknown): result is ItemsMutationReponse => {
-  return typeof result === 'object' && result !== null && Array.isArray((result as { invalidations: unknown }).invalidations);
-};
 
 const withInvalidations = (source: ItemsSource, runInvalidations: RunInvalidationsFn, withDebug?: boolean): ItemsSource => {
   return new Proxy(source, {
@@ -50,7 +47,9 @@ const init: InitWorkerFn = async (hostApi: ItemsHostApi, runInvalidations: RunIn
   let instance: ItemsSource;
 
   if (remoteStorageUrl) {
-    instance = new RemoteItemsSource(remoteStorageUrl) as unknown as ItemsSource;
+    const remoteItemsInstance = new RemoteItemsSource(remoteStorageUrl);
+    remoteItemsInstance.subscribeToInvalidations(runInvalidations);
+    instance = remoteItemsInstance as unknown as ItemsSource;
   } else {
     const db = await openAndPrepareDb(hostApi);
     instance = new ItemsSourceApi(db) as unknown as ItemsSource;

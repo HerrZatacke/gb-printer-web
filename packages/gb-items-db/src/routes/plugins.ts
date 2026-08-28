@@ -20,11 +20,15 @@ const pluginsRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_PLUGINS_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updatePlugins(request.body as UpdatePluginsParams);
+    const response = app.itemsSource.updatePlugins(request.body as UpdatePluginsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_PLUGINS_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deletePluginsByUrls(request.body as DeletePluginsByUrlsParams);
+    const response = app.itemsSource.deletePluginsByUrls(request.body as DeletePluginsByUrlsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 };
 

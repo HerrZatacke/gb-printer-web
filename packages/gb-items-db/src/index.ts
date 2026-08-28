@@ -5,6 +5,7 @@ import cors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
 import Fastify from 'fastify';
 import { runMigrations } from '@/db/connections';
+import invalidationPlugin from '@/plugins/invalidationPlugin';
 import itemsSourcePlugin from '@/plugins/itemsSourcePlugin';
 
 const app = Fastify({
@@ -13,6 +14,7 @@ const app = Fastify({
 });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+void app.register(invalidationPlugin);
 void app.register(itemsSourcePlugin);
 void app.register(fastifyStatic, { root: path.join(__dirname, '../public') });
 void app.register(AutoLoad, { dir: path.join(__dirname, 'routes') });

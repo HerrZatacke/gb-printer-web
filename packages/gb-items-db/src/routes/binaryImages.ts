@@ -20,11 +20,15 @@ const binaryImagesRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_BINARYIMAGES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updateBinaryImages(request.body as UpdateBinaryItemsParams);
+    const response = app.itemsSource.updateBinaryImages(request.body as UpdateBinaryItemsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_BINARYIMAGES_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deleteBinaryImagesByHashes(request.body as DeleteBinaryItemsByHashesParams);
+    const response = app.itemsSource.deleteBinaryImagesByHashes(request.body as DeleteBinaryItemsByHashesParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 };
 

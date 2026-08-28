@@ -24,11 +24,15 @@ const framesRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_FRAMES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.updateFrames(request.body as UpdateFramesParams);
+    const response = app.itemsSource.updateFrames(request.body as UpdateFramesParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 
   app.post(EndpointUrls.POST_FRAMES_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    return app.itemsSource.deleteFramesByIds(request.body as DeleteFramesByIdsParams);
+    const response = app.itemsSource.deleteFramesByIds(request.body as DeleteFramesByIdsParams);
+    void app.invalidation.broadcastInvalidations(request, response);
+    return response;
   });
 };
 
