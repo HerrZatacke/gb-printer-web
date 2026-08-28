@@ -5,7 +5,7 @@ import {
   Paper,
   Stack,
 } from '@mui/material';
-// import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
@@ -14,6 +14,7 @@ import { runMaintenanceAction } from '@/stores/items/queries/global';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
+import { updateImagesAction } from '@/stores/items/queries/images';
 
 function Index() {
   const [shouldRender, setShouldRender] = useState(false);
@@ -21,7 +22,7 @@ function Index() {
   const { updateImageGroup } = useImageGroups({ tree: true, list: true });
   // const { updateImageGroup, imageGroupTree, imageGroups } = useImageGroups({ tree: true, list: true });
   const { navigateToImage, navigateToGroup } = useNavigationTools();
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   // useEffect(() => {
   //   console.log({ imageGroupTree });
@@ -40,9 +41,9 @@ function Index() {
     }
   }, [enableDebug]);
 
-  const runMaintenance = useCallback(async () => {
-    await runMaintenanceAction();
-  }, []);
+  const dummyImageUpdate = useCallback(async () => {
+    const result = await updateImagesAction(queryClient, [], false);
+  }, [queryClient]);
 
   const createSubGroup = useCallback(async () => {
     console.log('calling updateImageGroup');
@@ -154,8 +155,11 @@ function Index() {
           </Button>
         </ButtonGroup>
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
-          <Button onClick={runMaintenance}>
+          <Button onClick={runMaintenanceAction}>
             runMaintenance
+          </Button>
+          <Button onClick={dummyImageUpdate}>
+            run dummyImageUpdate
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}
