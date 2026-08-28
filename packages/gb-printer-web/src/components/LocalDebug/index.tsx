@@ -10,8 +10,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigationTools } from '@/contexts/NavigationToolsContext';
 // import { useImages } from '@/hooks/useImages';
 import { useImageGroups } from '@/hooks/useImageGroups';
-import { resetImageCaches } from '@/stores/items/queries/cacheResets';
 import { runMaintenanceAction } from '@/stores/items/queries/global';
+import { updateImagesAction } from '@/stores/items/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { delay } from '@/tools/delay';
 import { randomId } from '@/tools/randomId';
@@ -41,14 +41,9 @@ function Index() {
     }
   }, [enableDebug]);
 
-  const runMaintenance = useCallback(async () => {
-    await runMaintenanceAction();
-  }, []);
-
-  const clearCaches = useCallback(async () => {
-    await resetImageCaches(queryClient, true);
+  const dummyImageUpdate = useCallback(async () => {
+    await updateImagesAction(queryClient, [], false);
   }, [queryClient]);
-
 
   const createSubGroup = useCallback(async () => {
     console.log('calling updateImageGroup');
@@ -160,11 +155,11 @@ function Index() {
           </Button>
         </ButtonGroup>
         <ButtonGroup size="small" variant="contained" fullWidth color="secondary">
-          <Button onClick={runMaintenance}>
+          <Button onClick={runMaintenanceAction}>
             runMaintenance
           </Button>
-          <Button onClick={clearCaches}>
-            clearCaches
+          <Button onClick={dummyImageUpdate}>
+            run dummyImageUpdate
           </Button>
         </ButtonGroup>
         {/* <pre style={{ maxHeight: '30vh' }}>{JSON.stringify(randomRgbGroupItems, null, 2)}</pre> */}

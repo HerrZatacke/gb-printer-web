@@ -11,7 +11,6 @@ import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/stores/items/client';
 import { createBatchedLoader } from '@/stores/items/queries/batchedLoader';
 import { imagesKeys } from '@/stores/items/queries/cacheKeys';
-import { resetImageCaches } from '@/stores/items/queries/cacheResets';
 import { STALE_TIME } from '@/stores/items/queries/consts';
 
 const warmImageCache = (images: Image[]) => {
@@ -184,13 +183,10 @@ export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: S
 
 export const updateImagesAction = async (queryClient: QueryClient, images: Image[], purge = false): Promise<void> => {
   const source = await getItemsSource();
-  // ToDo: updateImages should report if groups were also affected (e.g. by adding new images)
   await source.updateImages({ images, purge });
-  await resetImageCaches(queryClient, true);
 };
 
 export const deleteImagesByHashesAction = async (queryClient: QueryClient, hashes: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deleteImagesByHashes({ hashes });
-  await resetImageCaches(queryClient, true);
 };

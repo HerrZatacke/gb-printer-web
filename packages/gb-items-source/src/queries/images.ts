@@ -5,6 +5,7 @@ import {
   ImageQuerySortSchema,
   ImageSchema,
   ItemsReferenceListSchema,
+  ItemStoreNames,
   StoredImageSchema,
   type DeleteImagesByHashesParams,
   type GetGroupItemsByGroupIdParams,
@@ -196,8 +197,8 @@ export async function updateImages(this: ItemsSourceInternal, { images, purge }:
     })),
   );
 
-  await startMaintenanceTasks(this.repositories);
-  return mutationReponse([]);
+  const invalidations = await startMaintenanceTasks(this.repositories);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }]);
 }
 
 export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }: DeleteImagesByHashesParams): Promise<ItemsMutationReponse> {
@@ -205,6 +206,6 @@ export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }
   const { images: repository } = this.repositories;
   await repository.deleteByKeys(hashes);
 
-  await startMaintenanceTasks(this.repositories);
-  return mutationReponse([]);
+  const invalidations = await startMaintenanceTasks(this.repositories);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }]);
 }

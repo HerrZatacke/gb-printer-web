@@ -1,6 +1,7 @@
 import {
   FrameGroup,
   FrameGroupSchema,
+  ItemStoreNames,
   type DeleteFrameGroupsByIdsParams,
   type ItemsSourceTotalResponse,
   type UpdateFrameGroupsParams,
@@ -38,12 +39,12 @@ export async function updateFrameGroups(this: ItemsSourceInternal, { frameGroups
       value: frameGroup,
     })),
   );
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.FRAMEGROUPS }]);
 }
 
 export async function deleteFrameGroupsByIds(this: ItemsSourceInternal, { ids }: DeleteFrameGroupsByIdsParams): Promise<ItemsMutationReponse> {
   const mutationReponse = getMutationReponse(performance.now());
   const { framegroups: repository } = this.repositories;
   await repository.deleteByKeys(ids);
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.FRAMEGROUPS }]);
 }

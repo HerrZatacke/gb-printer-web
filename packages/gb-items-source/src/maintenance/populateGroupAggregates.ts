@@ -1,4 +1,11 @@
-import { SpecialTags, StoredImage } from 'gb-printer-schemas';
+import {
+  ItemStoreNames,
+  SpecialTags,
+  StoredImage,
+  type StoredSerializableImageGroup,
+  type ItemsInvalidation,
+} from 'gb-printer-schemas';
+import { hash as ohash } from 'ohash';
 import { type Repositories } from '@/types';
 
 const MAX_TREE_DEPTH = 20;
@@ -105,7 +112,7 @@ const resolveGroupAggregates = (
 
 export const populateGroupAggregates = async (
   repositories: Repositories,
-): Promise<void> => {
+): Promise<ItemsInvalidation[]> => {
   const groups = await repositories.imagegroups.getAll();
   const images = await repositories.images.getAll();
 
@@ -123,13 +130,32 @@ export const populateGroupAggregates = async (
   const resolvedAggregatesById = new Map<string, GroupAggregates>();
 
 
-  const updatedGroups = groups.map((group) => {
+  const updatedGroups = groups.reduce((acc: StoredSerializableImageGroup[], group) => {
     const aggregates = resolveGroupAggregates(group.id, 0, groupsById, aggregatesByImageHash, resolvedAggregatesById);
     const coverImage = group.coverImage || aggregates.coverImage;
-    return { ...group, ...aggregates, coverImage };
-  });
+    const newGroup = { ...group, ...aggregates, coverImage };
+    const oldHash = ohash(group);
+    const newHash = ohash(newGroup);
 
-  await repositories.imagegroups.put(
-    updatedGroups.map((group) => ({ key: group.id, value: group })),
-  );
+    if (oldHash === newHash) {
+      return acc;
+    }
+
+    return [
+      ...acc,
+      newGroup,
+    ];
+  }, []);
+
+  if (updatedGroups.length) {
+    await repositories.imagegroups.put(
+      updatedGroups.map((group) => ({ key: group.id, value: group })),
+    );
+
+    return [{
+      collection: ItemStoreNames.IMAGEGROUPS,
+    }];
+  }
+
+  return [];
 };

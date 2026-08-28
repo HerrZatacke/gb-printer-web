@@ -1,7 +1,8 @@
 import predefinedPalettes from 'gb-palettes';
 import {
-  type Palette,
+  ItemStoreNames,
   PaletteSchema,
+  type Palette,
   type DeletePalettesByShortNamesParams,
   type GetPalettesByShortNamesParams,
   type ItemsSourceResponse,
@@ -82,12 +83,12 @@ export async function updatePalettes(this: ItemsSourceInternal, { palettes, purg
       value: palette,
     })),
   );
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.PALETTES }]);
 }
 
 export async function deletePalettesByShortNames(this: ItemsSourceInternal, { shortNames }: DeletePalettesByShortNamesParams): Promise<ItemsMutationReponse> {
   const mutationReponse = getMutationReponse(performance.now());
   const { palettes: repository } = this.repositories;
   await repository.deleteByKeys(shortNames);
-  return mutationReponse([]);
+  return mutationReponse([{ collection: ItemStoreNames.PALETTES }]);
 }
