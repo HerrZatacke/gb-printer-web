@@ -60,9 +60,13 @@ jobs:
       - name: Create tag 🏷
         if: steps.checkTag.outputs.exists == 'false'
         uses: actions/github-script@v7
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         with:
           script: |
             await github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/gb-items-db-${{
+              ref: `refs/tags/gb-items-db-${process.env.RELEASE_VERSION}`,
+              sha: context.sha,
+            })
