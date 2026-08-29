@@ -25,3 +25,9 @@ export const useStoragesStore = createStoragesStore();
 if (typeof window !== 'undefined') {
   useFiltersStore.getState().cleanRecentImports();
 }
+
+useSettingsStore.subscribe(async ({ remoteStorageUrl }, { remoteStorageUrl: prevRemoteStorageUrl }) => {
+  if (remoteStorageUrl !== prevRemoteStorageUrl) {
+    window.location.reload();
+  }
+});

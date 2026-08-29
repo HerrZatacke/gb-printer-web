@@ -5,6 +5,7 @@ import {
   ImageQuerySortSchema,
   ImageSchema,
   ItemsReferenceListSchema,
+  ItemStoreNames,
   StoredImageSchema,
   type DeleteImagesByHashesParams,
   type GetGroupItemsByGroupIdParams,
@@ -32,9 +33,11 @@ import sortBy from '@/temptools/sortby';
 import uniqueBy from '@/temptools/unique/by';
 import { type ItemsSourceInternal } from '@/types';
 
+// ToDo: get from tools package once available
 const uniqueByHash = uniqueBy<Image>('hash');
 
 export async function getImages(this: ItemsSourceInternal, { params: queryParamsRaw, candidateHashes }: GetImagesParams): Promise<ItemsSourceResponse<Image>> {
+  // ToDo: Parse full params not only params!!
   const { repositories } = this;
   const { images: repository } = repositories;
   const start = performance.now();
@@ -194,8 +197,8 @@ export async function updateImages(this: ItemsSourceInternal, { images, purge }:
     })),
   );
 
-  await startMaintenanceTasks(this.repositories);
-  return mutationReponse([]);
+  const invalidations = await startMaintenanceTasks(this.repositories);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }]);
 }
 
 export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }: DeleteImagesByHashesParams): Promise<ItemsMutationReponse> {
@@ -203,6 +206,6 @@ export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }
   const { images: repository } = this.repositories;
   await repository.deleteByKeys(hashes);
 
-  await startMaintenanceTasks(this.repositories);
-  return mutationReponse([]);
+  const invalidations = await startMaintenanceTasks(this.repositories);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }]);
 }

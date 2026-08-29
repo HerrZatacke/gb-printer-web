@@ -5,6 +5,9 @@ on:
     branches: [ master ]
     paths:
       - 'packages/gb-printer-web/**'
+      - 'packages/gb-items-source/**'
+      - 'packages/gb-printer-schemas/**'
+      - .github/workflows/deploy-gb-printer-web.yml
   workflow_dispatch:
 
 jobs:

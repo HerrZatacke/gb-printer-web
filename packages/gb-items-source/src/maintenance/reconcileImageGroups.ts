@@ -1,4 +1,8 @@
-import { type StoredSerializableImageGroup } from 'gb-printer-schemas';
+import {
+  ItemStoreNames,
+  type ItemsInvalidation,
+  type StoredSerializableImageGroup,
+} from 'gb-printer-schemas';
 import unique from '@/temptools/unique';
 import { type Repositories } from '@/types';
 
@@ -57,10 +61,11 @@ const runPass = async (
   repositories: Repositories,
   groups: StoredSerializableImageGroup[],
   validImageHashes: Set<string>,
-): Promise<boolean> => {
+): Promise<[boolean, boolean]> => {
   const validGroupIds = new Set(groups.map((group) => group.id));
 
   let hasDeletedAny = false;
+  let didChangeAny = false;
 
   for (const group of groups) {
     const { group: sanitized, didChange } = sanitizeGroup(group, validImageHashes, validGroupIds);
@@ -72,6 +77,7 @@ const runPass = async (
     }
 
     if (didChange) {
+      didChangeAny = true;
       await repositories.imagegroups.put([
         {
           key: sanitized.id,
@@ -81,19 +87,23 @@ const runPass = async (
     }
   }
 
-  return hasDeletedAny;
+  return [hasDeletedAny, didChangeAny];
 };
 
 export const reconcileImageGroups = async (
   repositories: Repositories,
-): Promise<void> => {
+): Promise<ItemsInvalidation[]> => {
   const startPasses = performance.now();
   const validImageHashes = new Set(await repositories.images.getAllKeys());
   const groups = await repositories.imagegroups.getAll();
 
+  let mustInvalidate: boolean = false;
+
   let pass = 0;
   for (; pass < MAX_PASSES; pass += 1) {
-    const hasDeletedAny = await runPass(repositories, groups, validImageHashes);
+    const [hasDeletedAny, didChangeAny] = await runPass(repositories, groups, validImageHashes);
+
+    mustInvalidate = mustInvalidate || hasDeletedAny || didChangeAny;
 
     if (!hasDeletedAny) {
       break;
@@ -101,4 +111,12 @@ export const reconcileImageGroups = async (
   }
 
   console.log(`${pass + 1} cleaning pass(es) took ${Math.round(performance.now() - startPasses)}ms`);
+
+  if (!mustInvalidate) {
+    return [];
+  }
+
+  return [{
+    collection: ItemStoreNames.IMAGEGROUPS,
+  }];
 };

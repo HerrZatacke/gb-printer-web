@@ -1,0 +1,42 @@
+{
+  "name": "gb-items-db",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf dist && tsc && tsc-alias --resolve-full-paths",
+    "dev": "cross-env NODE_ENV=development concurrently \"tsx watch --env-file=.env src/index.ts\" \"tsc-alias --watch\"",
+    "lint": "eslint .",
+    "drizzle:generate": "npx drizzle-kit generate --config drizzle.config.ts",
+    "start": "cross-env NODE_ENV=production node --env-file=.env dist/index.js"
+  },
+  "dependencies": {
+    "@fastify/autoload": "catalog:",
+    "@fastify/cors": "catalog:",
+    "@fastify/static": "catalog:",
+    "@fastify/websocket": "catalog:",
+    "@types/better-sqlite3": "catalog:",
+    "@types/ws": "catalog:",
+    "better-sqlite3":  "catalog:",
+    "cross-env": "catalog:",
+    "drizzle-kit":  "catalog:",
+    "drizzle-orm": "catalog:",
+    "fastify": "catalog:",
+    "fastify-plugin": "catalog:",
+    "gb-image-decoder": "catalog:",
+    "gb-items-source": "workspace:*",
+    "gb-palettes": "catalog:",
+    "gb-printer-schemas": "workspace:*",
+    "ws": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "concurrently": "catalog:",
+    "rimraf": "catalog:",
+    "tsc-alias": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

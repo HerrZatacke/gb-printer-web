@@ -3,7 +3,6 @@ import { ROOT_ID } from 'gb-items-source';
 import { type SerializableImageGroup, type TreeImageGroup } from 'gb-printer-schemas';
 import { getItemsSource } from '@/stores/items/client';
 import { imageGroupsKeys } from '@/stores/items/queries/cacheKeys';
-import { resetImageGroupCaches } from '@/stores/items/queries/cacheResets';
 import { STALE_TIME } from '@/stores/items/queries/consts';
 import unique from '@/tools/unique';
 
@@ -121,7 +120,6 @@ export const imageGroupsListQueryOptions = () => {
 export const updateImageGroupsAction = async (queryClient: QueryClient, imageGroups: SerializableImageGroup[], purge = false): Promise<void> => {
   const source = await getItemsSource();
   await source.updateImageGroups({ imageGroups, purge });
-  await resetImageGroupCaches(queryClient);
 };
 
 
@@ -139,7 +137,6 @@ export const updateImageGroupAction = async (queryClient: QueryClient, group: Se
 
   const source = await getItemsSource();
   await source.updateImageGroups({ imageGroups: changedGroups, purge: false });
-  await resetImageGroupCaches(queryClient);
 };
 
 
@@ -168,12 +165,10 @@ export const moveImagesToGroupAction = async (queryClient: QueryClient, images: 
 
   const source = await getItemsSource();
   await source.updateImageGroups({ imageGroups: changedGroups, purge: false });
-  await resetImageGroupCaches(queryClient);
 };
 
 
 export const deleteImageGroupsByIdsAction = async (queryClient: QueryClient, deleteIds: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deleteImageGroupsByIds({ ids: deleteIds });
-  await resetImageGroupCaches(queryClient);
 };

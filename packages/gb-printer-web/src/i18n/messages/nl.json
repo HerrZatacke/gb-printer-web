@@ -39,6 +39,13 @@
     "closePrinterPage": "Printerpagina sluiten",
     "openPrinterPage": "Printerpagina openen"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Lokale gegevens naar externe opslag kopiëren",
+    "purgeRemote": "Externe gegevens vervangen door lokale gegevens",
+    "remoteStorageHeader": "Externe opslag koppelen",
+    "remoteStorageUrl": "Externe opslag-URL",
+    "remoteStorageUrlHelper": "De URL van de service waar je gegevens worden opgeslagen (de pagina wordt opnieuw geladen zodra deze instelling is gewijzigd)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {Geen verbonden apparaten} =1 {Eén verbonden apparaat:} other {# verbonden apparaten:}}",
     "copyToClipboard": "Naar klembord kopiëren",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Voer alleen de naam van de submap in. Anders zal de app volledig oplossen naar “{fullAppPath}”, binnen uw Dropbox, wat waarschijnlijk niet is wat u bedoelde."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Verbinden met externe opslag",
     "enableDebug": "Debug-informatie tonen",
     "exampleDateFormat": "Voorbeeld datumformaat: {format}",
     "forceMagicCheck": "Geldige .sav-bestand afdwingen bij importeren",
@@ -487,6 +495,7 @@
       "fr-FR": "Frans – Frankrijk (fr-FR)"
     },
     "preferredLocale": "Voorkeurstaal",
+    "removeRemoteStorage": "Externe opslag verwijderen",
     "resetTrackingConsent": "Analyse-/trackingtoestemming opnieuw instellen (momenteel {consentState, select, accepted {actief} other {inactief}})",
     "sortPalettes": "Paletten sorteren"
   },

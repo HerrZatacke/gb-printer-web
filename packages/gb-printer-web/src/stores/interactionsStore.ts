@@ -27,6 +27,7 @@ interface Values {
   printerBusy: boolean;
   printerData: PrinterInfo | null;
   printerFunctions: PrinterFunction[];
+  showRemoteStorageDialog: boolean;
   showSerials: boolean;
   showQueryTool: boolean;
   sstvHash: string;
@@ -54,6 +55,7 @@ interface Actions {
   setSyncBusy: (syncBusy: boolean) => void;
   setSyncSelect: (syncBusy: boolean) => void;
   setTrashBusy: (trashBusy: boolean) => void;
+  setShowRemoteStorageDialog: (showRemoteStorageDialog: boolean) => void;
   showTrashCount: (show: boolean) => void;
   updateTrashCount: (frames: number, images: number) => void;
   setVideoSelection: (videoSelection: string[]) => void;
@@ -73,6 +75,7 @@ export const createInteractionsStore = () => (
     printerData: null,
     printerFunctions: [],
     showQueryTool: false,
+    showRemoteStorageDialog: false,
     showSerials: false,
     sstvHash: '',
     syncBusy: false,
@@ -92,6 +95,7 @@ export const createInteractionsStore = () => (
     setPrinterFunctions: (printerFunctions: PrinterFunction[]) => set({ printerFunctions }),
     setSSTVHash: (sstvHash: string) => set({ sstvHash }),
     setShowQueryTool: (showQueryTool: boolean) => set({ showQueryTool }),
+    setShowRemoteStorageDialog: (showRemoteStorageDialog: boolean) => set({ showRemoteStorageDialog }),
     setShowSerials: (showSerials: boolean) => set({ showSerials }),
     setSyncBusy: (syncBusy: boolean) => set({ syncBusy }),
     setSyncSelect: (syncSelect: boolean) => set({ syncSelect }),

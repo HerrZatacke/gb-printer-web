@@ -1,6 +1,7 @@
 import React from 'react';
 import BitmapQueue from '@/components/Overlays/BitmapQueue';
 import Confirm from '@/components/Overlays/Confirm';
+import ConnectRemoteStorage from '@/components/Overlays/ConnectRemoteStorage';
 import DownloadOptions from '@/components/Overlays/DownloadOptions';
 import DragOver from '@/components/Overlays/DragOver';
 import EditForm from '@/components/Overlays/EditForm';
@@ -83,6 +84,7 @@ function Overlays() {
     syncSelect,
     videoSelection,
     showQueryTool,
+    showRemoteStorageDialog,
     showSerials,
     downloadHashes,
     sstvHash,
@@ -135,6 +137,8 @@ function Overlays() {
       return <SSTVForm />; // interactive
     case syncSelect:
       return <SyncSelect />; // interactive
+    case showRemoteStorageDialog:
+      return <ConnectRemoteStorage />; // interactive
     case showTrashbin:
       return <Trashbin />; // interactive
     case showSerialOverlay:

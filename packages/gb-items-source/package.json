@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "rimraf dist && tsc && tsc-alias",
+    "build": "rimraf dist && tsc && tsc-alias --resolve-full-paths",
     "dev": "concurrently \"tsc --watch --preserveWatchOutput\" \"tsc-alias --watch\"",
     "lint": "eslint ."
   },
@@ -14,6 +14,7 @@
     "comlink": "catalog:",
     "gb-palettes": "catalog:",
     "gb-printer-schemas": "workspace:*",
+    "ohash": "catalog:",
     "ufo": "catalog:",
     "zod": "catalog:"
   },

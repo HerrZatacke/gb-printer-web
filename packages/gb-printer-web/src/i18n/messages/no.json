@@ -39,6 +39,13 @@
     "closePrinterPage": "Lukk skriverside",
     "openPrinterPage": "Åpne skriverside"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Kopier lokale data til ekstern lagring",
+    "purgeRemote": "Erstatt eksterne data med lokale data",
+    "remoteStorageHeader": "Ligar armazenamento externo",
+    "remoteStorageUrl": "URL for ekstern lagring",
+    "remoteStorageUrlHelper": "URL-en til tjenesten hvor dataene dine lagres (siden lastes på nytt så snart denne innstillingen endres)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {Ingen tilkoblede enheter} =1 {Én tilkoblet enhet:} other {# tilkoblede enheter:}}",
     "copyToClipboard": "Kopier til utklippstavle",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Skriv inn bare navnet på undermappen. Ellers vil appen fullstendig løse til ”{fullAppPath}” innenfor din Dropbox, noe som sannsynligvis ikke er det du hadde til hensikt."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Koble til ekstern lagring",
     "enableDebug": "Vis feilsøkingsinformasjon",
     "exampleDateFormat": "Eksempel datoformat: {format}",
     "forceMagicCheck": "Tving gyldig .sav-fil ved import",
@@ -487,6 +495,7 @@
       "fr-FR": "Fransk – Frankrike (fr-FR)"
     },
     "preferredLocale": "Foretrukket språk",
+    "removeRemoteStorage": "Fjern ekstern lagring",
     "resetTrackingConsent": "Tilbakestill analyse-/sporingssamtykke (for øyeblikket {consentState, select, accepted {aktiv} other {inaktiv}})",
     "sortPalettes": "Sorter paletter"
   },

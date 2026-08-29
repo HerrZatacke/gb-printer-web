@@ -67,7 +67,7 @@ export const openAndPrepareDb = async (hostApi: ItemsHostApi): Promise<Repositor
       }
       console.log(`UpgradeTasks done in ${performance.now() - startUpgradeTasks}ms`);
 
-      await startMaintenanceTasks(repositories);
+      await startMaintenanceTasks(repositories); // returned invalidations can be ignored
     } catch (error) {
       const err = new Error(`Error while running upgrade- or maintenance-tasks: "${(error as Error)?.message}"`);
       hostApi.onMigrationError(err.message);

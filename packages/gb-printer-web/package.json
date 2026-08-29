@@ -1,6 +1,6 @@
 {
   "name": "gb-printer-web",
-  "version": "1.57.14",
+  "version": "1.58.0",
   "description": "GameBoy Camera Gallery WebApp",
   "scripts": {
     "dev": "pnpm dev:clean && pnpm dev:dev",
@@ -68,6 +68,7 @@
     "filenamify": "catalog:",
     "filesize": "catalog:",
     "gb-image-decoder": "catalog:",
+    "gb-items-db": "workspace:*",
     "gb-items-source": "workspace:*",
     "gb-palettes": "catalog:",
     "gb-printer-schemas": "workspace:*",

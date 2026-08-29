@@ -1,3 +1,4 @@
+import { EndpointUrls } from 'gb-items-db/src/endpointUrls';
 import { ItemsSource } from 'gb-items-source';
 import {
   GetGroupItemsByGroupIdParamsSchema,
@@ -34,6 +35,7 @@ const NoParamsSchema = z.undefined();
 
 export interface EndpointSettings {
   methodName: MethodName;
+  remotePath: string;
   exampleBody: string;
   schema: z.ZodType;
   description: string;
@@ -58,27 +60,32 @@ const exampleImageQueryParams = {
 };
 const exampleImageQueryParamsJSON = JSON.stringify(exampleImageQueryParams);
 
+
 export const endpointSettings: Record<MethodName, EndpointSettings> = {
   getStats: {
     methodName: 'getStats',
+    remotePath: EndpointUrls.GET_STATS,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   getUsages: {
     methodName: 'getUsages',
+    remotePath: EndpointUrls.GET_USAGES,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   getAllTags: {
     methodName: 'getAllTags',
+    remotePath: EndpointUrls.POST_IMAGES_TAGS,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   getGroupItemsByGroupId: {
     methodName: 'getGroupItemsByGroupId',
+    remotePath: EndpointUrls.POST_IMAGES_GROUPITEMSBYGROUPID,
     exampleBody: `{"groupId": "", "includeGroups": true, "params": ${exampleImageQueryParamsJSON}}`,
     schema: GetGroupItemsByGroupIdParamsSchema,
     description: [
@@ -96,6 +103,7 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   getHashesByGroupId: {
     methodName: 'getHashesByGroupId',
+    remotePath: EndpointUrls.POST_IMAGES_HASHESBYGROUPID,
     exampleBody: `{"groupId": "", "includeGroups": true, "sort": ${exampleImageQuerySortJSON}, "filters": ${exampleFiltersJSON}}`,
     schema: GetHashesByGroupIdParamsSchema,
     description: [
@@ -111,6 +119,7 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   getImages: {
     methodName: 'getImages',
+    remotePath: EndpointUrls.POST_IMAGES,
     exampleBody: `{"params": ${exampleImageQueryParamsJSON}}`,
     schema: GetImagesParamsSchema,
     description: [
@@ -127,18 +136,21 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   getImagesByHashes: {
     methodName: 'getImagesByHashes',
+    remotePath: EndpointUrls.POST_IMAGES_BYHASHES,
     exampleBody: '{"hashes": []}',
     schema: GetImagesByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
   getImagesByAnyHashes: {
     methodName: 'getImagesByAnyHashes',
+    remotePath: EndpointUrls.POST_IMAGES_BYANYHASHES,
     exampleBody: '{"hashes": []}',
     schema: GetImagesByAnyHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
   updateImages: {
     methodName: 'updateImages',
+    remotePath: EndpointUrls.POST_IMAGES_UPDATE,
     exampleBody: '{"images": [], "purge": false}',
     schema: UpdateImagesParamsSchema,
     description: [
@@ -148,24 +160,28 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   deleteImagesByHashes: {
     methodName: 'deleteImagesByHashes',
+    remotePath: EndpointUrls.POST_IMAGES_DELETE,
     exampleBody: '{"hashes": []}',
     schema: DeleteImagesByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
   getImageGroupsFullTree: {
     methodName: 'getImageGroupsFullTree',
+    remotePath: EndpointUrls.POST_IMAGEGROUPS_TREE,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   getImageGroupsList: {
     methodName: 'getImageGroupsList',
+    remotePath: EndpointUrls.POST_IMAGEGROUPS_LIST,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   updateImageGroups: {
     methodName: 'updateImageGroups',
+    remotePath: EndpointUrls.POST_IMAGEGROUPS_UPDATE,
     exampleBody: '{"imageGroups": [], "purge": false}',
     schema: UpdateImageGroupsParamsSchema,
     description: [
@@ -175,30 +191,35 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   deleteImageGroupsByIds: {
     methodName: 'deleteImageGroupsByIds',
+    remotePath: EndpointUrls.POST_IMAGEGROUPS_DELETE,
     exampleBody: '{"ids": []}',
     schema: DeleteImageGroupsByIdsParamsSchema,
     description: 'ids: array of string (min: 1)',
   },
   getFrames: {
     methodName: 'getFrames',
+    remotePath: EndpointUrls.POST_FRAMES,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   getFramesByHashes: {
     methodName: 'getFramesByHashes',
+    remotePath: EndpointUrls.POST_FRAMES_BYHASHES,
     exampleBody: '{"hashes": []}',
     schema: GetFramesByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
   getFramesByIds: {
     methodName: 'getFramesByIds',
+    remotePath: EndpointUrls.POST_FRAMES_BYIDS,
     exampleBody: '{"ids": []}',
     schema: GetFramesByIdsParamsSchema,
     description: 'ids: array of string (min: 1)',
   },
   updateFrames: {
     methodName: 'updateFrames',
+    remotePath: EndpointUrls.POST_FRAMES_UPDATE,
     exampleBody: '{"frames": [], "purge": false}',
     schema: UpdateFramesParamsSchema,
     description: [
@@ -208,18 +229,21 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   deleteFramesByIds: {
     methodName: 'deleteFramesByIds',
+    remotePath: EndpointUrls.POST_FRAMES_DELETE,
     exampleBody: '{"ids": []}',
     schema: DeleteFramesByIdsParamsSchema,
     description: 'ids: array of string (min: 1)',
   },
   getFrameGroups: {
     methodName: 'getFrameGroups',
+    remotePath: EndpointUrls.POST_FRAMEGROUPS,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   updateFrameGroups: {
     methodName: 'updateFrameGroups',
+    remotePath: EndpointUrls.POST_FRAMEGROUPS_UPDATE,
     exampleBody: '{"frameGroups": [], "purge": false}',
     schema: UpdateFrameGroupsParamsSchema,
     description: [
@@ -229,24 +253,28 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   deleteFrameGroupsByIds: {
     methodName: 'deleteFrameGroupsByIds',
+    remotePath: EndpointUrls.POST_FRAMEGROUPS_DELETE,
     exampleBody: '{"ids": []}',
     schema: DeleteFrameGroupsByIdsParamsSchema,
     description: 'ids: array of string (min: 1)',
   },
   getPalettes: {
     methodName: 'getPalettes',
+    remotePath: EndpointUrls.POST_PALETTES,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   getPalettesByShortNames: {
     methodName: 'getPalettesByShortNames',
+    remotePath: EndpointUrls.POST_PALETTES_BYSHORTNAMES,
     exampleBody: '{"shortNames": []}',
     schema: GetPalettesByShortNamesParamsSchema,
     description: 'shortNames: array of string (min: 1)',
   },
   updatePalettes: {
     methodName: 'updatePalettes',
+    remotePath: EndpointUrls.POST_PALETTES_UPDATE,
     exampleBody: '{"palettes": [], "purge": false}',
     schema: UpdatePalettesParamsSchema,
     description: [
@@ -256,24 +284,28 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   deletePalettesByShortNames: {
     methodName: 'deletePalettesByShortNames',
+    remotePath: EndpointUrls.POST_PALETTES_DELETE,
     exampleBody: '{"shortNames": []}',
     schema: DeletePalettesByShortNamesParamsSchema,
     description: 'shortNames: array of string (min: 1)',
   },
   getPlugins: {
     methodName: 'getPlugins',
+    remotePath: EndpointUrls.POST_PLUGINS,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   getPluginsByUrls: {
     methodName: 'getPluginsByUrls',
+    remotePath: EndpointUrls.POST_PLUGINS_BYURLS,
     exampleBody: '{"urls": []}',
     schema: GetPluginsByUrlsParamsSchema,
     description: 'urls: array of string (min: 1)',
   },
   updatePlugins: {
     methodName: 'updatePlugins',
+    remotePath: EndpointUrls.POST_PLUGINS_UPDATE,
     exampleBody: '{"plugins": [], "purge": false}',
     schema: UpdatePluginsParamsSchema,
     description: [
@@ -283,54 +315,63 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   },
   deletePluginsByUrls: {
     methodName: 'deletePluginsByUrls',
+    remotePath: EndpointUrls.POST_PLUGINS_DELETE,
     exampleBody: '{"urls": []}',
     schema: DeletePluginsByUrlsParamsSchema,
     description: 'urls: array of string (min: 1)',
   },
   getBinaryImagesByHashes: {
     methodName: 'getBinaryImagesByHashes',
+    remotePath: EndpointUrls.POST_BINARYIMAGES_BYHASHES,
     exampleBody: '{"hashes": []}',
     schema: GetBinaryItemsByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
   getBinaryImageHashes: {
     methodName: 'getBinaryImageHashes',
+    remotePath: EndpointUrls.POST_BINARYIMAGES_HASHES,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   updateBinaryImages: {
     methodName: 'updateBinaryImages',
+    remotePath: EndpointUrls.POST_BINARYIMAGES_UPDATE,
     exampleBody: '{"items": []}',
     schema: UpdateBinaryItemsParamsSchema,
     description: 'items: array of BinaryStoreItem (min: 1)',
   },
   deleteBinaryImagesByHashes: {
     methodName: 'deleteBinaryImagesByHashes',
+    remotePath: EndpointUrls.POST_BINARYIMAGES_DELETE,
     exampleBody: '{"hashes": []}',
     schema: DeleteBinaryItemsByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
   getBinaryFramesByHashes: {
     methodName: 'getBinaryFramesByHashes',
+    remotePath: EndpointUrls.POST_BINARYFRAMES_BYHASHES,
     exampleBody: '{"hashes": []}',
     schema: GetBinaryItemsByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
   getBinaryFrameHashes: {
     methodName: 'getBinaryFrameHashes',
+    remotePath: EndpointUrls.POST_BINARYFRAMES_HASHES,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
   },
   updateBinaryFrames: {
     methodName: 'updateBinaryFrames',
+    remotePath: EndpointUrls.POST_BINARYFRAMES_UPDATE,
     exampleBody: '{"items": []}',
     schema: UpdateBinaryItemsParamsSchema,
     description: 'items: array of BinaryStoreItem (min: 1)',
   },
   deleteBinaryFramesByHashes: {
     methodName: 'deleteBinaryFramesByHashes',
+    remotePath: EndpointUrls.POST_BINARYFRAMES_DELETE,
     exampleBody: '{"hashes": []}',
     schema: DeleteBinaryItemsByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',

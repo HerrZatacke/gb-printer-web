@@ -1,4 +1,3 @@
-import { type QueryClient } from '@tanstack/react-query';
 import { Plugin } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
 import { getItemsSource } from '@/stores/items/client';
@@ -73,14 +72,12 @@ export const pluginByUrlQueryOptions = (url: string) => ({
   staleTime: STALE_TIME,
 });
 
-export const updatePluginsAction = async (queryClient: QueryClient, plugins: Plugin[], purge = false): Promise<void> => {
+export const updatePluginsAction = async (plugins: Plugin[], purge = false): Promise<void> => {
   const source = await getItemsSource();
   await source.updatePlugins({ plugins, purge });
-  await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
 };
 
-export const deletePluginsByUrlsAction = async (queryClient: QueryClient, deleteUrls: string[]): Promise<void> => {
+export const deletePluginsByUrlsAction = async (deleteUrls: string[]): Promise<void> => {
   const source = await getItemsSource();
   await source.deletePluginsByUrls({ urls: deleteUrls });
-  await queryClient.invalidateQueries({ queryKey: pluginsKeys.all });
 };

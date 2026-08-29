@@ -50,8 +50,8 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
   });
 
   const updatePlugins = useCallback(async (plugins: Plugin[], purge = false): Promise<void> => {
-    await updatePluginsAction(queryClient, plugins, purge);
-  }, [queryClient]);
+    await updatePluginsAction(plugins, purge);
+  }, []);
 
   const updatePluginConfig = useCallback(async (url: string, key: string, value: string | number): Promise<void> => {
     const foundPlugin = await queryClient.fetchQuery(pluginByUrlQueryOptions(url));
@@ -76,8 +76,8 @@ export const usePlugins = ({ list, urls }: UsePluginsOptions): UsePlugins => {
   }, [queryClient, updatePlugins]);
 
   const deletePluginsByUrls = useCallback(async (deleteUrls: string[]): Promise<void> => {
-    await deletePluginsByUrlsAction(queryClient, deleteUrls);
-  }, [queryClient]);
+    await deletePluginsByUrlsAction(deleteUrls);
+  }, []);
 
   const updatePluginState = useCallback((url: string, loading: boolean, error: string | false) => {
     console.log('updatePluginState', {

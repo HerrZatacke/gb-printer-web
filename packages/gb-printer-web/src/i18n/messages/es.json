@@ -39,6 +39,13 @@
     "closePrinterPage": "Cerrar página de la impresora",
     "openPrinterPage": "Abrir página de impresora"
   },
+  "ConnectRemoteStorage": {
+    "copyLocalToRemote": "Copiar datos locales al almacenamiento externo",
+    "purgeRemote": "Sustituir los datos remotos por los datos locales",
+    "remoteStorageHeader": "Conectar almacenamiento externo",
+    "remoteStorageUrl": "URL de almacenamiento remoto",
+    "remoteStorageUrlHelper": "La URL del servicio donde se almacenan tus datos (la página se recargará en cuanto se cambie esta configuración)"
+  },
   "ConnectSerial": {
     "connectedDevices": "{deviceCount, plural, =0 {No hay dispositivos conectados} =1 {Un dispositivo conectado:} other {# dispositivos conectados:}}",
     "copyToClipboard": "Copiar al portapapeles",
@@ -455,6 +462,7 @@
     "subfolderWarning": "Ingrese solo el nombre de la subcarpeta. De lo contrario, la aplicación se resolverá completamente a «{fullAppPath}» dentro de su Dropbox, lo cual probablemente no es lo que pretendía."
   },
   "SettingsGeneric": {
+    "connectRemoteStorage": "Conectar al almacenamiento remoto",
     "enableDebug": "Mostrar información de depuración",
     "exampleDateFormat": "Formato de fecha de ejemplo: {format}",
     "forceMagicCheck": "Forzar archivo .sav válido al importar",
@@ -487,6 +495,7 @@
       "fr-FR": "Francés – Francia (fr-FR)"
     },
     "preferredLocale": "Idioma preferido",
+    "removeRemoteStorage": "Eliminar almacenamiento remoto",
     "resetTrackingConsent": "Restablecer consentimiento de análisis/seguimiento (actualmente {consentState, select, accepted {activo} other {inactivo}})",
     "sortPalettes": "Ordenar paletas"
   },

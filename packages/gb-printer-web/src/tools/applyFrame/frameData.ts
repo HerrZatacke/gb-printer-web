@@ -28,7 +28,7 @@ export const saveFrameData = async (lines: string[], imageStartLine: number): Pr
     dataHash,
     compressed,
   } = await compressAndHashFrame(lines, imageStartLine);
-  await updateBinaryFramesAction(getQueryClient(), [{ hash: dataHash, data: compressed }]);
+  await updateBinaryFramesAction([{ hash: dataHash, data: compressed }]);
   return dataHash;
 };
 
