@@ -1,9 +1,9 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import AutoLoad from '@fastify/autoload';
-import cors from '@fastify/cors';
+import cors, { type FastifyCorsOptions } from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
-import Fastify from 'fastify';
+import Fastify, { type FastifyRequest } from 'fastify';
 import { runMigrations } from '@/db/connections';
 import invalidationPlugin from '@/plugins/invalidationPlugin';
 import itemsSourcePlugin from '@/plugins/itemsSourcePlugin';
@@ -22,22 +22,27 @@ void app.register(invalidationPlugin);
 void app.register(itemsSourcePlugin);
 void app.register(fastifyStatic, { root: path.join(__dirname, '../public') });
 void app.register(AutoLoad, { dir: path.join(__dirname, 'routes') });
-await app.register(cors, {
-  origin: (origin, cb) => {
+await app.register(cors, () => (req: FastifyRequest, callback: (err: Error | null, options: FastifyCorsOptions) => void) => {
+  const { origin } = req.headers;
 
-    if (!origin || allowedOrigins.includes(origin)) {
-      cb(null, true);
-      return;
-    }
-    cb(new Error('Not allowed by CORS'), false);
-  },
-  credentials: true,
+  if (!origin) {
+    callback(null, { origin: true, credentials: true });
+    return;
+  }
+
+  const originHost = new URL(origin).host;
+  if (originHost === req.headers.host || allowedOrigins.includes(origin)) {
+    callback(null, { origin: true, credentials: true });
+    return;
+  }
+
+  callback(new Error('Not allowed by CORS'), { origin: false, credentials: true });
 });
 
 const start = async () => {
   try {
-    if (!allowedOrigins.length || !appPort) {
-      throw new Error('missing env values (GB_ITEMS_DB_ALLOWED_ORIGINS/GB_ITEMS_DB_PORT)');
+    if (!appPort) {
+      throw new Error('missing env values: GB_ITEMS_DB_PORT');
     }
     await runMigrations();
     await app.listen({ port: appPort, host: '0.0.0.0' });
