@@ -118,7 +118,7 @@ export const createSettingsStore = () => (
         importPad: false,
         lastBaudRate: 115200,
         pageSize: 30,
-        preferredLocale: getDefaultLocale(),
+        preferredLocale: 'en-GB',
         printerUrls: [],
         remoteStorageUrl: '',
         savFrameTypes: 'int',
@@ -185,6 +185,22 @@ export const createSettingsStore = () => (
       {
         name: `${PROJECT_PREFIX}-settings`,
         storage: createJSONStorage(() => localStorage),
+        merge: (persistedState, currentState) => {
+          const typed = persistedState as Partial<SettingsState> | undefined;
+
+          if (typed?.preferredLocale) {
+            return {
+              ...currentState,
+              ...typed,
+            };
+          }
+
+          return {
+            ...currentState,
+            ...typed,
+            preferredLocale: getDefaultLocale(),
+          };
+        },
       },
     ),
   )
