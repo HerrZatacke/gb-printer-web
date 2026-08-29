@@ -6,11 +6,11 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "dev": "concurrently \"tsx watch src/index.ts\" \"tsc-alias --watch\"",
+    "build": "rimraf dist && tsc && tsc-alias --resolve-full-paths",
+    "dev": "cross-env NODE_ENV=development concurrently \"tsx watch --env-file=.env src/index.ts\" \"tsc-alias --watch\"",
     "lint": "eslint .",
     "drizzle:generate": "npx drizzle-kit generate --config drizzle.config.ts",
-    "start": "node dist/index.js"
+    "start": "cross-env NODE_ENV=production node --env-file=.env dist/index.js"
   },
   "dependencies": {
     "@fastify/autoload": "catalog:",
@@ -20,6 +20,7 @@
     "@types/better-sqlite3": "catalog:",
     "@types/ws": "catalog:",
     "better-sqlite3":  "catalog:",
+    "cross-env": "catalog:",
     "drizzle-kit":  "catalog:",
     "drizzle-orm": "catalog:",
     "fastify": "catalog:",

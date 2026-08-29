@@ -54,6 +54,7 @@ catalog:
   chunk: 0.0.3
   comlink: ^4.4.2
   concurrently: ^10.0.4
+  cross-env: ^10.1.0
   dayjs: ^1.11.21
   defu: ^6.1.7
   drizzle-kit: ^0.31.10
