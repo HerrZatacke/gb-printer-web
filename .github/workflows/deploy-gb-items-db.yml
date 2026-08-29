@@ -37,7 +37,7 @@ jobs:
 
       - name: Check if tag already exists 🏷
         id: checkTag
-        uses: mukunku/tag-exists-action@v1.6.0
+        uses: mukunku/tag-exists-action@v1.7.0
         with:
           tag: gb-items-db-${{ env.RELEASE_VERSION }}
 
@@ -67,7 +67,7 @@ jobs:
 
       - name: Create tag 🏷
         if: steps.checkTag.outputs.exists == 'false'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         with:
