@@ -1,0 +1,14 @@
+services:
+  gb-items-db:
+    build: .
+    container_name: gb-items-db
+    ports:
+      - "3001:3001"
+    environment:
+      GB_ITEMS_DB_ALLOWED_ORIGINS: https://herrzatacke.github.io/
+      GB_ITEMS_DB_PORT: "3001"
+    volumes:
+      - gb-items-db-data:/app/packages/gb-items-db/database
+
+volumes:
+  gb-items-db-data:

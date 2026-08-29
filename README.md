@@ -11,6 +11,12 @@ You can run this image and use it's URL on the settings page to have a shared da
 > There is no password protection or authorization.  
 > Use this image if you know what you are doing.
 
+Build image and start containter locally
+```bash
+docker compose up -d --build --force-recreate
+```
+
+Use the published package (adjust env vars to your needs)
 ```bash
 docker pull ghcr.io/herrzatacke/gb-items-db:latest
 
