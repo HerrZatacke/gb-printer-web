@@ -128,12 +128,15 @@ export const updateImageGroupAction = async (queryClient: QueryClient, group: Se
     throw new Error('A group cannot be its own parent');
   }
 
-  const { items: allGroups } = await queryClient.fetchQuery({
-    ...imageGroupsListQueryOptions(),
-    // ensure "fresh" dataset
+  const queryOptions = imageGroupsListQueryOptions();
+
+  const { items: freshGroups } = await queryClient.fetchQuery({
+    ...queryOptions,
+    queryKey: [...queryOptions.queryKey, 'fresh-snapshot'],
     staleTime: 0,
   });
-  const changedGroups = computeImageGroupUpdateDiff(allGroups, group, parentGroupId);
+
+  const changedGroups = computeImageGroupUpdateDiff(freshGroups, group, parentGroupId);
 
   const source = await getItemsSource();
   await source.updateImageGroups({ imageGroups: changedGroups, purge: false });
@@ -141,12 +144,15 @@ export const updateImageGroupAction = async (queryClient: QueryClient, group: Se
 
 
 export const moveImagesToGroupAction = async (queryClient: QueryClient, images: string[], targetImageGroupId?: string): Promise<void> => {
-  const { items: allGroups } = await queryClient.fetchQuery({
-    ...imageGroupsListQueryOptions(),
-    // ensure "fresh" dataset
+  const queryOptions = imageGroupsListQueryOptions();
+
+  const { items: freshGroups } = await queryClient.fetchQuery({
+    ...queryOptions,
+    queryKey: [...queryOptions.queryKey, 'fresh-snapshot'],
     staleTime: 0,
   });
-  const newImageParentGroup = (targetImageGroupId && allGroups.find((g) => g.id === targetImageGroupId)) || null;
+
+  const newImageParentGroup = (targetImageGroupId && freshGroups.find((g) => g.id === targetImageGroupId)) || null;
 
   let changedGroups: SerializableImageGroup[];
 
@@ -157,10 +163,10 @@ export const moveImagesToGroupAction = async (queryClient: QueryClient, images: 
     };
 
     // no parentGroupId needed, because group is not being moved
-    changedGroups = computeImageGroupUpdateDiff(allGroups, changedGroup);
+    changedGroups = computeImageGroupUpdateDiff(freshGroups, changedGroup);
   } else {
     // No group found to move images to, just remove them from all groups (=move to root)
-    changedGroups = removeImagesFromGroups(allGroups, images);
+    changedGroups = removeImagesFromGroups(freshGroups, images);
   }
 
   const source = await getItemsSource();

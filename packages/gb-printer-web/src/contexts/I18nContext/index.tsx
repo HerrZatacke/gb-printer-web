@@ -22,6 +22,7 @@ export function I18nProvider({ children }: PropsWithChildren) {
   }, [preferredLocale, setPreferredLocale]);
 
   useEffect(() => {
+    let cancelled = false;
     const set = async () => {
       let langFile = preferredLocale.split('-')[0];
 
@@ -31,12 +32,20 @@ export function I18nProvider({ children }: PropsWithChildren) {
 
       const localeMessages = (await import(`@/i18n/messages/${langFile}.json`)).default;
 
+      if (cancelled) {
+        return;
+      }
+
       setMessages(defu(localeMessages, messagesEn));
       setLocale(preferredLocale);
       setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
     };
 
     set();
+
+    return () => {
+      cancelled = true;
+    };
   }, [preferredLocale]);
 
   return (
