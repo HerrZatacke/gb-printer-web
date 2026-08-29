@@ -1,3 +1,26 @@
+CREATE TABLE `binary_frames` (
+	`key` text PRIMARY KEY NOT NULL,
+	`value` text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `binary_images` (
+	`key` text PRIMARY KEY NOT NULL,
+	`value` text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `frames` (
+	`id` text PRIMARY KEY NOT NULL,
+	`hash` text NOT NULL,
+	`name` text NOT NULL,
+	`lines` integer DEFAULT 360 NOT NULL
+);
+--> statement-breakpoint
+CREATE INDEX `idx_frames_hash` ON `frames` (`hash`);--> statement-breakpoint
+CREATE TABLE `frame_groups` (
+	`id` text PRIMARY KEY NOT NULL,
+	`name` text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `image_references` (
 	`source_hash` text NOT NULL,
 	`referenced_hash` text NOT NULL,
@@ -47,4 +70,20 @@ CREATE TABLE `image_groups` (
 	`special_tags` text DEFAULT '[]',
 	`palettes` text DEFAULT '[]',
 	`frames` text DEFAULT '[]'
+);
+--> statement-breakpoint
+CREATE TABLE `palettes` (
+	`short_name` text PRIMARY KEY NOT NULL,
+	`name` text NOT NULL,
+	`palette` text NOT NULL,
+	`origin` text DEFAULT '' NOT NULL,
+	`is_predefined` integer DEFAULT false NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `plugins` (
+	`url` text PRIMARY KEY NOT NULL,
+	`config` text,
+	`name` text DEFAULT '' NOT NULL,
+	`description` text DEFAULT '' NOT NULL,
+	`config_params` text
 );

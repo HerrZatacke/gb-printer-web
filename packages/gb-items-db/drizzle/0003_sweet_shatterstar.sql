@@ -1,1 +1,0 @@
-CREATE INDEX `idx_frames_hash` ON `frames` (`hash`);
