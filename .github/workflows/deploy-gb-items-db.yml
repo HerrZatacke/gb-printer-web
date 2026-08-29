@@ -2,7 +2,7 @@ name: Deploy gb-items-db
 
 on:
   push:
-    branches: [ master, feature/fastify ]
+    branches: [ master ]
     paths:
       - 'packages/gb-printer-web/**'
       - 'packages/gb-items-db/**'
