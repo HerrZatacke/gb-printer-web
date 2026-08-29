@@ -33,7 +33,7 @@ jobs:
 
       - name: Add release version to environment variables 🌍
         run: |
-          node -e "console.log('RELEASE_VERSION=' + require('./packages/gb-items-db/package.json').version + '|' + require('./packages/gb-printer-web/package.json').version)" >> $GITHUB_ENV
+          node -e "console.log('RELEASE_VERSION=' + require('./packages/gb-items-db/package.json').version + '-' + require('./packages/gb-printer-web/package.json').version)" >> $GITHUB_ENV
 
       - name: Check if tag already exists 🏷
         id: checkTag
