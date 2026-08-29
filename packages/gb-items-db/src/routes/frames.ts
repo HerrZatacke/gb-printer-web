@@ -12,25 +12,25 @@ import { EndpointUrls } from '@/endpointUrls';
 
 const framesRoutes: FastifyPluginAsync = async (app) => {
   app.post(EndpointUrls.POST_FRAMES, async (): Promise<ItemsSourceTotalResponse<Frame>> => {
-    return app.itemsSource.getFrames();
+    return app.createItemsSource('unknown').getFrames();
   });
 
   app.post(EndpointUrls.POST_FRAMES_BYHASHES, async (request): Promise<ItemsSourceTotalResponse<Frame>> => {
-    return app.itemsSource.getFramesByHashes(request.body as GetFramesByHashesParams);
+    return app.createItemsSource('unknown').getFramesByHashes(request.body as GetFramesByHashesParams);
   });
 
   app.post(EndpointUrls.POST_FRAMES_BYIDS, async (request): Promise<ItemsSourceTotalResponse<Frame>> => {
-    return app.itemsSource.getFramesByIds(request.body as GetFramesByIdsParams);
+    return app.createItemsSource('unknown').getFramesByIds(request.body as GetFramesByIdsParams);
   });
 
   app.post(EndpointUrls.POST_FRAMES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.itemsSource.updateFrames(request.body as UpdateFramesParams);
+    const response = app.createItemsSource('unknown').updateFrames(request.body as UpdateFramesParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });
 
   app.post(EndpointUrls.POST_FRAMES_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.itemsSource.deleteFramesByIds(request.body as DeleteFramesByIdsParams);
+    const response = app.createItemsSource('unknown').deleteFramesByIds(request.body as DeleteFramesByIdsParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });

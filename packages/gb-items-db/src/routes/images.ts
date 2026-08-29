@@ -18,37 +18,37 @@ import { EndpointUrls } from '@/endpointUrls';
 
 const imagesRoutes: FastifyPluginAsync = async (app) => {
   app.post(EndpointUrls.POST_IMAGES, async (request): Promise<ItemsSourceResponse<Image>> => {
-    return app.itemsSource.getImages(request.body as GetImagesParams);
+    return app.createItemsSource('unknown').getImages(request.body as GetImagesParams);
   });
 
   app.post(EndpointUrls.POST_IMAGES_TAGS, async (): Promise<ItemsSourceTotalResponse<string>> => {
-    return app.itemsSource.getAllTags();
+    return app.createItemsSource('unknown').getAllTags();
   });
 
   app.post(EndpointUrls.POST_IMAGES_BYHASHES, async (request): Promise<ItemsSourceResponse<Image>> => {
-    return app.itemsSource.getImagesByHashes(request.body as GetImagesByHashesParams);
+    return app.createItemsSource('unknown').getImagesByHashes(request.body as GetImagesByHashesParams);
   });
 
   app.post(EndpointUrls.POST_IMAGES_BYANYHASHES, async (request): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
-    return app.itemsSource.getImagesByAnyHashes(request.body as GetImagesByAnyHashesParams);
+    return app.createItemsSource('unknown').getImagesByAnyHashes(request.body as GetImagesByAnyHashesParams);
   });
 
   app.post(EndpointUrls.POST_IMAGES_HASHESBYGROUPID, async (request): Promise<ItemsSourceTotalResponse<string>> => {
-    return app.itemsSource.getHashesByGroupId(request.body as GetHashesByGroupIdParams);
+    return app.createItemsSource('unknown').getHashesByGroupId(request.body as GetHashesByGroupIdParams);
   });
 
   app.post(EndpointUrls.POST_IMAGES_GROUPITEMSBYGROUPID, async (request): Promise<ItemsSourceResponse<GroupItem>> => {
-    return app.itemsSource.getGroupItemsByGroupId(request.body as GetGroupItemsByGroupIdParams);
+    return app.createItemsSource('unknown').getGroupItemsByGroupId(request.body as GetGroupItemsByGroupIdParams);
   });
 
   app.post(EndpointUrls.POST_IMAGES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.itemsSource.updateImages(request.body as UpdateImagesParams);
+    const response = app.createItemsSource('unknown').updateImages(request.body as UpdateImagesParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });
 
   app.post(EndpointUrls.POST_IMAGES_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.itemsSource.deleteImagesByHashes(request.body as DeleteImagesByHashesParams);
+    const response = app.createItemsSource('unknown').deleteImagesByHashes(request.body as DeleteImagesByHashesParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });

@@ -15,13 +15,14 @@ import { createDrizzleRepository, createIndexedDrizzleRepository } from '@/repos
 
 export const createRepositories = (
   db: BetterSQLite3Database,
+  ownerId: string,
 ): Repositories => ({
-  [ItemStoreNames.IMAGES]: createIndexedDrizzleRepository(db, imagesConfig),
-  [ItemStoreNames.FRAMES]: createIndexedDrizzleRepository(db, framesConfig),
-  [ItemStoreNames.FRAMEGROUPS]: createDrizzleRepository(db, frameGroupsConfig),
-  [ItemStoreNames.IMAGEGROUPS]: createDrizzleRepository(db, imageGroupsConfig),
-  [ItemStoreNames.PALETTES]: createDrizzleRepository(db, palettesConfig),
-  [ItemStoreNames.PLUGINS]: createDrizzleRepository(db, pluginsConfig),
-  [ItemStoreNames.BINARYIMAGES]: createDrizzleRepository(db, binaryImagesConfig),
-  [ItemStoreNames.BINARYFRAMES]: createDrizzleRepository(db, binaryFramesConfig),
+  [ItemStoreNames.IMAGES]: createIndexedDrizzleRepository(db, ownerId, imagesConfig),
+  [ItemStoreNames.FRAMES]: createIndexedDrizzleRepository(db, ownerId, framesConfig),
+  [ItemStoreNames.FRAMEGROUPS]: createDrizzleRepository(db, ownerId, frameGroupsConfig),
+  [ItemStoreNames.IMAGEGROUPS]: createDrizzleRepository(db, ownerId, imageGroupsConfig),
+  [ItemStoreNames.PALETTES]: createDrizzleRepository(db, ownerId, palettesConfig),
+  [ItemStoreNames.PLUGINS]: createDrizzleRepository(db, ownerId, pluginsConfig),
+  [ItemStoreNames.BINARYIMAGES]: createDrizzleRepository(db, ownerId, binaryImagesConfig),
+  [ItemStoreNames.BINARYFRAMES]: createDrizzleRepository(db, ownerId, binaryFramesConfig),
 });
