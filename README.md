@@ -2,7 +2,24 @@
 
 Game Boy Camera Gallery is a web app to organise, edit and share shots taken with the Game Boy Camera.
 
+## Standalone web version
 Check the [published version on GitHub-Pages](https://herrzatacke.github.io/gb-printer-web/)
+
+## Published Docker image _API ONLY_ (experimental)
+You can run this image and use it's URL on the settings page to have a shared database.
+> This is currently a __single user__ setup.  
+> There is no password protection or authorization.  
+> Use this image if you know what you are doing.
+
+```bash
+docker pull ghcr.io/herrzatacke/gb-items-db:latest
+
+docker run -p 3001:3001 `
+  -e GB_ITEMS_DB_ALLOWED_ORIGINS=https://herrzatacke.github.io/ `
+  -e GB_ITEMS_DB_PORT=3001 `
+  -v gb-items-db-data:/app/packages/gb-items-db/database `
+  ghcr.io/herrzatacke/gb-items-db:latest
+```
 
 ## Workspace
 
