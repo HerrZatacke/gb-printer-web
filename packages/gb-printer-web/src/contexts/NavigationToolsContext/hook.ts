@@ -7,7 +7,7 @@ import { useGalleryTreeContext } from '@/contexts/GalleryTreeContext';
 import { collectGroupsByFullSlug, collectGroupsById } from '@/contexts/GalleryTreeContext/reducePaths';
 import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import { useUrl } from '@/hooks/useUrl';
-import { imageGroupsFullTreeQueryOptions } from '@/stores/items/queries/imageGroups';
+import { imageGroupsFullTreeQueryOptions, imageGroupsListQueryOptions } from '@/stores/items/queries/imageGroups';
 import { hashesByGroupIdQueryOptions } from '@/stores/items/queries/images';
 import { useSettingsStore } from '@/stores/stores';
 import { cleanFullSlug } from '@/tools/cleanSlug';
@@ -52,8 +52,11 @@ export const useContextHook = (): UseNavigationTools => {
       return getUrl({ pageIndex, group: '' });
     }
 
+    const queryOptions = imageGroupsFullTreeQueryOptions();
+
     const { item: root } = await queryClient.fetchQuery({
-      ...imageGroupsFullTreeQueryOptions(),
+      ...queryOptions,
+      queryKey: [...queryOptions.queryKey, 'fresh-snapshot'],
       staleTime: 0,
     });
 

@@ -96,6 +96,7 @@ const useEditImageGroup = (): UseEditImageGroup => {
   const [parentSlug, setParentSlug] = useState<string>('');
 
   useEffect(() => {
+    let cancelled = false;
     const prepareInitialValues = async (): Promise<InitialEditValues> => {
       switch (editMode) {
         case EditMode.CREATE_NEW: {
@@ -111,8 +112,11 @@ const useEditImageGroup = (): UseEditImageGroup => {
         }
 
         case EditMode.EDIT_EXISTING: {
+          const queryOptions = imageGroupsListQueryOptions();
+
           const { items: freshGroups } = await queryClient.fetchQuery({
-            ...imageGroupsListQueryOptions(),
+            ...queryOptions,
+            queryKey: [...queryOptions.queryKey, 'fresh-snapshot'],
             staleTime: 0,
           });
 
@@ -144,6 +148,10 @@ const useEditImageGroup = (): UseEditImageGroup => {
 
     prepareInitialValues()
       .then((initial) => {
+        if (cancelled) {
+          return;
+        }
+
         setInitialValues(initial);
         setTitle(initial.title);
         setIsFavourite(initial.isFavourite);
@@ -152,7 +160,10 @@ const useEditImageGroup = (): UseEditImageGroup => {
         setParentSlug(initial.parentGroup?.fullSlug || '');
       });
 
-    return () => setInitialValues(null);
+    return () => {
+      cancelled = true;
+      setInitialValues(null);
+    };
   }, [editImageGroup, editMode, queryClient, groupsById, view]);
 
   const absoluteSlug = useMemo(() => {
