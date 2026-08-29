@@ -4,16 +4,17 @@ on:
   push:
     branches: [ master, feature/fastify ]
     paths:
+      - 'packages/gb-printer-web/**'
       - 'packages/gb-items-db/**'
       - 'packages/gb-items-source/**'
       - 'packages/gb-printer-schemas/**'
       - 'Dockerfile'
       - 'pnpm-lock.yaml'
+      - .github/workflows/deploy-gb-items-db.yml
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/gb-items-db
 
 jobs:
   build-and-push:
@@ -25,6 +26,10 @@ jobs:
     steps:
       - name: Checkout 💳
         uses: actions/checkout@v4
+
+      - name: Set lowercase image name 🔡
+        run: |
+          echo "IMAGE_NAME=$(echo '${{ github.repository_owner }}/gb-items-db' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Add release version to environment variables 🌍
         run: |
