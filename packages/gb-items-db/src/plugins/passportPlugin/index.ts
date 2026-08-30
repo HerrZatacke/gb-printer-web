@@ -1,0 +1,109 @@
+import fastifyPassport from '@fastify/passport';
+import fastifySecureSession from '@fastify/secure-session';
+import { Strategy as DiscordStrategy, DiscordScope } from 'discord-strategy';
+import { type FastifyInstance } from 'fastify';
+import fp from 'fastify-plugin';
+
+declare module 'fastify' {
+  interface PassportUser {
+    id: string;
+  }
+}
+
+const publicPathPrefixes = ['/health', '/auth', '/gb-items-db'];
+
+export default fp(async (app: FastifyInstance) => {
+  const sessionSecretKey = process.env.SESSION_SECRET_KEY;
+  const isDevMode = process.env.NODE_ENV === 'development';
+  const appPublicOrigin = process.env.GB_ITEMS_PUBLIC_ORIGIN || '';
+  const discordClientId = process.env.DISCORD_CLIENT_ID;
+  const discordClientSecret = process.env.DISCORD_CLIENT_SECRET;
+  const discordCallbackUrl = process.env.DISCORD_CALLBACK_URL;
+
+  if (!discordClientId || !discordClientSecret || !discordCallbackUrl) {
+    app.log.warn('[auth] Discord OAuth2 environment variables are not set — running without authentication.');
+    return;
+  }
+
+  if (!appPublicOrigin) {
+    throw new Error('GB_ITEMS_PUBLIC_ORIGIN environment variable is not set');
+  }
+
+  if (!sessionSecretKey) {
+    throw new Error('SESSION_SECRET_KEY environment variable is not set');
+  }
+
+  await app.register(fastifySecureSession, {
+    key: Buffer.from(sessionSecretKey, 'hex'),
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      secure: !isDevMode,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    },
+  });
+
+  fastifyPassport.use(
+    'discord',
+    new DiscordStrategy(
+      {
+        authorizationURL: 'https://discord.com/api/oauth2/authorize',
+        tokenURL: 'https://discord.com/api/oauth2/token',
+        clientID: discordClientId,
+        clientSecret: discordClientSecret,
+        callbackURL: `${appPublicOrigin}${discordCallbackUrl}`,
+        scope: [DiscordScope.Identify, DiscordScope.Email],
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        done(null, profile);
+      },
+    ),
+  );
+
+  fastifyPassport.registerUserSerializer(async (user: { id: string }) => {
+    return user.id;
+  });
+
+  fastifyPassport.registerUserDeserializer(async (id: string) => {
+    return { id };
+  });
+
+  await app.register(fastifyPassport.initialize());
+  await app.register(fastifyPassport.secureSession());
+
+  app.addHook('preValidation', async (request, response) => {
+    const requestPath = request.url.split('?')[0];
+
+    if (publicPathPrefixes.some((prefix) => requestPath.startsWith(prefix))) {
+      return;
+    }
+
+    if (!request.isAuthenticated()) {
+      response.redirect('/auth');
+    }
+  });
+
+  app.get(
+    '/auth/discord',
+    { preValidation: fastifyPassport.authenticate('discord') },
+    async () => {},
+  );
+
+  app.get(
+    '/auth/discord/callback',
+    {
+      preValidation: fastifyPassport.authenticate('discord', {
+        successRedirect: '/',
+        failureRedirect: '/auth/failed',
+      }),
+    },
+    async () => {},
+  );
+
+  app.get('/auth/logout', async (request, response) => {
+    await request.logOut();
+    request.session.delete();
+    return response.sendFile('auth/logout/index.html');
+  });
+});
