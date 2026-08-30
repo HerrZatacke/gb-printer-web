@@ -18,6 +18,10 @@ export default fp(async (app: FastifyInstance) => {
   const appPublicOrigin = process.env.GB_ITEMS_PUBLIC_ORIGIN || '';
   const discordClientId = process.env.DISCORD_CLIENT_ID;
   const discordClientSecret = process.env.DISCORD_CLIENT_SECRET;
+  const allowedUserIds = (process.env.DISCORD_ALLOWED_USER_IDS || '')
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean);
   const discordCallbackUrl = '/auth/discord/callback';
 
   if (!discordClientId || !discordClientSecret) {
@@ -56,6 +60,11 @@ export default fp(async (app: FastifyInstance) => {
         scope: [DiscordScope.Identify, DiscordScope.Email],
       },
       async (accessToken, refreshToken, profile, done) => {
+        if (allowedUserIds.length > 0 && !allowedUserIds.includes(profile.id)) {
+          done(null, false);
+          return;
+        }
+
         done(null, profile);
       },
     ),
