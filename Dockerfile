@@ -33,6 +33,7 @@ COPY packages/gb-items-db/src/endpointUrls/index.ts ./packages/gb-items-db/src/e
 ENV NEXT_PUBLIC_DROPBOX_APP_KEY=""
 ENV NEXT_PUBLIC_DROPBOX_APP_PATH=""
 ENV NEXT_PUBLIC_BASE_PATH=""
+ENV NEXT_PUBLIC_AUTOMATIC_REMOTE_STORAGE="1"
 ENV NEXT_PUBLIC_UMAMI_SRC=""
 ENV NEXT_PUBLIC_UMAMI_WEBSITE_ID=""
 RUN pnpm --filter gb-printer-web build

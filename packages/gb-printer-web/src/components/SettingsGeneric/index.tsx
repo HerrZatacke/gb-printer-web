@@ -1,12 +1,15 @@
 'use client';
 
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Stack from '@mui/material/Stack';
-import Switch from '@mui/material/Switch';
-import TextField from '@mui/material/TextField';
+import {
+  Button,
+  ButtonGroup,
+  FormControlLabel,
+  MenuItem,
+  Stack,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Date } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
@@ -43,6 +46,8 @@ const clickActionMenuOptions: ClickActionOption[] = [
     value: GalleryClickAction.VIEW,
   },
 ];
+
+const remoteStorageIsAutomatic = process.env.NEXT_PUBLIC_AUTOMATIC_REMOTE_STORAGE === '1';
 
 function SettingsGeneric() {
   const {
@@ -295,23 +300,36 @@ function SettingsGeneric() {
         }
       </TextField>
 
-      <ButtonGroup
-        variant="outlined"
-        color="secondary"
+      <Stack
+        direction="column"
+        sx={{
+          gap: 1,
+        }}
       >
-        <Button
-          onClick={() => setShowRemoteStorageDialog(true)}
-          disabled={Boolean(remoteStorageUrl)}
+        {Boolean(remoteStorageUrl) && (
+          <Typography variant="body2">{t('remoteStorageCurrentUrl', { remoteStorageUrl })}</Typography>
+        )}
+        {remoteStorageIsAutomatic && (
+          <Typography variant="caption">{t('remoteStorageIsAutomatic')}</Typography>
+        )}
+        <ButtonGroup
+          variant="outlined"
+          color="secondary"
         >
-          {t('connectRemoteStorage')}
-        </Button>
-        <Button
-          onClick={() => setRemoteStorageUrl('')}
-          disabled={!remoteStorageUrl}
-        >
-          {t('removeRemoteStorage')}
-        </Button>
-      </ButtonGroup>
+          <Button
+            onClick={() => setShowRemoteStorageDialog(true)}
+            disabled={Boolean(remoteStorageUrl) || remoteStorageIsAutomatic}
+          >
+            {t('connectRemoteStorage')}
+          </Button>
+          <Button
+            onClick={() => setRemoteStorageUrl('')}
+            disabled={!remoteStorageUrl || remoteStorageIsAutomatic}
+          >
+            {t('removeRemoteStorage')}
+          </Button>
+        </ButtonGroup>
+      </Stack>
 
       <EnableWebUSB />
 
