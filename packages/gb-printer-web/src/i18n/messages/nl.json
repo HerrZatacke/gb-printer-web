@@ -495,6 +495,8 @@
       "fr-FR": "Frans – Frankrijk (fr-FR)"
     },
     "preferredLocale": "Voorkeurstaal",
+    "remoteStorageCurrentUrl": "Je bent momenteel verbonden met {remoteStorageUrl}",
+    "remoteStorageIsAutomatic": "Automatische configuratie",
     "removeRemoteStorage": "Externe opslag verwijderen",
     "resetTrackingConsent": "Analyse-/trackingtoestemming opnieuw instellen (momenteel {consentState, select, accepted {actief} other {inactief}})",
     "sortPalettes": "Paletten sorteren"

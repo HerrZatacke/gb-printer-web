@@ -19,6 +19,7 @@ import { tableByStoreName } from '@/repository/tablesByStoreName';
 
 export const createDrizzleRepository = <TValue, TKey extends string = string>(
   db: BetterSQLite3Database,
+  ownerId: string,
   config: EntityConfig<TValue, TKey>,
 ): ItemRepository<TValue, TKey> => {
   const { storeName, hasKeyPath } = config;
@@ -124,9 +125,10 @@ export const createDrizzleRepository = <TValue, TKey extends string = string>(
 
 export const createIndexedDrizzleRepository = <TValue, TKey extends string = string>(
   db: BetterSQLite3Database,
+  ownerId: string,
   config: EntityConfig<TValue, TKey>,
 ): IndexedItemRepository<TValue, TKey> => {
-  const base = createDrizzleRepository(db, config);
+  const base = createDrizzleRepository(db, ownerId, config);
   const { storeName, keyOf } = config;
   const table = tableByStoreName[storeName];
 

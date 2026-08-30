@@ -495,6 +495,8 @@
       "fr-FR": "Franska – Frankrike (fr-FR)"
     },
     "preferredLocale": "Föredraget språk",
+    "remoteStorageCurrentUrl": "Du är just nu ansluten till {remoteStorageUrl}",
+    "remoteStorageIsAutomatic": "Automatisk konfiguration",
     "removeRemoteStorage": "Ta bort fjärrlagring",
     "resetTrackingConsent": "Återställ analys-/spårningssamtycke (för närvarande {consentState, select, accepted {aktiv} other {inaktiv}})",
     "sortPalettes": "Sortera paletter"

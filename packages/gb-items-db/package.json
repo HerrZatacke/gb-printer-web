@@ -1,6 +1,6 @@
 {
   "name": "gb-items-db",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -16,6 +16,9 @@
     "@fastify/autoload": "catalog:",
     "@fastify/cors": "catalog:",
     "@fastify/static": "catalog:",
+    "@fastify/passport": "catalog:",
+    "@fastify/secure-session": "catalog:",
+    "discord-strategy": "catalog:",
     "@fastify/websocket": "catalog:",
     "@types/better-sqlite3": "catalog:",
     "@types/ws": "catalog:",
@@ -33,6 +36,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@types/passport-oauth2": "catalog:",
     "concurrently": "catalog:",
     "rimraf": "catalog:",
     "tsc-alias": "catalog:",

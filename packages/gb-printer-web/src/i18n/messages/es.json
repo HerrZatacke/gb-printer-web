@@ -495,6 +495,8 @@
       "fr-FR": "Francés – Francia (fr-FR)"
     },
     "preferredLocale": "Idioma preferido",
+    "remoteStorageCurrentUrl": "Actualmente estás conectado/a a {remoteStorageUrl}",
+    "remoteStorageIsAutomatic": "Configuración automática",
     "removeRemoteStorage": "Eliminar almacenamiento remoto",
     "resetTrackingConsent": "Restablecer consentimiento de análisis/seguimiento (actualmente {consentState, select, accepted {activo} other {inactivo}})",
     "sortPalettes": "Ordenar paletas"

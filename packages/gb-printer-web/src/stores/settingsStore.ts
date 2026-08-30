@@ -188,10 +188,13 @@ export const createSettingsStore = () => (
         merge: (persistedState, currentState) => {
           const typed = persistedState as Partial<SettingsState> | undefined;
 
+          const remoteStorageUrl = process.env.NEXT_PUBLIC_AUTOMATIC_REMOTE_STORAGE === '1' ? window.origin : typed?.remoteStorageUrl || '';
+
           if (typed?.preferredLocale) {
             return {
               ...currentState,
               ...typed,
+              remoteStorageUrl,
             };
           }
 
@@ -199,6 +202,7 @@ export const createSettingsStore = () => (
             ...currentState,
             ...typed,
             preferredLocale: getDefaultLocale(),
+            remoteStorageUrl,
           };
         },
       },
