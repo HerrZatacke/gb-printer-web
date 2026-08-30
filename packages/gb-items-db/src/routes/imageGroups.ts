@@ -16,6 +16,7 @@ const imageGroupsRoutes: FastifyPluginAsync = async (app) => {
   });
 
   app.post(EndpointUrls.POST_IMAGEGROUPS_TREE, async (request): Promise<RootItemSourceResponse<TreeImageGroup>> => {
+    request.session.touch();
     return app.createItemsSource(request.user?.id).getImageGroupsFullTree();
   });
 
