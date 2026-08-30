@@ -32,6 +32,19 @@ docker run -p 3001:3001 `
   ghcr.io/herrzatacke/gb-items-db:latest
 ```
 
+### Variables
+> If `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` are left unset, the app runs with no authentication at all — intended for setups where access is restricted some other way (e.g. a reverse proxy, VPN, or network-level restriction).
+
+| Variable                      | Required                   | Description                                                                                                                                                                                                             |
+|-------------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GB_ITEMS_DB_ALLOWED_ORIGINS` | Yes                        | Comma-separated list of origins allowed to make CORS requests to the API (e.g. the URL your frontend is hosted at).                                                                                                     |
+| `GB_ITEMS_DB_PORT`            | Yes                        | Port the server listens on inside the container.                                                                                                                                                                        |
+| `GB_ITEMS_PUBLIC_ORIGIN`      | Only if using Discord auth | The public URL the app is reachable at (e.g. `https://your-domain.example`). Used to build the Discord OAuth2 callback URL.                                                                                             |
+| `SESSION_SECRET_KEY`          | Only if using Discord auth | 32-byte hex key used to encrypt session cookies. Generate with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. Keep this secret and stable — changing it invalidates all existing sessions. |
+| `DISCORD_CLIENT_ID`           | Only if using Discord auth | Client ID from your Discord application, used to initiate the OAuth2 login flow.                                                                                                                                        |
+| `DISCORD_CLIENT_SECRET`       | Only if using Discord auth | Client secret from your Discord application. Keep this secret.                                                                                                                                                          |
+| `DISCORD_ALLOWED_USER_IDS`    | No                         | Comma-separated whitelist of Discord user IDs allowed to log in. Leave unset to allow any Discord account.                                                                                                              |
+
 ## Workspace
 
 This repository is a pnpm workspace containing the packages that make up gb-printer-web.

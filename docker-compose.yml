@@ -4,9 +4,17 @@ services:
     container_name: gb-items-db
     ports:
       - "3001:3001"
+    env_file:
+      - path: ./packages/gb-items-db/.env
+        required: false
     environment:
-      GB_ITEMS_DB_ALLOWED_ORIGINS: https://herrzatacke.github.io/
-      GB_ITEMS_DB_PORT: "3001"
+        GB_ITEMS_DB_ALLOWED_ORIGINS: https://herrzatacke.github.io/
+        GB_ITEMS_DB_PORT: "3001"
+        # GB_ITEMS_PUBLIC_ORIGIN: https://your-domain.example
+        # SESSION_SECRET_KEY: your-64-character-hex-key
+        # DISCORD_CLIENT_ID: your-discord-client-id
+        # DISCORD_CLIENT_SECRET: your-discord-client-secret
+        # DISCORD_ALLOWED_USER_IDS: 123456789012345678,234567890123456789
     volumes:
       - gb-items-db-data:/app/packages/gb-items-db/database
 
