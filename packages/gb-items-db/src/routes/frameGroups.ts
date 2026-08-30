@@ -9,18 +9,18 @@ import {
 import { EndpointUrls } from '@/endpointUrls';
 
 const frameGroupsRoutes: FastifyPluginAsync = async (app) => {
-  app.post(EndpointUrls.POST_FRAMEGROUPS, async (): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
-    return app.createItemsSource('unknown').getFrameGroups();
+  app.post(EndpointUrls.POST_FRAMEGROUPS, async (request): Promise<ItemsSourceTotalResponse<FrameGroup>> => {
+    return app.createItemsSource(request.user?.id).getFrameGroups();
   });
 
   app.post(EndpointUrls.POST_FRAMEGROUPS_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.createItemsSource('unknown').updateFrameGroups(request.body as UpdateFrameGroupsParams);
+    const response = app.createItemsSource(request.user?.id).updateFrameGroups(request.body as UpdateFrameGroupsParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });
 
   app.post(EndpointUrls.POST_FRAMEGROUPS_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.createItemsSource('unknown').deleteFrameGroupsByIds(request.body as DeleteFrameGroupsByIdsParams);
+    const response = app.createItemsSource(request.user?.id).deleteFrameGroupsByIds(request.body as DeleteFrameGroupsByIdsParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });

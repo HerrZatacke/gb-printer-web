@@ -6,13 +6,13 @@ import { createRepositories } from '@/repository/createRepositories';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    createItemsSource: (ownerId: string) => ItemsSource;
+    createItemsSource: (ownerId?: string) => ItemsSource;
   }
 }
 
 const itemsSourcePlugin: FastifyPluginAsync = async (app) => {
-  const createItemsSource = (ownerId: string) => {
-    const repositories = createRepositories(db, ownerId);
+  const createItemsSource = (ownerId?: string) => {
+    const repositories = createRepositories(db, ownerId || 'anonymous');
     return new ItemsSourceApi(repositories) as unknown as ItemsSource;
   };
 

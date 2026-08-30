@@ -11,18 +11,18 @@ const statsRoutes: FastifyPluginAsync = async (app) => {
     return 'ok';
   });
 
-  app.get(EndpointUrls.GET_STATS, async (): Promise<ItemsStatsResponse> => {
-    return app.createItemsSource('unknown').getStats();
+  app.get(EndpointUrls.GET_STATS, async (request): Promise<ItemsStatsResponse> => {
+    return app.createItemsSource(request.user?.id).getStats();
   });
 
   app.get(EndpointUrls.GET_MAINTENANCE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.createItemsSource('unknown').runMaintenance();
+    const response = app.createItemsSource(request.user?.id).runMaintenance();
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });
 
-  app.get(EndpointUrls.GET_USAGES, async (): Promise<ItemsUsageReponse> => {
-    return app.createItemsSource('unknown').getUsages();
+  app.get(EndpointUrls.GET_USAGES, async (request): Promise<ItemsUsageReponse> => {
+    return app.createItemsSource(request.user?.id).getUsages();
   });
 };
 

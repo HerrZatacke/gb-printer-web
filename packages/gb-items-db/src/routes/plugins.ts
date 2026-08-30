@@ -11,22 +11,22 @@ import {
 import { EndpointUrls } from '@/endpointUrls';
 
 const pluginsRoutes: FastifyPluginAsync = async (app) => {
-  app.post(EndpointUrls.POST_PLUGINS, async (): Promise<ItemsSourceTotalResponse<Plugin>> => {
-    return app.createItemsSource('unknown').getPlugins();
+  app.post(EndpointUrls.POST_PLUGINS, async (request): Promise<ItemsSourceTotalResponse<Plugin>> => {
+    return app.createItemsSource(request.user?.id).getPlugins();
   });
 
   app.post(EndpointUrls.POST_PLUGINS_BYURLS, async (request): Promise<ItemsSourceResponse<Plugin>> => {
-    return app.createItemsSource('unknown').getPluginsByUrls(request.body as GetPluginsByUrlsParams);
+    return app.createItemsSource(request.user?.id).getPluginsByUrls(request.body as GetPluginsByUrlsParams);
   });
 
   app.post(EndpointUrls.POST_PLUGINS_UPDATE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.createItemsSource('unknown').updatePlugins(request.body as UpdatePluginsParams);
+    const response = app.createItemsSource(request.user?.id).updatePlugins(request.body as UpdatePluginsParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });
 
   app.post(EndpointUrls.POST_PLUGINS_DELETE, async (request): Promise<ItemsMutationReponse> => {
-    const response = app.createItemsSource('unknown').deletePluginsByUrls(request.body as DeletePluginsByUrlsParams);
+    const response = app.createItemsSource(request.user?.id).deletePluginsByUrls(request.body as DeletePluginsByUrlsParams);
     void app.invalidation.broadcastInvalidations(request, response);
     return response;
   });
