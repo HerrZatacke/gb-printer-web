@@ -1,6 +1,6 @@
 # ---- Base ----
-FROM node:24-alpine AS base
-RUN apk add --no-cache python3 make g++
+FROM node:24-slim AS base
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 RUN corepack enable
 WORKDIR /app
 
@@ -48,7 +48,7 @@ COPY packages/gb-items-db/package.json ./packages/gb-items-db/
 RUN pnpm install --frozen-lockfile --prod
 
 # ---- Runtime ----
-FROM node:24-alpine AS runtime
+FROM node:24-slim AS runtime
 WORKDIR /app
 
 COPY --from=prod-deps /app/node_modules ./node_modules
