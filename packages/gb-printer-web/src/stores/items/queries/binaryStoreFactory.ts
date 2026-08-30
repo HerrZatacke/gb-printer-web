@@ -84,7 +84,11 @@ export const createBinaryBlobQueries = (storeLabel: string, sourceApi: BinarySto
   };
 
   const updateAction = async (items: BinaryStoreItem[]): Promise<void> => {
-    await sourceApi.update(items);
+    const chunkSize = 1000;
+    for (let i = 0; i < items.length; i += chunkSize) {
+      const chunk = items.slice(i, i + chunkSize);
+      await sourceApi.update(chunk);
+    }
   };
 
   const deleteByHashesAction = async (hashes: string[]): Promise<void> => {
