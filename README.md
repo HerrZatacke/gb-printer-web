@@ -23,6 +23,11 @@ docker pull ghcr.io/herrzatacke/gb-items-db:latest
 docker run -p 3001:3001 `
   -e GB_ITEMS_DB_ALLOWED_ORIGINS=https://herrzatacke.github.io/ `
   -e GB_ITEMS_DB_PORT=3001 `
+  -e GB_ITEMS_PUBLIC_ORIGIN=https://your-domain.example `
+  -e SESSION_SECRET_KEY=your-64-character-hex-key `
+  -e DISCORD_CLIENT_ID=your-discord-client-id `
+  -e DISCORD_CLIENT_SECRET=your-discord-client-secret `
+  -e DISCORD_ALLOWED_USER_IDS=123456789012345678,234567890123456789 `
   -v gb-items-db-data:/app/packages/gb-items-db/database `
   ghcr.io/herrzatacke/gb-items-db:latest
 ```
