@@ -18,9 +18,9 @@ export default fp(async (app: FastifyInstance) => {
   const appPublicOrigin = process.env.GB_ITEMS_PUBLIC_ORIGIN || '';
   const discordClientId = process.env.DISCORD_CLIENT_ID;
   const discordClientSecret = process.env.DISCORD_CLIENT_SECRET;
-  const discordCallbackUrl = process.env.DISCORD_CALLBACK_URL;
+  const discordCallbackUrl = '/auth/discord/callback';
 
-  if (!discordClientId || !discordClientSecret || !discordCallbackUrl) {
+  if (!discordClientId || !discordClientSecret) {
     app.log.warn('[auth] Discord OAuth2 environment variables are not set — running without authentication.');
     return;
   }
@@ -91,7 +91,7 @@ export default fp(async (app: FastifyInstance) => {
   );
 
   app.get(
-    '/auth/discord/callback',
+    discordCallbackUrl,
     {
       preValidation: fastifyPassport.authenticate('discord', {
         successRedirect: '/',
