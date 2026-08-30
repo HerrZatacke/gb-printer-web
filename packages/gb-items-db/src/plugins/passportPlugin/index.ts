@@ -65,7 +65,7 @@ export default fp(async (app: FastifyInstance) => {
           return;
         }
 
-        done(null, profile);
+        done(null, { id: `discord:${profile.id}` });
       },
     ),
   );
