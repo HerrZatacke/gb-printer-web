@@ -3,14 +3,12 @@ import {
   type Image,
   type ImageQueryParams,
   type GroupItem,
-  type ItemsReferenceList,
   type ItemsSourcePaging,
 } from 'gb-printer-schemas';
 import { useCallback } from 'react';
 import { useImageQueryParams } from '@/hooks/useImageQueryParams';
 import {
   imagesAllTagsQueryOptions,
-  imagesByAnyHashesQueryOptions,
   imagesByHashesQueryOptions,
   imagesListQueryOptions,
   imagesRawQueryOptions,
@@ -49,8 +47,6 @@ export interface UseImages {
   isLoadingAllTags: boolean;
   byHashes: Image[];
   isLoadingByHashes: boolean;
-  byAnyHashes: ItemsReferenceList<Image>[];
-  isLoadingByAnyHashes: boolean;
   raw: Image[];
   isLoadingRaw: boolean;
   updateImages: (images: Image[], purge?: boolean) => Promise<void>;
@@ -66,7 +62,6 @@ export const useImages = ({
   hashesGroupIdIncludeGroups,
   allTags,
   hashes,
-  anyHashes,
   raw,
   rawCandidateHashes,
   keepPreviousData: shouldKeepPreviousData = true,
@@ -111,13 +106,6 @@ export const useImages = ({
     retry: false,
   });
 
-  const byAnyHashesQuery = useQuery({
-    ...imagesByAnyHashesQueryOptions(anyHashes || []),
-    enabled: Boolean(anyHashes?.length),
-    placeholderData,
-    retry: false,
-  });
-
   const rawQuery = useQuery({
     ...imagesRawQueryOptions(
       raw || imageQueryParams,
@@ -153,9 +141,6 @@ export const useImages = ({
 
     byHashes: byHashesQuery.data?.items ?? [],
     isLoadingByHashes: byHashesQuery.isLoading,
-
-    byAnyHashes: byAnyHashesQuery.data?.items ?? [],
-    isLoadingByAnyHashes: byAnyHashesQuery.isLoading,
 
     raw: rawQuery.data?.items ?? [],
     isLoadingRaw: rawQuery.isLoading,
