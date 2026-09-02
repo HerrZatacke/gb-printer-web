@@ -11,7 +11,7 @@ declare module 'fastify' {
 }
 
 const itemsSourcePlugin: FastifyPluginAsync = async (app) => {
-  const createItemsSource = (ownerId?: string) => {
+  const createItemsSource = (ownerId?: string): ItemsSource => {
     const repositories = createRepositories(db, ownerId || 'anonymous');
     return new ItemsSourceApi(repositories) as unknown as ItemsSource;
   };
