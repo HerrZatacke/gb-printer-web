@@ -10,7 +10,12 @@ declare module 'fastify' {
   }
 }
 
-const publicPathPrefixes = ['/health', '/auth', '/gb-items-db'];
+const publicPathPrefixes = [
+  '/health', // healthcheck
+  '/auth', // static pages for login/logout/sessions
+  '/gb-items-db', // static assets for local html files (non-webapp)
+  '/fav', // manifest, favicon, etc...
+];
 
 export default fp(async (app: FastifyInstance) => {
   const sessionSecretKey = process.env.SESSION_SECRET_KEY;
