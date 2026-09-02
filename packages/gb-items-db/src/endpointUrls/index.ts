@@ -19,7 +19,6 @@ export const EndpointUrls = {
   POST_IMAGES: '/images',
   POST_IMAGES_TAGS: '/images/tags',
   POST_IMAGES_BYHASHES: '/images/byHashes',
-  POST_IMAGES_BYANYHASHES: '/images/byAnyHashes',
   POST_IMAGES_HASHESBYGROUPID: '/images/hashesByGroupId',
   POST_IMAGES_GROUPITEMSBYGROUPID: '/images/groupItemsByGroupId',
   POST_IMAGES_UPDATE: '/images/update',
@@ -31,7 +30,6 @@ export const EndpointUrls = {
   POST_IMAGEGROUPS_DELETE: '/imageGroups/delete',
 
   POST_FRAMES: '/frames',
-  POST_FRAMES_BYHASHES: '/frames/byHashes',
   POST_FRAMES_BYIDS: '/frames/byIds',
   POST_FRAMES_UPDATE: '/frames/update',
   POST_FRAMES_DELETE: '/frames/delete',
@@ -42,11 +40,13 @@ export const EndpointUrls = {
 
   POST_BINARYIMAGES_BYHASHES: '/binaryImages/byHashes',
   POST_BINARYIMAGES_HASHES: '/binaryImages/hashes',
+  POST_BINARYIMAGES_ORPHANED: '/binaryImages/orphaned',
   POST_BINARYIMAGES_UPDATE: '/binaryImages/update',
   POST_BINARYIMAGES_DELETE: '/binaryImages/delete',
 
   POST_BINARYFRAMES_BYHASHES: '/binaryFrames/byHashes',
   POST_BINARYFRAMES_HASHES: '/binaryFrames/hashes',
+  POST_BINARYFRAMES_ORPHANED: '/binaryFrames/orphaned',
   POST_BINARYFRAMES_UPDATE: '/binaryFrames/update',
   POST_BINARYFRAMES_DELETE: '/binaryFrames/delete',
 } as const;

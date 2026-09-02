@@ -1,6 +1,4 @@
-import z from 'zod';
 import { ItemStoreNames } from '@/schemas/api/consts';
-import { ItemsReferenceListSchema } from '@/schemas/items/ItemsReferenceList';
 
 export interface ItemsSourcePaging {
   filtered: number;
@@ -21,8 +19,6 @@ export interface ItemsSourceTotalResponse<T> {
   total: number;
   duration: number;
 }
-
-export type ItemsReferenceList<T> = z.infer<ReturnType<typeof ItemsReferenceListSchema<z.ZodType<T>>>>;
 
 export interface RootItemSourceResponse<T> {
   item: T;

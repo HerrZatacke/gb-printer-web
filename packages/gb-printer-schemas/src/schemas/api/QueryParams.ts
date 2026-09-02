@@ -53,10 +53,6 @@ export const GetImagesByHashesParamsSchema = z.object({
   hashes: z.array(z.string()).min(1),
 });
 
-export const GetImagesByAnyHashesParamsSchema = z.object({
-  hashes: z.array(z.string()).min(1),
-});
-
 export const UpdateImagesParamsSchema = z.object({
   images: z.array(ImageSchema),
   purge: z.boolean(),
@@ -73,10 +69,6 @@ export const UpdateImageGroupsParamsSchema = z.object({
 
 export const DeleteImageGroupsByIdsParamsSchema = z.object({
   ids: z.array(z.string()).min(1),
-});
-
-export const GetFramesByHashesParamsSchema = z.object({
-  hashes: z.array(z.string()).min(1),
 });
 
 export const GetFramesByIdsParamsSchema = z.object({

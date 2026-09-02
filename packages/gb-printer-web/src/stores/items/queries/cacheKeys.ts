@@ -20,7 +20,6 @@ export const framesKeys = {
   all: frameBaseKeys,
   list: [...frameBaseKeys, 'list'] as const,
   byIds: (ids: string[]) => [...frameBaseKeys, 'byIds', [...ids].sort()] as const,
-  byHashes: (hashes: string[]) => [...frameBaseKeys, 'byHashes', [...hashes].sort()] as const,
 };
 
 
@@ -46,7 +45,6 @@ export const imagesKeys = {
   allTags: [...imagesBaseKeys, 'allTags'] as const,
   byHash: (hash: string) => [...imagesBaseKeys, 'byHash', hash] as const,
   byHashes: (hashes: string[]) => [...imagesBaseKeys, 'byHashes', [...hashes].sort()] as const,
-  byAnyHashes: (hashes: string[]) => [...imagesBaseKeys, 'byAnyHashes', [...hashes].sort()] as const,
   raw: (raw: ImageQueryParams, candidateHashes?: Set<string>) => [...imagesBaseKeys, 'raw', { raw, hashes: candidateHashes && [...candidateHashes].sort() }] as const,
 };
 

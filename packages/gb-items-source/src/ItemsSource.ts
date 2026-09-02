@@ -3,12 +3,14 @@ import {
   getBinaryFrameHashes,
   getBinaryFramesByHashes,
   updateBinaryFrames,
+  getOrphanedFrameHashes,
 } from '@/queries/binaryFrames';
 import {
   deleteBinaryImagesByHashes,
   getBinaryImageHashes,
   getBinaryImagesByHashes,
   updateBinaryImages,
+  getOrphanedImageHashes,
 } from '@/queries/binaryImages';
 import {
   deleteFrameGroupsByIds,
@@ -18,7 +20,6 @@ import {
 import {
   deleteFramesByIds,
   getFrames,
-  getFramesByHashes,
   getFramesByIds,
   updateFrames,
 } from '@/queries/frames';
@@ -36,7 +37,6 @@ import {
   getGroupItemsByGroupId,
   getHashesByGroupId,
   getImagesByHashes,
-  getImagesByAnyHashes,
   getImages,
   updateImages,
 } from '@/queries/images';
@@ -73,7 +73,6 @@ Object.assign(ItemsSourceApi.prototype, {
   getHashesByGroupId,
   getImages,
   getImagesByHashes,
-  getImagesByAnyHashes,
   updateImages,
   deleteImagesByHashes,
 
@@ -83,7 +82,6 @@ Object.assign(ItemsSourceApi.prototype, {
   deleteImageGroupsByIds,
 
   getFrames,
-  getFramesByHashes,
   getFramesByIds,
   updateFrames,
   deleteFramesByIds,
@@ -106,10 +104,12 @@ Object.assign(ItemsSourceApi.prototype, {
   getBinaryFrameHashes,
   updateBinaryFrames,
   deleteBinaryFramesByHashes,
+  getOrphanedFrameHashes,
 
   getBinaryImagesByHashes,
   getBinaryImageHashes,
   updateBinaryImages,
   deleteBinaryImagesByHashes,
+  getOrphanedImageHashes,
 });
 

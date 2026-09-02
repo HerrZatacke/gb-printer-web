@@ -2,7 +2,6 @@ import { type FastifyPluginAsync } from 'fastify';
 import {
   type ItemsSourceTotalResponse,
   type Frame,
-  type GetFramesByHashesParams,
   type GetFramesByIdsParams,
   type UpdateFramesParams,
   type DeleteFramesByIdsParams,
@@ -13,10 +12,6 @@ import { EndpointUrls } from '@/endpointUrls';
 const framesRoutes: FastifyPluginAsync = async (app) => {
   app.post(EndpointUrls.POST_FRAMES, async (request): Promise<ItemsSourceTotalResponse<Frame>> => {
     return app.createItemsSource(request.user?.id).getFrames();
-  });
-
-  app.post(EndpointUrls.POST_FRAMES_BYHASHES, async (request): Promise<ItemsSourceTotalResponse<Frame>> => {
-    return app.createItemsSource(request.user?.id).getFramesByHashes(request.body as GetFramesByHashesParams);
   });
 
   app.post(EndpointUrls.POST_FRAMES_BYIDS, async (request): Promise<ItemsSourceTotalResponse<Frame>> => {

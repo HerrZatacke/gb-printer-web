@@ -9,7 +9,9 @@ import {
   type ItemsMutationReponse,
 } from 'gb-printer-schemas';
 import z, { type ZodType } from 'zod';
+import { frameExistsByHash } from '@/queries/frames';
 import { getAddPaging, getAddTotal, getMutationReponse } from '@/queries/helpers/generic';
+import { imageExistsByAnyHash } from '@/queries/images';
 import { type ItemsSourceInternal } from '@/types';
 
 export const createBinaryStoreQueries = (
@@ -69,5 +71,27 @@ export const createBinaryStoreQueries = (
     return mutationReponse([{ collection: repositoryKey }]);
   }
 
-  return { getByHashes, getHashes, update, deleteByHashes };
+  async function getOrphanedHashes(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<string>> {
+    const start = performance.now();
+
+    const existenceCheck = (
+      repositoryKey === ItemStoreNames.BINARYIMAGES
+        ? imageExistsByAnyHash
+        : frameExistsByHash
+    ).bind(this);
+
+    const { items: storedHashes } = await getHashes.call(this);
+
+    const existsFlags = await Promise.all(
+      storedHashes.map((hash) => existenceCheck(hash)),
+    );
+
+    const orphanedHashes = storedHashes.filter((_hash, index) => !existsFlags[index]);
+
+    const addTotal = getAddTotal<string>(storedHashes.length, start, z.string());
+
+    return addTotal(orphanedHashes);
+  }
+
+  return { getByHashes, getHashes, update, deleteByHashes, getOrphanedHashes };
 };

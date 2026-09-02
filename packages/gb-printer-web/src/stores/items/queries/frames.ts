@@ -15,15 +15,6 @@ export const framesListQueryOptions = () => {
   };
 };
 
-export const framesByHashesBatchedLoader = createBatchedLoader<Frame>(
-  async (hashes) => {
-    const source = await getItemsSource();
-    return source.getFramesByHashes({ hashes });
-  },
-  (frame) => frame.hash,
-  50,
-);
-
 export const framesByIdsBatchedLoader = createBatchedLoader<Frame>(
   async (ids) => {
     const source = await getItemsSource();
@@ -32,22 +23,6 @@ export const framesByIdsBatchedLoader = createBatchedLoader<Frame>(
   (frame) => frame.id,
   50,
 );
-
-export const framesByHashesQueryOptions = (hashes: string[]) => {
-  return {
-    queryKey: framesKeys.byHashes(hashes),
-    queryFn: async () => {
-      if (!hashes?.length) {
-        return { items: [] };
-      }
-
-      const results = await Promise.all(hashes.map(framesByHashesBatchedLoader.loadByKey));
-      const items = results.filter((f): f is Frame => Boolean(f));
-      return { items };
-    },
-    staleTime: STALE_TIME,
-  };
-};
 
 export const framesByIdsQueryOptions = (ids: string[]) => {
   return {
