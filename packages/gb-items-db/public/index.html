@@ -8,25 +8,29 @@
 </head>
 <body>
 <div class="box">
-  <select id="endpoint">
-    <optgroup label="Images">
-      <option value="/images">getImages</option>
-      <option value="/images/tags">getAllTags</option>
-      <option value="/images/byHashes">getImagesByHashes</option>
-      <option value="/images/hashesByGroupId">getHashesByGroupId</option>
-      <option value="/images/groupItemsByGroupId">getGroupItemsByGroupId</option>
-      <option value="/images/update">updateImages</option>
-      <option value="/images/delete">deleteImagesByHashes</option>
-    </optgroup>
-    <optgroup label="ImageGroups">
-      <option value="/imageGroups/list">getImageGroupsList</option>
-      <option value="/imageGroups/tree">getImageGroupsFullTree</option>
-      <option value="/imageGroups/update">updateImageGroups</option>
-      <option value="/imageGroups/delete">deleteImageGroupsByIds</option>
-    </optgroup>
-  </select>
-  <br>
-  <textarea id="body" rows="12" cols="60">
+  <div>
+    <label for="endpoint">Select Endpoint</label>
+    <select id="endpoint">
+      <optgroup label="Images">
+        <option value="/images">getImages</option>
+        <option value="/images/tags">getAllTags</option>
+        <option value="/images/byHashes">getImagesByHashes</option>
+        <option value="/images/hashesByGroupId">getHashesByGroupId</option>
+        <option value="/images/groupItemsByGroupId">getGroupItemsByGroupId</option>
+        <option value="/images/update">updateImages</option>
+        <option value="/images/delete">deleteImagesByHashes</option>
+      </optgroup>
+      <optgroup label="ImageGroups">
+        <option value="/imageGroups/list">getImageGroupsList</option>
+        <option value="/imageGroups/tree">getImageGroupsFullTree</option>
+        <option value="/imageGroups/update">updateImageGroups</option>
+        <option value="/imageGroups/delete">deleteImageGroupsByIds</option>
+      </optgroup>
+    </select>
+  </div>
+  <div>
+    <label for="body">POST body</label>
+    <textarea id="body" rows="12" cols="60">
 {
   "params": {
     "sort": {
@@ -37,8 +41,8 @@
     "pageSize": 1
   }
 }
-</textarea>
-  <br>
+   </textarea>
+  </div>
   <button id="send">POST</button>
   <pre id="result"></pre>
 
