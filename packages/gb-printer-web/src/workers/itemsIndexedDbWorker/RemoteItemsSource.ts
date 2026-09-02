@@ -12,11 +12,9 @@ import {
   type Frame,
   type FrameGroup,
   type GetBinaryItemsByHashesParams,
-  type GetFramesByHashesParams,
   type GetFramesByIdsParams,
   type GetGroupItemsByGroupIdParams,
   type GetHashesByGroupIdParams,
-  type GetImagesByAnyHashesParams,
   type GetImagesByHashesParams,
   type GetImagesParams,
   type GetPalettesByShortNamesParams,
@@ -24,7 +22,6 @@ import {
   type GroupItem,
   type Image,
   type ItemsMutationReponse,
-  type ItemsReferenceList,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
   type ItemsStatsResponse,
@@ -159,10 +156,6 @@ export class RemoteItemsSource implements ItemsSource {
     return this.post<ItemsSourceResponse<Image>>(EndpointUrls.POST_IMAGES_BYHASHES, params);
   };
 
-  getImagesByAnyHashes = async (params: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> => {
-    return this.post<ItemsSourceResponse<ItemsReferenceList<Image>>>(EndpointUrls.POST_IMAGES_BYANYHASHES, params);
-  };
-
   getHashesByGroupId = async (params: GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>> => {
     return this.post<ItemsSourceTotalResponse<string>>(EndpointUrls.POST_IMAGES_HASHESBYGROUPID, params);
   };
@@ -201,10 +194,6 @@ export class RemoteItemsSource implements ItemsSource {
 
   getFrames = async (): Promise<ItemsSourceTotalResponse<Frame>> => {
     return this.post<ItemsSourceTotalResponse<Frame>>(EndpointUrls.POST_FRAMES);
-  };
-
-  getFramesByHashes = async (params: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> => {
-    return this.post<ItemsSourceTotalResponse<Frame>>(EndpointUrls.POST_FRAMES_BYHASHES, params);
   };
 
   getFramesByIds = async (params: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>> => {
@@ -279,6 +268,10 @@ export class RemoteItemsSource implements ItemsSource {
     return this.post<ItemsSourceTotalResponse<string>>(EndpointUrls.POST_BINARYIMAGES_HASHES);
   };
 
+  getOrphanedImageHashes = async (): Promise<ItemsSourceTotalResponse<string>> => {
+    return this.post<ItemsSourceTotalResponse<string>>(EndpointUrls.POST_BINARYIMAGES_ORPHANED);
+  };
+
   updateBinaryImages = async (params: UpdateBinaryItemsParams): Promise<ItemsMutationReponse> => {
     return this.post<ItemsMutationReponse>(EndpointUrls.POST_BINARYIMAGES_UPDATE, params);
   };
@@ -295,6 +288,10 @@ export class RemoteItemsSource implements ItemsSource {
 
   getBinaryFrameHashes = async (): Promise<ItemsSourceTotalResponse<string>> => {
     return this.post<ItemsSourceTotalResponse<string>>(EndpointUrls.POST_BINARYFRAMES_HASHES);
+  };
+
+  getOrphanedFrameHashes = async (): Promise<ItemsSourceTotalResponse<string>> => {
+    return this.post<ItemsSourceTotalResponse<string>>(EndpointUrls.POST_BINARYFRAMES_ORPHANED);
   };
 
   updateBinaryFrames = async (params: UpdateBinaryItemsParams): Promise<ItemsMutationReponse> => {

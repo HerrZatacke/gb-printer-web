@@ -3,7 +3,6 @@ import {
   ItemStoreNames,
   type DeleteFramesByIdsParams,
   type Frame,
-  type GetFramesByHashesParams,
   type GetFramesByIdsParams,
   type ItemsSourceTotalResponse,
   type UpdateFramesParams,
@@ -42,20 +41,10 @@ export async function getFramesByIds(this: ItemsSourceInternal, { ids }: GetFram
   return addPaging(filteredFrames);
 }
 
-export async function getFramesByHashes(this: ItemsSourceInternal, { hashes }: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>> {
+export async function frameExistsByHash(this: ItemsSourceInternal, hash: string): Promise<boolean> {
   const { frames: repository } = this.repositories;
-  const start = performance.now();
-
-  const total = await repository.count();
-
-  const frames = await repository.getByIndexValues('hash', hashes);
-
-  const filteredFrames = frames
-    .filter((frame): frame is Frame => Boolean(frame));
-
-  const addPaging = getAddTotal<Frame>(total, start, FrameSchema);
-
-  return addPaging(filteredFrames);
+  const frames = await repository.getByIndexValues('hash', [hash]);
+  return Boolean(frames.length);
 }
 
 export async function updateFrames(this: ItemsSourceInternal, { frames, purge }: UpdateFramesParams): Promise<ItemsMutationReponse> {
@@ -74,12 +63,12 @@ export async function updateFrames(this: ItemsSourceInternal, { frames, purge }:
       value: frame,
     })),
   );
-  return mutationReponse([{ collection: ItemStoreNames.FRAMES }]);
+  return mutationReponse([{ collection: ItemStoreNames.FRAMES }, { collection: ItemStoreNames.BINARYFRAMES }]);
 }
 
 export async function deleteFramesByIds(this: ItemsSourceInternal, { ids }: DeleteFramesByIdsParams): Promise<ItemsMutationReponse> {
   const mutationReponse = getMutationReponse(performance.now());
   const { frames: repository } = this.repositories;
   await repository.deleteByKeys(ids);
-  return mutationReponse([{ collection: ItemStoreNames.FRAMES }]);
+  return mutationReponse([{ collection: ItemStoreNames.FRAMES }, { collection: ItemStoreNames.BINARYFRAMES }]);
 }

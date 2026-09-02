@@ -19,6 +19,10 @@ const binaryFramesRoutes: FastifyPluginAsync = async (app) => {
     return app.createItemsSource(request.user?.id).getBinaryFrameHashes();
   });
 
+  app.post(EndpointUrls.POST_BINARYFRAMES_ORPHANED, async (request): Promise<ItemsSourceTotalResponse<string>> => {
+    return app.createItemsSource(request.user?.id).getOrphanedFrameHashes();
+  });
+
   app.post(EndpointUrls.POST_BINARYFRAMES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
     const response = app.createItemsSource(request.user?.id).updateBinaryFrames(request.body as UpdateBinaryItemsParams);
     void app.invalidation.broadcastInvalidations(request, response);

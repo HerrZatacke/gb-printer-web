@@ -11,11 +11,9 @@ import {
   type Frame,
   type FrameGroup,
   type GetBinaryItemsByHashesParams,
-  type GetFramesByHashesParams,
   type GetFramesByIdsParams,
   type GetGroupItemsByGroupIdParams,
   type GetHashesByGroupIdParams,
-  type GetImagesByAnyHashesParams,
   type GetImagesByHashesParams,
   type GetImagesParams,
   type GetPalettesByShortNamesParams,
@@ -23,7 +21,6 @@ import {
   type GroupItem,
   type Image,
   type ItemsMutationReponse,
-  type ItemsReferenceList,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
   type ItemsStatsResponse,
@@ -55,7 +52,6 @@ export interface ItemsSource {
   getHashesByGroupId(params: GetHashesByGroupIdParams): Promise<ItemsSourceTotalResponse<string>>;
   getImages(params: GetImagesParams): Promise<ItemsSourceResponse<Image>>;
   getImagesByHashes(params: GetImagesByHashesParams): Promise<ItemsSourceResponse<Image>>;
-  getImagesByAnyHashes(params: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>>;
   updateImages(params: UpdateImagesParams): Promise<ItemsMutationReponse>;
   deleteImagesByHashes(params: DeleteImagesByHashesParams): Promise<ItemsMutationReponse>;
 
@@ -65,7 +61,6 @@ export interface ItemsSource {
   deleteImageGroupsByIds(params: DeleteImageGroupsByIdsParams): Promise<ItemsMutationReponse>;
 
   getFrames(): Promise<ItemsSourceTotalResponse<Frame>>;
-  getFramesByHashes(params: GetFramesByHashesParams): Promise<ItemsSourceTotalResponse<Frame>>;
   getFramesByIds(params: GetFramesByIdsParams): Promise<ItemsSourceTotalResponse<Frame>>;
   updateFrames(params: UpdateFramesParams): Promise<ItemsMutationReponse>;
   deleteFramesByIds(params: DeleteFramesByIdsParams): Promise<ItemsMutationReponse>;
@@ -88,11 +83,13 @@ export interface ItemsSource {
   getBinaryImageHashes(): Promise<ItemsSourceTotalResponse<string>>;
   updateBinaryImages(params: UpdateBinaryItemsParams): Promise<ItemsMutationReponse>;
   deleteBinaryImagesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<ItemsMutationReponse>;
+  getOrphanedFrameHashes(): Promise<ItemsSourceTotalResponse<string>>;
 
   getBinaryFramesByHashes(params: GetBinaryItemsByHashesParams): Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getBinaryFrameHashes(): Promise<ItemsSourceTotalResponse<string>>;
   updateBinaryFrames(params: UpdateBinaryItemsParams): Promise<ItemsMutationReponse>;
   deleteBinaryFramesByHashes(params: DeleteBinaryItemsByHashesParams): Promise<ItemsMutationReponse>;
+  getOrphanedImageHashes(): Promise<ItemsSourceTotalResponse<string>>;
 }
 
 export interface FilterableFacet {

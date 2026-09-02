@@ -4,18 +4,15 @@ import {
   ImageQueryParamsSchema,
   ImageQuerySortSchema,
   ImageSchema,
-  ItemsReferenceListSchema,
   ItemStoreNames,
   StoredImageSchema,
   type DeleteImagesByHashesParams,
   type GetGroupItemsByGroupIdParams,
   type GetHashesByGroupIdParams,
-  type GetImagesByAnyHashesParams,
   type GetImagesByHashesParams,
   type GetImagesParams,
   type GroupItem,
   type Image,
-  type ItemsReferenceList,
   type ItemsSourceResponse,
   type ItemsSourceTotalResponse,
   type StoredImage,
@@ -136,38 +133,21 @@ export async function getImagesByHashes(this: ItemsSourceInternal, { hashes }: G
   return addPaging(filteredImages);
 }
 
-export async function getImagesByAnyHashes(this: ItemsSourceInternal, { hashes }: GetImagesByAnyHashesParams): Promise<ItemsSourceResponse<ItemsReferenceList<Image>>> {
+export async function imageExistsByAnyHash(this: ItemsSourceInternal, hash: string): Promise<boolean> {
   const { images: repository } = this.repositories;
-  const start = performance.now();
-
-  const total = await repository.count();
 
   const [foundByPrimary, foundByReference] = await Promise.all([
-    Promise.all(hashes.map((hash) => repository.getByKey(hash))),
-    repository.getByIndexValues('referencedHashes', hashes),
+    repository.getByKey(hash),
+    repository.getByIndexValues('referencedHashes', [hash]),
   ]);
 
-  const items = hashes.map((hash): ImageReferenceList => {
+  const foundFiltered = [
+    foundByPrimary,
+    ...foundByReference,
+  ]
+    .filter((image): image is StoredImage => Boolean(image));
 
-    const foundFiltered = [
-      foundByPrimary.find((image) => (image?.hash === hash )),
-      ...foundByReference.filter((image) => (image?.referencedHashes.includes(hash))),
-    ]
-      .filter((image): image is StoredImage => Boolean(image));
-
-
-    return {
-      reference: hash,
-      items: uniqueByHash(foundFiltered),
-    };
-  });
-
-  const ImageReferenceListSchema = ItemsReferenceListSchema<typeof ImageSchema>(ImageSchema);
-  type ImageReferenceList = z.infer<typeof ImageReferenceListSchema>;
-
-  const addPaging = getAddPaging<ImageReferenceList>(total, 0, items.length, start, ImageReferenceListSchema);
-
-  return addPaging(items);
+  return Boolean(uniqueByHash(foundFiltered).length);
 }
 
 export async function getAllTags(this: ItemsSourceInternal): Promise<ItemsSourceTotalResponse<string>> {
@@ -198,7 +178,7 @@ export async function updateImages(this: ItemsSourceInternal, { images, purge }:
   );
 
   const invalidations = await startMaintenanceTasks(this.repositories);
-  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }]);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }, { collection: ItemStoreNames.BINARYIMAGES }]);
 }
 
 export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }: DeleteImagesByHashesParams): Promise<ItemsMutationReponse> {
@@ -207,5 +187,5 @@ export async function deleteImagesByHashes(this: ItemsSourceInternal, { hashes }
   await repository.deleteByKeys(hashes);
 
   const invalidations = await startMaintenanceTasks(this.repositories);
-  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }]);
+  return mutationReponse([...invalidations, { collection: ItemStoreNames.IMAGES }, { collection: ItemStoreNames.BINARYIMAGES }]);
 }

@@ -5,12 +5,10 @@ import {
   GetHashesByGroupIdParamsSchema,
   GetImagesParamsSchema,
   GetImagesByHashesParamsSchema,
-  GetImagesByAnyHashesParamsSchema,
   UpdateImagesParamsSchema,
   DeleteImagesByHashesParamsSchema,
   UpdateImageGroupsParamsSchema,
   DeleteImageGroupsByIdsParamsSchema,
-  GetFramesByHashesParamsSchema,
   GetFramesByIdsParamsSchema,
   UpdateFramesParamsSchema,
   DeleteFramesByIdsParamsSchema,
@@ -141,13 +139,6 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
     schema: GetImagesByHashesParamsSchema,
     description: 'hashes: array of string (min: 1)',
   },
-  getImagesByAnyHashes: {
-    methodName: 'getImagesByAnyHashes',
-    remotePath: EndpointUrls.POST_IMAGES_BYANYHASHES,
-    exampleBody: '{"hashes": []}',
-    schema: GetImagesByAnyHashesParamsSchema,
-    description: 'hashes: array of string (min: 1)',
-  },
   updateImages: {
     methodName: 'updateImages',
     remotePath: EndpointUrls.POST_IMAGES_UPDATE,
@@ -202,13 +193,6 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',
-  },
-  getFramesByHashes: {
-    methodName: 'getFramesByHashes',
-    remotePath: EndpointUrls.POST_FRAMES_BYHASHES,
-    exampleBody: '{"hashes": []}',
-    schema: GetFramesByHashesParamsSchema,
-    description: 'hashes: array of string (min: 1)',
   },
   getFramesByIds: {
     methodName: 'getFramesByIds',
@@ -334,6 +318,13 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
     schema: NoParamsSchema,
     description: 'no parameters',
   },
+  getOrphanedImageHashes: {
+    methodName: 'getOrphanedImageHashes',
+    remotePath: EndpointUrls.POST_BINARYIMAGES_ORPHANED,
+    exampleBody: '',
+    schema: NoParamsSchema,
+    description: 'no parameters',
+  },
   updateBinaryImages: {
     methodName: 'updateBinaryImages',
     remotePath: EndpointUrls.POST_BINARYIMAGES_UPDATE,
@@ -358,6 +349,13 @@ export const endpointSettings: Record<MethodName, EndpointSettings> = {
   getBinaryFrameHashes: {
     methodName: 'getBinaryFrameHashes',
     remotePath: EndpointUrls.POST_BINARYFRAMES_HASHES,
+    exampleBody: '',
+    schema: NoParamsSchema,
+    description: 'no parameters',
+  },
+  getOrphanedFrameHashes: {
+    methodName: 'getOrphanedFrameHashes',
+    remotePath: EndpointUrls.POST_BINARYFRAMES_ORPHANED,
     exampleBody: '',
     schema: NoParamsSchema,
     description: 'no parameters',

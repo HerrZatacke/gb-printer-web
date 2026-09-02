@@ -19,6 +19,10 @@ const binaryImagesRoutes: FastifyPluginAsync = async (app) => {
     return app.createItemsSource(request.user?.id).getBinaryImageHashes();
   });
 
+  app.post(EndpointUrls.POST_BINARYIMAGES_ORPHANED, async (request): Promise<ItemsSourceTotalResponse<string>> => {
+    return app.createItemsSource(request.user?.id).getOrphanedImageHashes();
+  });
+
   app.post(EndpointUrls.POST_BINARYIMAGES_UPDATE, async (request): Promise<ItemsMutationReponse> => {
     const response = app.createItemsSource(request.user?.id).updateBinaryImages(request.body as UpdateBinaryItemsParams);
     void app.invalidation.broadcastInvalidations(request, response);

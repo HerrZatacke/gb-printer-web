@@ -4,7 +4,6 @@ import {
   type ImageQueryFilters,
   type ImageQueryParams,
   type ImageQuerySort,
-  type ItemsReferenceList,
   type ItemsSourceTotalResponse,
 } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
@@ -31,20 +30,6 @@ export const imagesByHashesBatchedLoader = createBatchedLoader<Image>(
     };
   },
   (image) => image.hash,
-  50,
-);
-
-export const imagesByAnyHashesBatchedLoader = createBatchedLoader<ItemsReferenceList<Image>>(
-  async (hashes): Promise<ItemsSourceTotalResponse<ItemsReferenceList<Image>>> => {
-    const source = await getItemsSource();
-    const response = await source.getImagesByAnyHashes({ hashes });
-    return {
-      duration: response.duration,
-      total: response.paging.total,
-      items: response.items,
-    };
-  },
-  (image) => image.reference,
   50,
 );
 
@@ -150,22 +135,6 @@ export const imageByHashQueryOptions = (hash: string) => ({
   queryFn: async () => imagesByHashesBatchedLoader.loadByKey(hash),
   staleTime: STALE_TIME,
 });
-
-export const imagesByAnyHashesQueryOptions = (hashes: string[]) => {
-  return {
-    queryKey: imagesKeys.byAnyHashes(hashes),
-    queryFn: async () => {
-      if (!hashes?.length) {
-        return { items: [] };
-      }
-
-      const results = await Promise.all(hashes.map(imagesByAnyHashesBatchedLoader.loadByKey));
-      const items = results.filter((f): f is ItemsReferenceList<Image> => Boolean(f));
-      return { items };
-    },
-    staleTime: STALE_TIME,
-  };
-};
 
 export const imagesRawQueryOptions = (raw: ImageQueryParams, candidateHashes?: Set<string>) => {
   return {

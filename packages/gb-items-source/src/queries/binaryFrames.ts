@@ -6,4 +6,5 @@ export const {
   getHashes: getBinaryFrameHashes,
   update: updateBinaryFrames,
   deleteByHashes: deleteBinaryFramesByHashes,
+  getOrphanedHashes: getOrphanedFrameHashes,
 } = createBinaryStoreQueries(ItemStoreNames.BINARYFRAMES, BinaryStoreItemSchema);

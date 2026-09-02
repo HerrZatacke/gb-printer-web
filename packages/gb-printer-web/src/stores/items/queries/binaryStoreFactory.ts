@@ -11,6 +11,7 @@ import { STALE_TIME } from '@/stores/items/queries/consts';
 interface BinaryStoreSourceApi {
   getByHashes: (hashes: string[]) => Promise<ItemsSourceResponse<BinaryStoreItem>>;
   getHashes: () => Promise<ItemsSourceTotalResponse<string>>;
+  getOrphanedHashes: () => Promise<ItemsSourceTotalResponse<string>>;
   update: (items: BinaryStoreItem[]) => Promise<ItemsMutationReponse>;
   deleteByHashes: (hashes: string[]) => Promise<ItemsMutationReponse>;
 }
@@ -21,6 +22,7 @@ export const createBinaryBlobQueries = (storeLabel: string, sourceApi: BinarySto
   const keys = {
     all: baseKeys,
     allHashes: [...baseKeys, 'allHashes'] as const,
+    orphanedHashes: [...baseKeys, 'orphanedHashes'] as const,
     byHash: (hash: string) => [...baseKeys, 'byHash', hash] as const,
     byHashes: (hashes: string[]) => [...baseKeys, 'byHashes', [...hashes].sort()] as const,
   };
@@ -48,6 +50,12 @@ export const createBinaryBlobQueries = (storeLabel: string, sourceApi: BinarySto
   const hashesQueryOptions = () => ({
     queryKey: keys.allHashes,
     queryFn: async () => sourceApi.getHashes(),
+    staleTime: STALE_TIME,
+  });
+
+  const orphanedHashesQueryOptions = () => ({
+    queryKey: keys.orphanedHashes,
+    queryFn: async () => sourceApi.getOrphanedHashes(),
     staleTime: STALE_TIME,
   });
 
@@ -98,6 +106,7 @@ export const createBinaryBlobQueries = (storeLabel: string, sourceApi: BinarySto
   return {
     keys,
     hashesQueryOptions,
+    orphanedHashesQueryOptions,
     byHashQueryOptions,
     byHashesQueryOptions,
     updateAction,

@@ -6,4 +6,5 @@ export const {
   getHashes: getBinaryImageHashes,
   update: updateBinaryImages,
   deleteByHashes: deleteBinaryImagesByHashes,
+  getOrphanedHashes: getOrphanedImageHashes,
 } = createBinaryStoreQueries(ItemStoreNames.BINARYIMAGES, BinaryStoreItemSchema);

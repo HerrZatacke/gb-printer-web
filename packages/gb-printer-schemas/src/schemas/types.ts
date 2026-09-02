@@ -15,11 +15,9 @@ import {
   DeletePalettesByShortNamesParamsSchema,
   DeletePluginsByUrlsParamsSchema,
   GetBinaryItemsByHashesParamsSchema,
-  GetFramesByHashesParamsSchema,
   GetFramesByIdsParamsSchema,
   GetGroupItemsByGroupIdParamsSchema,
   GetHashesByGroupIdParamsSchema,
-  GetImagesByAnyHashesParamsSchema,
   GetImagesByHashesParamsSchema,
   GetImagesParamsSchema,
   GetPalettesByShortNamesParamsSchema,
@@ -48,12 +46,10 @@ export type GetGroupItemsByGroupIdParams = z.infer<typeof GetGroupItemsByGroupId
 export type GetHashesByGroupIdParams = z.infer<typeof GetHashesByGroupIdParamsSchema>;
 export type GetImagesParams = z.infer<typeof GetImagesParamsSchema>;
 export type GetImagesByHashesParams = z.infer<typeof GetImagesByHashesParamsSchema>;
-export type GetImagesByAnyHashesParams = z.infer<typeof GetImagesByAnyHashesParamsSchema>;
 export type UpdateImagesParams = z.infer<typeof UpdateImagesParamsSchema>;
 export type DeleteImagesByHashesParams = z.infer<typeof DeleteImagesByHashesParamsSchema>;
 export type UpdateImageGroupsParams = z.infer<typeof UpdateImageGroupsParamsSchema>;
 export type DeleteImageGroupsByIdsParams = z.infer<typeof DeleteImageGroupsByIdsParamsSchema>;
-export type GetFramesByHashesParams = z.infer<typeof GetFramesByHashesParamsSchema>;
 export type GetFramesByIdsParams = z.infer<typeof GetFramesByIdsParamsSchema>;
 export type UpdateFramesParams = z.infer<typeof UpdateFramesParamsSchema>;
 export type DeleteFramesByIdsParams = z.infer<typeof DeleteFramesByIdsParamsSchema>;
