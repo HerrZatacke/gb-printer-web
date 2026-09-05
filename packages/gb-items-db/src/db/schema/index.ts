@@ -1,5 +1,6 @@
 export * from './binaryFrames';
 export * from './binaryImages';
+export * from './consts';
 export * from './frames';
 export * from './frameGroups';
 export * from './images';
