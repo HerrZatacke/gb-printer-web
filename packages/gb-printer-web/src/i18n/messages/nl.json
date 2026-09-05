@@ -324,6 +324,7 @@
   "ImportQueue": {
     "createGroupLabel": "Groep maken van afbeeldingen op huidige locatie",
     "dialogHeader": "{count, plural, =1 {Afbeelding importeren} other {# afbeeldingen importeren}}",
+    "importAsFrame": "Als frame importeren",
     "modifyFrame": "Kader wijzigen",
     "noFrameOption": "Geen kader / zoals geïmporteerd",
     "removeAlreadyImported": "Al geïmporteerde verwijderen {count, plural, =0 {} other {({count})}}",

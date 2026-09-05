@@ -1,10 +1,10 @@
-import CropFreeIcon from '@mui/icons-material/CropFree';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CancelIcon from '@mui/icons-material/Cancel';
 import Badge, { type BadgeOwnProps } from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import { type Palette } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
@@ -108,11 +108,14 @@ function ImportRow({
           }}
         >
           <IconButton
+            size="large"
             title={t('importAsFrame')}
             disabled={tiles.length / 20 < 14}
             onClick={() => importAsFrame(tempId)}
           >
-            <CropFreeIcon />
+            <SvgIcon>
+              <path d="M4.5 2.5c-1.1 0-2 .9-2 2v15c0 1.1.9 2 2 2h15c1.1 0 2-.9 2-2v-15c0-1.1-.9-2-2-2zm0 3.5h15v12h-15z" />
+            </SvgIcon>
           </IconButton>
           <Badge
             {...badgeProps}
@@ -123,12 +126,13 @@ function ImportRow({
             overlap="circular"
           >
             <IconButton
+              size="large"
               title={t('removeFromQueue')}
               onClick={() => setTimeout(() => {
                 cancelItemImport(tempId);
               }, 1)}
             >
-              <DeleteIcon />
+              <CancelIcon />
             </IconButton>
           </Badge>
         </ButtonGroup>

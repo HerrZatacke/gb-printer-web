@@ -324,6 +324,7 @@
   "ImportQueue": {
     "createGroupLabel": "Criar grupo a partir das imagens no local atual",
     "dialogHeader": "{count, plural, =1 {Importar imagem} other {Importar # imagens}}",
+    "importAsFrame": "Importar como frame",
     "modifyFrame": "Modificar moldura",
     "noFrameOption": "Sem moldura / como importado",
     "removeAlreadyImported": "Remover já importadas {count, plural, =0 {} other {({count})}}",

@@ -50,6 +50,17 @@ function ImportQueue() {
       header={t('dialogHeader', { count: importQueue.length })}
       confirm={runImport}
       deny={cancelImport}
+      actionButtons={(
+        <Button
+          variant="contained"
+          disabled={importQueue.length > 1}
+          onClick={() => {
+            importAsFrame(importQueue[0].tempId);
+          }}
+        >
+          {t('importAsFrame')}
+        </Button>
+      )}
     >
       <Stack
         direction="column"
