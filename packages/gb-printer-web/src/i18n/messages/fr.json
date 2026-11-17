@@ -448,6 +448,15 @@
   "RemotePrinterContext": {
     "noFilesReceived": "Aucun fichier valide reçu de l'imprimante WiFi"
   },
+  "RemoteStorageStatus": {
+    "awaitingHeader": "En attente de connexion",
+    "awaitingToken": "Suivez les étapes dans la fenêtre pop-up pour terminer la connexion",
+    "errorHeader": "Erreur lors de la récupération du jeton de connexion",
+    "popupBlocked": "La pop-up de connexion a été bloquée par le navigateur",
+    "popupClosedEarly": "La pop-up de connexion a été fermée avant la fin du processus",
+    "popupNoToken": "La pop-up de connexion n'a pas renvoyé de jeton",
+    "retry": "Réessayer"
+  },
   "Serials": {
     "dialogHeader": "Périphériques WebUSB / Série"
   },
@@ -495,6 +504,7 @@
       "en-US": "Anglais – États-Unis (en-US)",
       "fr-FR": "Français – France (fr-FR)"
     },
+    "logoutRemoteStorage": "Se déconnecter du stockage externe",
     "preferredLocale": "Langue préférée",
     "remoteStorageCurrentUrl": "Tu es actuellement connecté(e) à {remoteStorageUrl}",
     "remoteStorageIsAutomatic": "Configuration automatique",

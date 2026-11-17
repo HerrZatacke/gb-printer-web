@@ -39,11 +39,17 @@ import {
   type UpdatePalettesParams,
   type UpdatePluginsParams,
 } from 'gb-printer-schemas';
-import { $fetch } from 'ofetch';
+import { $fetch, type FetchError } from 'ofetch';
 import { cleanDoubleSlashes } from 'ufo';
 import { v4 } from 'uuid';
+import type ApiAuth from '@/stores/items/client/auth';
+import { delay as d } from '@/tools/delay';
 import { isMutationResult } from '@/workers/itemsIndexedDbWorker/tools/isMutationResult';
 import { RunInvalidationsFn } from '@/workers/itemsIndexedDbWorker/types';
+
+const isUnauthorizedError = (error: unknown): error is FetchError => {
+  return error instanceof Error && (error as FetchError).response?.status === 401;
+};
 
 export class RemoteItemsSource implements ItemsSource {
   private clientId: string;
@@ -52,27 +58,63 @@ export class RemoteItemsSource implements ItemsSource {
   private intentionalClose = false;
   private socket: WebSocket | undefined;
 
-  constructor(private readonly baseUrl: string) {
+  constructor(
+    private readonly baseUrl: string,
+    private readonly apiAuth: ApiAuth,
+  ) {
     this.clientId = v4();
   }
 
-  private readonly get = async <T>(url: string): Promise<T> => {
-    return $fetch(cleanDoubleSlashes(`${this.baseUrl}${url}`), {
-      method: 'GET',
-      headers: {
-        'x-client-id': this.clientId,
-      },
-    });
+
+  private readonly get = async <T>(url: string, retries = 0): Promise<T> => {
+    const authToken = await this.apiAuth.getBearerToken(retries > 0);
+
+    try {
+      return await $fetch<T>(cleanDoubleSlashes(`${this.baseUrl}${url}`), {
+        method: 'GET',
+        headers: {
+          'x-client-id': this.clientId,
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        },
+      });
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        if (retries < 3) {
+          if (retries === 2) {
+            await d(2500);
+          }
+          return this.get(url, retries + 1);
+        }
+      }
+
+      throw error;
+    }
   };
 
-  private readonly post = async <T>(url: string, body?: Record<string, unknown>): Promise<T> => {
-    return $fetch(cleanDoubleSlashes(`${this.baseUrl}${url}`), {
-      method: 'POST',
-      headers: {
-        'x-client-id': this.clientId,
-      },
-      body,
-    });
+  private readonly post = async <T>(url: string, body?: Record<string, unknown>, retries = 0): Promise<T> => {
+    const authToken = await this.apiAuth.getBearerToken(retries > 0);
+
+    try {
+      return await $fetch<T>(cleanDoubleSlashes(`${this.baseUrl}${url}`), {
+        method: 'POST',
+        headers: {
+          'x-client-id': this.clientId,
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        },
+        body,
+      });
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        if (retries < 3) {
+          if (retries === 2) {
+            await d(2500);
+          }
+          return this.post(url, body, retries + 1);
+        }
+      }
+
+      throw error;
+    }
   };
 
   subscribeToInvalidations = (runInvalidations: RunInvalidationsFn): void => {
@@ -91,8 +133,10 @@ export class RemoteItemsSource implements ItemsSource {
     });
   };
 
-  private connect = (runInvalidations: RunInvalidationsFn): void => {
-    const socket = new WebSocket(cleanDoubleSlashes(`${this.baseUrl}${EndpointUrls.WS_INVALIDATIONS}?clientId=${this.clientId}`));
+  private connect = async (runInvalidations: RunInvalidationsFn): Promise<void> => {
+    const authToken = await this.apiAuth.getBearerToken(false);
+
+    const socket = new WebSocket(cleanDoubleSlashes(`${this.baseUrl}${EndpointUrls.WS_INVALIDATIONS}?clientId=${this.clientId}${authToken ? `&authToken=${authToken}` : ''}`));
 
     this.socket = socket;
 

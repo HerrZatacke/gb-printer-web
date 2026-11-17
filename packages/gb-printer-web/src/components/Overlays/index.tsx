@@ -17,6 +17,7 @@ import PickColors from '@/components/Overlays/PickColors';
 import ProgressBox from '@/components/Overlays/ProgressBox';
 import ProgressLogBox from '@/components/Overlays/ProgressLogBox';
 import QueryTool from '@/components/Overlays/QueryTool';
+import RemoteStorageStatus from './RemoteStorageStatus';
 import Serials from '@/components/Overlays/Serials';
 import SortForm from '@/components/Overlays/SortForm';
 import SSTVForm from '@/components/Overlays/SSTVForm';
@@ -85,6 +86,7 @@ function Overlays() {
     videoSelection,
     showQueryTool,
     showRemoteStorageDialog,
+    remoteStorageStatus,
     showSerials,
     downloadHashes,
     sstvHash,
@@ -95,6 +97,7 @@ function Overlays() {
     progressLog,
   } = useProgressStore();
 
+  const showRemoteStorageStatus = !!remoteStorageStatus;
   const showSSTVForm = !!sstvHash;
   const showDownloadOverlay = !!downloadHashes.length;
   const showProgressLog = !!progressLog.git.length || !!progressLog.dropbox.length;
@@ -137,6 +140,8 @@ function Overlays() {
       return <SSTVForm />; // interactive
     case syncSelect:
       return <SyncSelect />; // interactive
+    case showRemoteStorageStatus:
+      return <RemoteStorageStatus />; // interactive
     case showRemoteStorageDialog:
       return <ConnectRemoteStorage />; // interactive
     case showTrashbin:

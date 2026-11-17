@@ -448,6 +448,15 @@
   "RemotePrinterContext": {
     "noFilesReceived": "Nessun file valido ricevuto dalla stampante WiFi"
   },
+  "RemoteStorageStatus": {
+    "awaitingHeader": "In attesa dell'accesso",
+    "awaitingToken": "Segui i passaggi nel popup per completare l'accesso",
+    "errorHeader": "Errore durante il recupero del token di accesso",
+    "popupBlocked": "Il popup di accesso è stato bloccato dal browser",
+    "popupClosedEarly": "Il popup di accesso è stato chiuso prima del completamento",
+    "popupNoToken": "Il popup di accesso non ha restituito un token",
+    "retry": "Riprova"
+  },
   "Serials": {
     "dialogHeader": "Dispositivi WebUSB / Seriali"
   },
@@ -495,6 +504,7 @@
       "en-US": "Inglese – Stati Uniti (en-US)",
       "fr-FR": "Francese – Francia (fr-FR)"
     },
+    "logoutRemoteStorage": "Disconnetti dall'archiviazione esterna",
     "preferredLocale": "Lingua preferita",
     "remoteStorageCurrentUrl": "Sei attualmente connesso/a a {remoteStorageUrl}",
     "remoteStorageIsAutomatic": "Configurazione automatica",

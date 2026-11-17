@@ -1,5 +1,6 @@
 import * as Comlink from 'comlink';
 import { type ItemsSource, ItemsSourceApi } from 'gb-items-source';
+import type ApiAuth from '@/stores/items/client/auth';
 import { openAndPrepareDb } from '@/workers/itemsIndexedDbWorker/db';
 import { RemoteItemsSource } from '@/workers/itemsIndexedDbWorker/RemoteItemsSource';
 import { isMutationResult } from '@/workers/itemsIndexedDbWorker/tools/isMutationResult';
@@ -43,11 +44,17 @@ const withInvalidations = (source: ItemsSource, runInvalidations: RunInvalidatio
   });
 };
 
-const init: InitWorkerFn = async (hostApi: ItemsHostApi, runInvalidations: RunInvalidationsFn, remoteStorageUrl: string, withDebug?: boolean) => {
+const init: InitWorkerFn = async (
+  hostApi: ItemsHostApi,
+  runInvalidations: RunInvalidationsFn,
+  remoteStorageUrl: string,
+  apiAuth: ApiAuth,
+  withDebug?: boolean,
+) => {
   let instance: ItemsSource;
 
   if (remoteStorageUrl) {
-    const remoteItemsInstance = new RemoteItemsSource(remoteStorageUrl);
+    const remoteItemsInstance = new RemoteItemsSource(remoteStorageUrl, apiAuth);
     remoteItemsInstance.subscribeToInvalidations(runInvalidations);
     instance = remoteItemsInstance as unknown as ItemsSource;
   } else {

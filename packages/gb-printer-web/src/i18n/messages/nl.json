@@ -448,6 +448,15 @@
   "RemotePrinterContext": {
     "noFilesReceived": "Geen geldige bestanden ontvangen van WiFi-printer"
   },
+  "RemoteStorageStatus": {
+    "awaitingHeader": "Wachten op inloggen",
+    "awaitingToken": "Volg de stappen in het pop-upvenster om het aanmeldproces te voltooien",
+    "errorHeader": "Fout bij het ophalen van het inlogtoken",
+    "popupBlocked": "Login-pop-up werd geblokkeerd door de browser",
+    "popupClosedEarly": "Login-pop-up werd gesloten voordat het proces was voltooid",
+    "popupNoToken": "Login-pop-up heeft geen token teruggegeven",
+    "retry": "Opnieuw proberen"
+  },
   "Serials": {
     "dialogHeader": "WebUSB / Seriële apparaten"
   },
@@ -495,6 +504,7 @@
       "en-US": "Engels – Verenigde Staten (en-US)",
       "fr-FR": "Frans – Frankrijk (fr-FR)"
     },
+    "logoutRemoteStorage": "Afmelden bij externe opslag",
     "preferredLocale": "Voorkeurstaal",
     "remoteStorageCurrentUrl": "Je bent momenteel verbonden met {remoteStorageUrl}",
     "remoteStorageIsAutomatic": "Automatische configuratie",

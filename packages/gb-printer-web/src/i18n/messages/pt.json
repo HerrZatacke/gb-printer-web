@@ -448,6 +448,15 @@
   "RemotePrinterContext": {
     "noFilesReceived": "Nenhum ficheiro válido recebido da impressora WiFi"
   },
+  "RemoteStorageStatus": {
+    "awaitingHeader": "A aguardar início de sessão",
+    "awaitingToken": "Segue os passos na janela pop-up para concluir o início de sessão",
+    "errorHeader": "Erro ao obter o token de início de sessão",
+    "popupBlocked": "A popup de início de sessão foi bloqueada pelo navegador",
+    "popupClosedEarly": "A popup de início de sessão foi fechada antes de concluir o processo",
+    "popupNoToken": "A popup de início de sessão não devolveu um token",
+    "retry": "Tentar novamente"
+  },
   "Serials": {
     "dialogHeader": "Dispositivos WebUSB / Seriais"
   },
@@ -495,6 +504,7 @@
       "en-US": "Inglês – Estados Unidos (en-US)",
       "fr-FR": "Francês – França (fr-FR)"
     },
+    "logoutRemoteStorage": "Terminar sessão no armazenamento externo",
     "preferredLocale": "Idioma preferido",
     "remoteStorageCurrentUrl": "Estás atualmente ligado(a) a {remoteStorageUrl}",
     "remoteStorageIsAutomatic": "Configuração automática",

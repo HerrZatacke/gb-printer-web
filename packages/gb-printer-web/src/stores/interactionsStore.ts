@@ -27,6 +27,7 @@ interface Values {
   printerBusy: boolean;
   printerData: PrinterInfo | null;
   printerFunctions: PrinterFunction[];
+  remoteStorageStatus: string | null;
   showRemoteStorageDialog: boolean;
   showSerials: boolean;
   showQueryTool: boolean;
@@ -49,6 +50,7 @@ interface Actions {
   setPrinterBusy: (printerBusy: boolean) => void;
   setPrinterData: (printerData: PrinterInfo | null) => void;
   setPrinterFunctions: (printerFunctions: PrinterFunction[]) => void;
+  setRemoteStorageStatus: (remoteStorageStatus: string | null) => void;
   setShowQueryTool: (showQueryTool: boolean) => void;
   setShowSerials: (showSerials: boolean) => void;
   setSSTVHash: (sstvHash: string) => void;
@@ -74,6 +76,7 @@ export const createInteractionsStore = () => (
     printerBusy: false,
     printerData: null,
     printerFunctions: [],
+    remoteStorageStatus: null,
     showQueryTool: false,
     showRemoteStorageDialog: false,
     showSerials: false,
@@ -93,6 +96,7 @@ export const createInteractionsStore = () => (
     setPrinterBusy: (printerBusy: boolean) => set({ printerBusy }),
     setPrinterData: (printerData: PrinterInfo | null) => set({ printerData }),
     setPrinterFunctions: (printerFunctions: PrinterFunction[]) => set({ printerFunctions }),
+    setRemoteStorageStatus: (remoteStorageStatus: string | null) => set({ remoteStorageStatus }),
     setSSTVHash: (sstvHash: string) => set({ sstvHash }),
     setShowQueryTool: (showQueryTool: boolean) => set({ showQueryTool }),
     setShowRemoteStorageDialog: (showRemoteStorageDialog: boolean) => set({ showRemoteStorageDialog }),

@@ -448,6 +448,15 @@
   "RemotePrinterContext": {
     "noFilesReceived": "Inga giltiga filer mottagna från WiFi-skrivaren"
   },
+  "RemoteStorageStatus": {
+    "awaitingHeader": "Väntar på inloggning",
+    "awaitingToken": "Följ stegen i popup-fönstret för att slutföra inloggningen",
+    "errorHeader": "Fel vid hämtning av inloggningstoken",
+    "popupBlocked": "Inloggningsfönstret blockerades av webbläsaren",
+    "popupClosedEarly": "Inloggningsfönstret stängdes innan processen slutfördes",
+    "popupNoToken": "Inloggningsfönstret returnerade ingen token",
+    "retry": "Försök igen"
+  },
   "Serials": {
     "dialogHeader": "Seriel"
   },
@@ -495,6 +504,7 @@
       "en-US": "Engelska – Förenta staterna (en-US)",
       "fr-FR": "Franska – Frankrike (fr-FR)"
     },
+    "logoutRemoteStorage": "Logga ut från extern lagring",
     "preferredLocale": "Föredraget språk",
     "remoteStorageCurrentUrl": "Du är just nu ansluten till {remoteStorageUrl}",
     "remoteStorageIsAutomatic": "Automatisk konfiguration",

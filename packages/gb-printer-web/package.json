@@ -76,6 +76,7 @@
     "globby": "catalog:",
     "idb": "catalog:",
     "jszip": "catalog:",
+    "jwt-decode": "catalog:",
     "localforage": "catalog:",
     "mui-markdown": "catalog:",
     "next": "catalog:",

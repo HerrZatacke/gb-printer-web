@@ -9,7 +9,15 @@
 <body>
 <div class="box">
   <h1>Login</h1>
-  <a href="/auth/discord">Authenticate with Discord</a>
+  <a id="to-discord" href="/auth/discord">Authenticate with Discord</a>
+  <script>
+    const url = new URL(window.location);
+    const origin = url.searchParams.get('origin');
+    if (origin) {
+      const toDiscord = document.getElementById('to-discord');
+      toDiscord.href = `${toDiscord.href}?origin=${encodeURIComponent(origin)}`
+    }
+  </script>
 </div>
 </body>
 </html>

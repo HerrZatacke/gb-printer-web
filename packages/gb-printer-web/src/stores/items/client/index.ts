@@ -6,6 +6,7 @@ import {
   type ItemsInvalidation,
 } from 'gb-printer-schemas';
 import { getQueryClient } from '@/contexts/QueryClient';
+import ApiAuth from '@/stores/items/client/auth';
 import { binaryFramesKeys } from '@/stores/items/queries/binaryFrames';
 import { binaryImagesKeys } from '@/stores/items/queries/binaryImages';
 import {
@@ -109,6 +110,7 @@ export const getItemsSource = async (): Promise<ItemsSource> => {
         Comlink.proxy(hostApi),
         Comlink.proxy(runInvalidations),
         remoteStorageUrl,
+        Comlink.proxy(new ApiAuth(remoteStorageUrl)),
         debug,
       );
     })().catch((err) => {

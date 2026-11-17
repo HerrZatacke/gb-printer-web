@@ -12,6 +12,7 @@ type Invalidator = {
 declare module 'fastify' {
   interface FastifyInstance {
     invalidation: Invalidator;
+    authEnabled: boolean;
   }
 }
 
@@ -41,15 +42,42 @@ const invalidationPlugin: FastifyPluginAsync = async (app) => {
   app.decorate('invalidation', { broadcastInvalidations });
 
   app.get(EndpointUrls.WS_INVALIDATIONS, { websocket: true }, (socket, req) => {
-    const { clientId } = req.query as { clientId?: string };
+    const { clientId, authToken } = req.query as { clientId?: string; authToken?: string };
 
     if (!clientId) {
       socket.close();
       return;
     }
 
-    clients.set(clientId, socket);
+    if (!app.authEnabled) {
+      clients.set(clientId, socket);
+      socket.on('close', () => {
+        clients.delete(clientId);
+      });
+      return;
+    }
 
+    if (req.isAuthenticated()) {
+      clients.set(clientId, socket);
+      socket.on('close', () => {
+        clients.delete(clientId);
+      });
+      return;
+    }
+
+    if (!authToken) {
+      socket.close();
+      return;
+    }
+
+    try {
+      app.jwt.verify(authToken);
+    } catch {
+      socket.close();
+      return;
+    }
+
+    clients.set(clientId, socket);
     socket.on('close', () => {
       clients.delete(clientId);
     });

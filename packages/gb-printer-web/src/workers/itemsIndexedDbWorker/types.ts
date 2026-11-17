@@ -11,6 +11,7 @@ import {
   type ItemsInvalidation,
 } from 'gb-printer-schemas';
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
+import type ApiAuth from '@/stores/items/client/auth';
 
 export interface ItemsDB extends DBSchema {
   [ItemStoreNames.BINARYFRAMES]: {
@@ -75,4 +76,10 @@ export interface FilterableFacet {
 
 export type RunInvalidationsFn = (invalidations: ItemsInvalidation[]) => Promise<void>;
 
-export type InitWorkerFn = (hostApi: ItemsHostApi, runInvalidations: RunInvalidationsFn, remoteStorageUrl: string, withDebug?: boolean) => Promise<ItemsSource>;
+export type InitWorkerFn = (
+  hostApi: ItemsHostApi,
+  runInvalidations: RunInvalidationsFn,
+  remoteStorageUrl: string,
+  apiAuth: ApiAuth,
+  withDebug?: boolean,
+) => Promise<ItemsSource>;

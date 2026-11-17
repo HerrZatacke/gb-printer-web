@@ -13,6 +13,7 @@ import {
 import { Date } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
+import { cleanDoubleSlashes } from 'ufo';
 import DownloadOptionsForm from '@/components/Overlays/DownloadOptions/DownloadOptionsForm';
 import SettingsPrinterUrls from '@/components/SettingsPrinterUrls';
 import EnableWebUSB from '@/components/WebUSBGreeting/EnableWebUSB';
@@ -26,6 +27,7 @@ import { useFrameGroups } from '@/hooks/useFrameGroups';
 import usePaletteSort from '@/hooks/usePaletteSort';
 import { locales } from '@/i18n/locales';
 import { useInteractionsStore, useSettingsStore } from '@/stores/stores';
+import { delay } from '@/tools/delay';
 
 interface ClickActionOption {
   translationKey: string;
@@ -327,6 +329,29 @@ function SettingsGeneric() {
             disabled={!remoteStorageUrl || remoteStorageIsAutomatic}
           >
             {t('removeRemoteStorage')}
+          </Button>
+          <Button
+            onClick={async () => {
+              sessionStorage.removeItem('authToken');
+              const popup = window.open(
+                cleanDoubleSlashes(`${remoteStorageUrl}/auth/logout`),
+                'auth-logout',
+                'width=420,height=780',
+              );
+
+              window.setInterval(() => {
+                if (popup?.closed) {
+                  window.location.reload();
+                }
+              }, 100);
+
+              await delay(5000);
+              popup?.close();
+              window.location.reload();
+            }}
+            disabled={!remoteStorageUrl || !sessionStorage.getItem('authToken')}
+          >
+            {t('logoutRemoteStorage')}
           </Button>
         </ButtonGroup>
       </Stack>

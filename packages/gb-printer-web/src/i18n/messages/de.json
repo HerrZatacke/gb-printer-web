@@ -448,6 +448,15 @@
   "RemotePrinterContext": {
     "noFilesReceived": "Keine gültigen Dateien vom WiFi-Printer empfangen"
   },
+  "RemoteStorageStatus": {
+    "awaitingHeader": "Erwarte Anmeldung",
+    "awaitingToken": "Folge den Schritten im Pop-up, um den Anmeldevorgang abzuschließen",
+    "errorHeader": "Fehler beim Abrufen des Login-Tokens",
+    "popupBlocked": "Das Login-Popup wurde vom Browser blockiert",
+    "popupClosedEarly": "Das Login-Popup wurde geschlossen, bevor der Vorgang abgeschlossen war",
+    "popupNoToken": "Das Login-Popup hat keinen Token zurückgegeben",
+    "retry": "Erneut versuchen"
+  },
   "Serials": {
     "dialogHeader": "WebUSB / Serielle Geräte"
   },
@@ -495,6 +504,7 @@
       "en-US": "Englisch – Vereinigte Staaten (en-US)",
       "fr-FR": "Französisch – Frankreich (fr-FR)"
     },
+    "logoutRemoteStorage": "Von externem Speicher abmelden",
     "preferredLocale": "Bevorzugte Sprache",
     "remoteStorageCurrentUrl": "Du bist derzeit mit {remoteStorageUrl} verbunden",
     "remoteStorageIsAutomatic": "Automatische Konfiguration",

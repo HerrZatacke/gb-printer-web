@@ -15,6 +15,7 @@
   "dependencies": {
     "@fastify/autoload": "catalog:",
     "@fastify/cors": "catalog:",
+    "@fastify/jwt": "catalog:",
     "@fastify/static": "catalog:",
     "@fastify/passport": "catalog:",
     "@fastify/secure-session": "catalog:",

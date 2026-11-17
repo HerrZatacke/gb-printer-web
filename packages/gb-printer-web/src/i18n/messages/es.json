@@ -448,6 +448,15 @@
   "RemotePrinterContext": {
     "noFilesReceived": "No se han recibido archivos válidos de impresora WiFi"
   },
+  "RemoteStorageStatus": {
+    "awaitingHeader": "Esperando inicio de sesión",
+    "awaitingToken": "Sigue los pasos en la ventana emergente para completar el inicio de sesión",
+    "errorHeader": "Error al recuperar el token de inicio de sesión",
+    "popupBlocked": "La ventana emergente de inicio de sesión fue bloqueada por el navegador",
+    "popupClosedEarly": "La ventana emergente de inicio de sesión se cerró antes de completar el proceso",
+    "popupNoToken": "La ventana emergente de inicio de sesión no devolvió un token",
+    "retry": "Reintentar"
+  },
   "Serials": {
     "dialogHeader": "Dispositivos WebUSB / Seriales"
   },
@@ -495,6 +504,7 @@
       "en-US": "Inglés – Estados Unidos (en-US)",
       "fr-FR": "Francés – Francia (fr-FR)"
     },
+    "logoutRemoteStorage": "Cerrar sesión en el almacenamiento externo",
     "preferredLocale": "Idioma preferido",
     "remoteStorageCurrentUrl": "Actualmente estás conectado/a a {remoteStorageUrl}",
     "remoteStorageIsAutomatic": "Configuración automática",
