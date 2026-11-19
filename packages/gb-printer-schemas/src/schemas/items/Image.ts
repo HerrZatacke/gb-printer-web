@@ -1,4 +1,4 @@
-import { BlendMode, type RGBNPalette as DecoderLibRGBNPalette, Rotation } from 'gb-image-decoder';
+import { BlendMode, type RGBNPalette as DecoderLibRGBNPalette, Rotation, Mirror } from 'gb-image-decoder';
 import z from 'zod';
 import { fromCreationDate, toCreationDate } from '@/tools/creationDate';
 import { Date } from '@/tools/safeDate';
@@ -46,6 +46,7 @@ export const CommonImageSchema = z.object({
   tags: z.array(z.string()).catch([]),
   lockFrame: z.boolean().prefault(false),
   rotation: z.enum(Rotation).catch(Rotation.DEG_0),
+  mirror: z.enum(Mirror).catch(Mirror.NO_FLIP),
   meta: ImageMetadataSchema.nullable().catch(null),
 });
 

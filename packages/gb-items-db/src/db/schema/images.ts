@@ -7,6 +7,7 @@ import {
 } from 'drizzle-orm/sqlite-core';
 import {
   Rotation,
+  Mirror,
 } from 'gb-image-decoder';
 import {
   type RGBNHashes,
@@ -25,6 +26,7 @@ export const images = sqliteTable('images', {
   tags: text('tags', { mode: 'json' }).default([]).$type<string[]>(),
   lockFrame: integer('lock_frame', { mode: 'boolean' }),
   rotation: integer('rotation').$type<Rotation>(),
+  mirror: integer('mirror').$type<Mirror>(),
   meta: text('meta', { mode: 'json' }).$type<ImageMetadata>(),
 
   // Different properties for MonochromeImage and RGBNImage

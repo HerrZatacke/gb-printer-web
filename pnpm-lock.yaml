@@ -202,8 +202,8 @@ catalogs:
       specifier: ^11.0.22
       version: 11.0.22
     gb-image-decoder:
-      specifier: ^2.0.4
-      version: 2.0.4
+      specifier: ^2.1.0
+      version: 2.1.0
     gb-palettes:
       specifier: ^1.0.14
       version: 1.0.14
@@ -397,7 +397,7 @@ importers:
         version: 6.0.0
       gb-image-decoder:
         specifier: 'catalog:'
-        version: 2.0.4(ohash@2.0.12)
+        version: 2.1.0(ohash@2.0.12)
       gb-items-source:
         specifier: workspace:*
         version: link:../gb-items-source
@@ -474,7 +474,7 @@ importers:
         version: 1.11.21
       gb-image-decoder:
         specifier: 'catalog:'
-        version: 2.0.4(ohash@2.0.12)
+        version: 2.1.0(ohash@2.0.12)
       gb-palettes:
         specifier: 'catalog:'
         version: 1.0.14
@@ -619,7 +619,7 @@ importers:
         version: 11.0.22
       gb-image-decoder:
         specifier: 'catalog:'
-        version: 2.0.4(ohash@2.0.12)
+        version: 2.1.0(ohash@2.0.12)
       gb-items-db:
         specifier: workspace:*
         version: link:../gb-items-db
@@ -3841,8 +3841,8 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  gb-image-decoder@2.0.4:
-    resolution: {integrity: sha512-fo5RRAPhDOfobUE3t/pSenADfap/eQ4kW6t4ITaYXvwAFXKL38EZk464I61z553moQd+a8VNatt9cV14ACq/9w==}
+  gb-image-decoder@2.1.0:
+    resolution: {integrity: sha512-9IoSnZtXrSqimCeyheXwRXH7T8UqsGaTP+OMdQVBFYS/YEP9flt0r8j5oC0RXT1Xa8DcBtAMK0XyD16A1037QQ==}
     peerDependencies:
       ohash: ^2.0.11
 
@@ -8678,7 +8678,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  gb-image-decoder@2.0.4(ohash@2.0.12):
+  gb-image-decoder@2.1.0(ohash@2.0.12):
     dependencies:
       ohash: 2.0.12
 
