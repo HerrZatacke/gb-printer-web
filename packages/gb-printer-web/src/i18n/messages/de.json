@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Datum / Zeit",
-    "editRotation": "Rotation bearbeiten"
+    "editMirror": "Bild spiegeln",
+    "editRotation": "Rotation bearbeiten",
+    "mirrorOption": "{option, select, 0 {Nicht spiegeln} 1 {Vertikal spiegeln} 2 {Horizontal spiegeln} other {}}"
   },
   "Import": {
     "exportImages": "Bilder exportieren",
@@ -612,6 +614,7 @@
     "updateInvertFramePalette": "Rahmenpaletten-Invertierung aktualisieren",
     "updateInvertPalette": "Bildpaletten-Invertierung aktualisieren",
     "updateLockFrame": "Separate Rahmeneinstellungen aktualisieren",
+    "updateMirror": "Spiegelung aktualisieren",
     "updatePalette": "Bildpaletten-Farben aktualisieren",
     "updateRotation": "Rotation aktualisieren",
     "updateTags": "Tags aktualisieren",

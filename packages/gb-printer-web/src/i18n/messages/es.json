@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Fecha y hora",
-    "editRotation": "Editar rotación"
+    "editMirror": "Voltear imagen",
+    "editRotation": "Editar rotación",
+    "mirrorOption": "{option, select, 0 {No voltear} 1 {Voltear verticalmente} 2 {Voltear horizontalmente} other {}}"
   },
   "Import": {
     "exportImages": "Exportar imágenes",
@@ -612,6 +614,7 @@
     "updateInvertFramePalette": "Actualizar inversión de paleta de marco",
     "updateInvertPalette": "Actualizar inversión de paleta de imagen",
     "updateLockFrame": "Actualizar configuraciones de marco separadas",
+    "updateMirror": "Actualizar volteo",
     "updatePalette": "Actualizar colores de paleta de imagen",
     "updateRotation": "Actualizar rotación",
     "updateTags": "Actualizar etiquetas",

@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Date / Time",
-    "editRotation": "Edit Rotation"
+    "editMirror": "Flip image",
+    "editRotation": "Edit Rotation",
+    "mirrorOption": "{option, select, 0 {No flip} 1 {Flip vertically} 2 {Flip horizontally} other {}}"
   },
   "Import": {
     "exportImages": "Export images",
@@ -612,6 +614,7 @@
     "updateInvertFramePalette": "Update invert frame palette setting",
     "updateInvertPalette": "Update invert image palette setting",
     "updateLockFrame": "Update separate frame settings",
+    "updateMirror": "Update flip",
     "updatePalette": "Update image palette colors",
     "updateRotation": "Update rotation",
     "updateTags": "Update tags",

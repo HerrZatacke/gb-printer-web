@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Data / Hora",
-    "editRotation": "Editar rotação"
+    "editMirror": "Inverter imagem",
+    "editRotation": "Editar rotação",
+    "mirrorOption": "{option, select, 0 {Não inverter} 1 {Inverter verticalmente} 2 {Inverter horizontalmente} other {}}"
   },
   "Import": {
     "exportImages": "Exportar imagens",
@@ -612,6 +614,7 @@
     "updateInvertFramePalette": "Atualizar inversão da paleta da moldura",
     "updateInvertPalette": "Atualizar inversão da paleta da imagem",
     "updateLockFrame": "Atualizar definições de moldura separadas",
+    "updateMirror": "Atualizar inversão",
     "updatePalette": "Atualizar cores da paleta da imagem",
     "updateRotation": "Atualizar rotação",
     "updateTags": "Atualizar etiquetas",

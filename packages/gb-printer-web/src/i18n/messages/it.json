@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Data / Ora",
-    "editRotation": "Modifica rotazione"
+    "editMirror": "Ribalta immagine",
+    "editRotation": "Modifica rotazione",
+    "mirrorOption": "{option, select, 0 {Non ribaltare} 1 {Ribalta verticalmente} 2 {Ribalta orizzontalmente} other {}}"
   },
   "Import": {
     "exportImages": "Esporta immagini",
@@ -612,6 +614,7 @@
     "updateInvertFramePalette": "Aggiorna inversione palette cornice",
     "updateInvertPalette": "Aggiorna inversione palette immagine",
     "updateLockFrame": "Aggiorna impostazioni cornice separate",
+    "updateMirror": "Aggiorna ribaltamento",
     "updatePalette": "Aggiorna colori palette immagine",
     "updateRotation": "Aggiorna rotazione",
     "updateTags": "Aggiorna tag",

@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Dato / Tid",
-    "editRotation": "Rediger rotasjon"
+    "editMirror": "Speilvend bilde",
+    "editRotation": "Rediger rotasjon",
+    "mirrorOption": "{option, select, 0 {Ikke speilvend} 1 {Speilvend vertikalt} 2 {Speilvend horisontalt} other {}}"
   },
   "Import": {
     "exportImages": "Eksporter bilder",
@@ -612,6 +614,7 @@
     "updateInvertFramePalette": "Oppdater inverter ramme palett",
     "updateInvertPalette": "Oppdater inverter palett",
     "updateLockFrame": "Oppdater lås ramme",
+    "updateMirror": "Oppdater speilvending",
     "updatePalette": "Oppdater palett",
     "updateRotation": "Oppdater rotasjon",
     "updateTags": "Oppdater tagger",
