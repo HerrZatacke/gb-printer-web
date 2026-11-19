@@ -1,6 +1,15 @@
 import chunk from 'chunk';
 import { saveAs } from 'file-saver';
-import { type RGBNTiles, type RGBNPalette, getRGBNImageBlob, getMonochromeImageBlob, ExportFrameMode, BW_PALETTE_HEX } from 'gb-image-decoder';
+import {
+  type RGBNTiles,
+  type RGBNPalette,
+  getRGBNImageBlob,
+  getMonochromeImageBlob,
+  ExportFrameMode,
+  BW_PALETTE_HEX,
+  Rotation,
+  Mirror,
+} from 'gb-image-decoder';
 import { type Palette, type Image, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
 import { GifWriter } from 'omggif';
 import Queue from 'promise-queue';
@@ -151,7 +160,8 @@ export const createAnimation = async () => {
   const canvases = await (Promise.all(animationFrames.map(async (image: Image): Promise<HTMLCanvasElement> => {
     const tiles = await loadImageTiles(image.hash);
     const lockFrame = videoLockFrame || image.lockFrame || false;
-    const rotation = image.rotation || 0;
+    const rotation = image.rotation || Rotation.DEG_0;
+    const mirror = image.mirror || Mirror.NO_FLIP;
 
     const { palette, framePalette } = await getImagePalettes({ ...image, lockFrame }); // set Lockframe to value set by global animate settings
 
@@ -174,6 +184,7 @@ export const createAnimation = async () => {
         lockFrame,
         imageStartLine,
         rotation,
+        mirror,
         scaleFactor,
         handleExportFrame,
       }, 'image/png');
@@ -194,6 +205,7 @@ export const createAnimation = async () => {
         tiles: tiles as string[],
         imageStartLine,
         rotation,
+        mirror,
         scaleFactor,
         handleExportFrame,
         ...updateParams,

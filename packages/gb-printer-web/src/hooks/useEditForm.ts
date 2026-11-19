@@ -1,4 +1,4 @@
-import { type RGBNPalette, Rotation } from 'gb-image-decoder';
+import { Mirror, type RGBNPalette, Rotation } from 'gb-image-decoder';
 import { type ImageMetadata, type MonochromeImage, type RGBNImage } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -20,6 +20,7 @@ interface Batch {
   lockFrame: boolean;
   tags: boolean;
   rotation: boolean;
+  mirror: boolean;
   palette: boolean;
   invertPalette: boolean;
   framePalette: boolean;
@@ -45,6 +46,7 @@ interface ToEdit {
   paletteShort?: string;
   framePaletteShort?: string;
   rotation?: Rotation;
+  mirror?: Mirror;
 }
 
 interface Form {
@@ -53,6 +55,7 @@ interface Form {
   frame: string;
   lockFrame: boolean;
   rotation: Rotation;
+  mirror: Mirror;
   invertPalette?: boolean;
   invertFramePalette?: boolean;
   paletteShort: string;
@@ -69,7 +72,7 @@ interface UseEditForm {
   willUpdateBatch: string[];
   tagChanges: TagChange;
 
-  updateForm: (what: keyof Batch) => (value: string | boolean | Rotation) => void;
+  updateForm: (what: keyof Batch) => (value: string | boolean | Rotation | Mirror) => void;
   updatePalette: (paletteUpdate: (string | RGBNPalette), confirm?: boolean) => void;
   updateTags: (mode: TagUpdateMode, tag: string) => void;
   resetTags: () => void;
@@ -90,6 +93,7 @@ const willUpdate = (batch: Batch, t: ReturnType<typeof useTranslations>): string
   batch.invertFramePalette ? t('updateInvertFramePalette') : '',
   batch.tags ? t('updateTags') : '',
   batch.rotation ? t('updateRotation') : '',
+  batch.mirror ? t('updateMirror') : '',
 ]
   .filter(Boolean)
 );
@@ -166,6 +170,7 @@ export const useEditForm = (): UseEditForm => {
       paletteShort,
       framePaletteShort,
       rotation: image.rotation,
+      mirror: image.mirror,
     });
   }, [editImages, images, dimensions]);
 
@@ -174,6 +179,7 @@ export const useEditForm = (): UseEditForm => {
   const [frame, updateFrame] = useState<string>(toEdit?.frame || '');
   const [lockFrame, updateFrameLock] = useState<boolean>(toEdit?.lockFrame || false);
   const [rotation, updateRotation] = useState<Rotation>(toEdit?.rotation || Rotation.DEG_0);
+  const [mirror, updateMirror] = useState<Mirror>(toEdit?.mirror || Mirror.NO_FLIP);
   const [invertPalette, updateInvertPalette] = useState<boolean>(toEdit?.invertPalette || false);
   const [invertFramePalette, updateInvertFramePalette] = useState<boolean>(toEdit?.invertFramePalette || false);
   const [paletteShort, updatePaletteShort] = useState<string>(toEdit?.paletteShort || '');
@@ -196,6 +202,7 @@ export const useEditForm = (): UseEditForm => {
     updateFrame(toEdit.frame ?? '');
     updateFrameLock(toEdit.lockFrame);
     updateRotation(toEdit.rotation || Rotation.DEG_0);
+    updateMirror(toEdit.mirror || Mirror.NO_FLIP);
     updateInvertPalette(toEdit.invertPalette);
     updateInvertFramePalette(toEdit.invertFramePalette);
     updatePaletteShort(toEdit.paletteShort ?? '');
@@ -217,12 +224,13 @@ export const useEditForm = (): UseEditForm => {
     frame,
     lockFrame,
     rotation,
+    mirror,
     invertPalette,
     paletteShort,
     framePaletteShort,
     invertFramePalette,
     paletteRGBN,
-  }), [created, frame, framePaletteShort, invertFramePalette, invertPalette, lockFrame, paletteRGBN, paletteShort, rotation, title]);
+  }), [created, frame, framePaletteShort, invertFramePalette, invertPalette, lockFrame, paletteRGBN, paletteShort, rotation, mirror, title]);
 
 
   const overrides = useMemo<Overrides>(() => ({
@@ -234,6 +242,7 @@ export const useEditForm = (): UseEditForm => {
     lockFrame: form.lockFrame,
     palette: form.paletteRGBN,
     rotation: form.rotation,
+    mirror: form.mirror,
   }), [form]);
 
 
@@ -260,6 +269,7 @@ export const useEditForm = (): UseEditForm => {
     lockFrame: false,
     tags: false,
     rotation: false,
+    mirror: false,
     palette: false,
     invertPalette: false,
     framePalette: false,
@@ -267,7 +277,7 @@ export const useEditForm = (): UseEditForm => {
   });
 
 
-  const updateForm = (what: keyof Batch) => (value: string | boolean | Rotation) => {
+  const updateForm = (what: keyof Batch) => (value: string | boolean | Rotation | Mirror) => {
     updateShouldUpdate({ ...shouldUpdate, [what]: true });
 
     switch (what) {
@@ -294,6 +304,9 @@ export const useEditForm = (): UseEditForm => {
         break;
       case 'rotation':
         updateRotation(value as Rotation);
+        break;
+      case 'mirror':
+        updateMirror(value as Mirror);
         break;
       default:
     }
@@ -364,6 +377,7 @@ export const useEditForm = (): UseEditForm => {
           frame,
           lockFrame: lockFrame || false,
           rotation,
+          mirror,
           palette: paletteRGBN || paletteShort,
           invertPalette: invertPalette || false,
           framePalette: framePaletteShort,

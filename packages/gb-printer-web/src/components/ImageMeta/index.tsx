@@ -1,3 +1,5 @@
+import CropDinIcon from '@mui/icons-material/CropDin';
+import FlipIcon from '@mui/icons-material/Flip';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Stack from '@mui/material/Stack';
@@ -6,7 +8,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { type Dayjs } from 'dayjs';
-import { Rotation } from 'gb-image-decoder';
+import { Mirror, Rotation } from 'gb-image-decoder';
 import { fromCreationDate, toCreationDate, type ImageMetadata, type RGBNHashes } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
@@ -18,10 +20,12 @@ interface Props {
   hash: string;
   updateCreated: (value: string) => void;
   updateRotation: (value: Rotation) => void;
+  updateMirror: (value: Mirror) => void;
   created?: string;
   hashes?: RGBNHashes;
   meta?: ImageMetadata;
   rotation?: Rotation;
+  mirror?: Mirror;
 }
 
 const rotations: number[] = [
@@ -31,6 +35,12 @@ const rotations: number[] = [
   Rotation.DEG_270,
 ];
 
+const mirrors: number[] = [
+  Mirror.NO_FLIP,
+  Mirror.FLIP_V,
+  Mirror.FLIP_H,
+];
+
 function ImageMeta({
   created,
   hash,
@@ -38,7 +48,9 @@ function ImageMeta({
   updateCreated,
   meta,
   rotation,
+  mirror,
   updateRotation,
+  updateMirror,
 }: Props) {
   const { preferredLocale } = useSettingsStore();
   const t = useTranslations('ImageMeta');
@@ -105,6 +117,34 @@ function ImageMeta({
                 value={value}
               >
                 { `${value * 90}°` }
+              </ToggleButton>
+            ))
+          }
+        </ToggleButtonGroup>
+      </FormControl>
+
+      <FormControl>
+        <InputLabel shrink>
+          {t('editMirror')}
+        </InputLabel>
+        <ToggleButtonGroup
+          exclusive
+          fullWidth
+          value={mirror || Mirror.NO_FLIP}
+          onChange={(_, value) => {
+            updateMirror(value as Mirror);
+          }}
+        >
+          {
+            mirrors.map((value) => (
+              <ToggleButton
+                key={value}
+                value={value}
+                title={t('mirrorOption', { option: value })}
+              >
+                {value === 0 && <CropDinIcon />}
+                {value === 1 && <FlipIcon sx={{ transform: 'rotate(90deg)' }} />}
+                {value === 2 && <FlipIcon />}
               </ToggleButton>
             ))
           }

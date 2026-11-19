@@ -82,6 +82,7 @@ const useBatchUpdateImages = (): UseBatchUpdateImages => {
               }
 
               case Updatable.ROTATION:
+              case Updatable.MIRROR:
               case Updatable.LOCK_FRAME:
               case Updatable.FRAME:{
                 return {

@@ -55,6 +55,7 @@ export const collectImageData: CollectImageDataFn = async (hash: string): Promis
         lockFrame: typeof lockFrame !== 'undefined' ? lockFrame : meta.lockFrame,
         imageStartLine,
         rotation: meta.rotation,
+        mirror: meta.mirror,
         scaleFactor,
         handleExportFrame,
       }, 'image/png');
@@ -78,6 +79,7 @@ export const collectImageData: CollectImageDataFn = async (hash: string): Promis
         tiles: tiles as string[],
         imageStartLine,
         rotation: meta.rotation,
+        mirror: meta.mirror,
         scaleFactor,
         handleExportFrame,
         ...updateParams,

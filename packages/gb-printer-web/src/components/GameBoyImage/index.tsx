@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Box from '@mui/material/Box';
-import { maxTiles, RGBNPalette, RGBNTiles, getMonochromeImageUrl, getRGBNImageUrl, Rotation } from 'gb-image-decoder';
+import { maxTiles, RGBNPalette, RGBNTiles, getMonochromeImageUrl, getRGBNImageUrl, Rotation, Mirror } from 'gb-image-decoder';
 import React, { CSSPropertiesVars, useEffect, useMemo, useState } from 'react';
 import ImageLoading from '@/components/ImageLoading';
 import { type Dimensions, dimensionsFromTileCount } from '@/hooks/useImageDimensions';
@@ -17,6 +17,7 @@ export interface GameBoyImageProps {
   dimensions?: Dimensions;
   asThumb?: boolean;
   rotation?: Rotation;
+  mirror?: Mirror;
 }
 
 function GameBoyImage({
@@ -30,6 +31,7 @@ function GameBoyImage({
   dimensions: dimensionsProp,
   asThumb = false,
   rotation = Rotation.DEG_0,
+  mirror = Mirror.NO_FLIP,
 }: GameBoyImageProps) {
 
   const isRGBN = !(palette instanceof Array);
@@ -59,12 +61,14 @@ function GameBoyImage({
             palette,
             lockFrame: lockFrame || false,
             rotation,
+            mirror,
           });
         } else if ((tiles as string[] | undefined)?.length) {
           newSrc = await getMonochromeImageUrl({
             tiles: tiles as string[],
             imageStartLine,
             rotation,
+            mirror,
             ...getMonochromeImageCreationParams({
               imagePalette: palette,
               framePalette,
@@ -97,6 +101,7 @@ function GameBoyImage({
     lockFrame,
     invertPalette,
     rotation,
+    mirror,
     isRGBN,
     imageStartLine,
     framePalette,
