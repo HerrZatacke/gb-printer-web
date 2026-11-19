@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
+import { type Mirror, type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { type Palette, type MonochromeImage, type RGBNHashes, type RGBNImage } from 'gb-printer-schemas';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { missingGreyPalette } from '@/consts/defaults';
@@ -34,6 +34,7 @@ interface GalleryImageData {
   invertPalette?: boolean;
   invertFramePalette?: boolean;
   rotation: Rotation;
+  mirror: Mirror;
 }
 
 interface UseGalleryImage {
@@ -114,6 +115,7 @@ export const useGalleryImage = (hash: string): UseGalleryImage => {
       invertPalette,
       invertFramePalette,
       rotation: stateImage.rotation,
+      mirror: stateImage.mirror,
       selectionIndex,
     });
   }, [selectionIndex, stateImage, imagePalettes]);

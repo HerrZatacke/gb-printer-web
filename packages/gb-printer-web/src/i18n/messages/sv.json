@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Datum / Tid",
-    "editRotation": "Redigera rotation"
+    "editMirror": "Vänd bilden",
+    "editRotation": "Redigera rotation",
+    "mirrorOption": "{option, select, 0 {Vänd inte} 1 {Vänd vertikalt} 2 {Vänd horisontellt} other {}}"
   },
   "Import": {
     "exportImages": "Exportera bilder",
@@ -324,6 +326,7 @@
   "ImportQueue": {
     "createGroupLabel": "Skapa grupp",
     "dialogHeader": "{count, plural, =1 {Importera bild} other {Importera # bilder}}",
+    "importAsFrame": "Importera som frame",
     "modifyFrame": "Ändra ram",
     "noFrameOption": "Ingen ram",
     "removeAlreadyImported": "Ta bort redan importerade {count, plural, =0 {} other {({count})}}",
@@ -611,6 +614,7 @@
     "updateInvertFramePalette": "Uppdatera inverterad ram-palett",
     "updateInvertPalette": "Uppdatera inverterad palett",
     "updateLockFrame": "Uppdatera låst ram",
+    "updateMirror": "Uppdatera spegelvändning",
     "updatePalette": "Uppdatera palett",
     "updateRotation": "Uppdatera rotation",
     "updateTags": "Uppdatera taggar",

@@ -3,9 +3,11 @@ import {
   integer,
   text,
 } from 'drizzle-orm/sqlite-core';
+import { anonymousOwner } from '@/db/schema/consts';
 
 export const imageGroups = sqliteTable('image_groups', {
   id: text('id').primaryKey(),
+  owner: text('owner').notNull().default(anonymousOwner),
   slug: text('slug').notNull(),
   created: text('created'),
   title: text('title'),

@@ -40,7 +40,8 @@ function EditForm() {
 
   useEffect(() => {
     if (!stickyBox) {
-      return () => { /**/ };
+      return () => { /**/
+      };
     }
 
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -96,7 +97,7 @@ function EditForm() {
         open
         deny={cancel}
       >
-        <LinearProgress variant="indeterminate" />
+        <LinearProgress variant="indeterminate"/>
       </Lightbox>
     );
   }
@@ -126,8 +127,8 @@ function EditForm() {
               backgroundColor: theme.palette.background.default,
             }}
           >
-            <ImageRender hash={toEdit.hash} overrides={overrides} />
-            { toEdit.imageCount > 1 ? (
+            <ImageRender hash={toEdit.hash} overrides={overrides}/>
+            {toEdit.imageCount > 1 ? (
               <Alert
                 severity="info"
                 sx={{
@@ -144,20 +145,20 @@ function EditForm() {
                 {
                   willUpdateBatch.length ? (
                     <Box component="ul">
-                      { willUpdateBatch.map((txt) => (
+                      {willUpdateBatch.map((txt) => (
                         <Typography
                           key={txt}
                           component="li"
                           variant="caption"
                         >
-                          { txt }
+                          {txt}
                         </Typography>
-                      )) }
+                      ))}
                     </Box>
                   ) : null
                 }
               </Alert>
-            ) : null }
+            ) : null}
           </Box>
         </Box>
         <TextField
@@ -186,6 +187,7 @@ function EditForm() {
           tags={tagChanges}
           meta={toEdit.meta}
           rotation={form.rotation}
+          mirror={form.mirror}
           updatePalette={updatePalette}
           updateInvertPalette={updateForm('invertPalette')}
           updateFramePalette={updateFramePalette}
@@ -195,6 +197,7 @@ function EditForm() {
           updateRotation={updateForm('rotation')}
           updateTags={updateTags}
           resetTags={resetTags}
+          updateMirror={updateForm('mirror')}
         />
       </Stack>
     </Lightbox>

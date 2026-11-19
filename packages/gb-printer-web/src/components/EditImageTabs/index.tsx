@@ -3,7 +3,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
-import { type RGBNPalette, type Rotation } from 'gb-image-decoder';
+import { Mirror, type RGBNPalette, type Rotation } from 'gb-image-decoder';
 import { type ImageMetadata, type RGBNHashes } from 'gb-printer-schemas';
 import { useTranslations } from 'next-intl';
 import React, { useMemo, useState, useEffect } from 'react';
@@ -40,6 +40,7 @@ interface Props {
   updateFrame: (value: string) => void;
   updateFrameLock: (value: boolean) => void;
   updateRotation: (value: Rotation) => void;
+  updateMirror: (value: Mirror) => void;
   resetTags: () => void;
 
   hashes?: RGBNHashes;
@@ -50,6 +51,7 @@ interface Props {
   frame?: string;
   meta?: ImageMetadata;
   rotation?: number;
+  mirror?: Mirror;
   mixedTypes?: boolean;
 }
 
@@ -171,6 +173,8 @@ function EditImageTabs(props: Props) {
             meta={props.meta}
             rotation={props.rotation}
             updateRotation={props.updateRotation}
+            mirror={props.mirror}
+            updateMirror={props.updateMirror}
           />
         </TabPanel>
       </TabContext>

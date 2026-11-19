@@ -1,4 +1,14 @@
-import { BW_PALETTE, BW_PALETTE_HEX, getMonochromeImageBlob, getRGBNImageBlob, type RGBNTiles, type ExportFrameMode, type RGBNPalette } from 'gb-image-decoder';
+import {
+  BW_PALETTE,
+  BW_PALETTE_HEX,
+  getMonochromeImageBlob,
+  getRGBNImageBlob,
+  type RGBNTiles,
+  type ExportFrameMode,
+  type RGBNPalette,
+  Rotation,
+  Mirror,
+} from 'gb-image-decoder';
 import { type Palette, type Image, type MonochromeImage } from 'gb-printer-schemas';
 import { type FileNameStyle } from '@/consts/fileNameStyles';
 import { getTxtFile } from '@/tools/download/getTxtFile';
@@ -31,7 +41,8 @@ export const prepareFiles = async (
 
     const isRGBN = isRGBNImage(image);
     const lockFrame = image.lockFrame || false;
-    const rotation = image.rotation || 0;
+    const rotation = image.rotation || Rotation.DEG_0;
+    const mirror = image.mirror || Mirror.NO_FLIP;
 
     const { palette, framePalette } = await getImagePalettes(image);
 
@@ -47,6 +58,7 @@ export const prepareFiles = async (
           lockFrame,
           imageStartLine,
           rotation,
+          mirror,
           scaleFactor,
           handleExportFrame,
         }, fileType);
@@ -64,6 +76,7 @@ export const prepareFiles = async (
       return getMonochromeImageBlob({
         tiles: tiles as string[],
         rotation,
+        mirror,
         scaleFactor,
         handleExportFrame,
         ...updateParams,

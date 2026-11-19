@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Fecha y hora",
-    "editRotation": "Editar rotación"
+    "editMirror": "Voltear imagen",
+    "editRotation": "Editar rotación",
+    "mirrorOption": "{option, select, 0 {No voltear} 1 {Voltear verticalmente} 2 {Voltear horizontalmente} other {}}"
   },
   "Import": {
     "exportImages": "Exportar imágenes",
@@ -324,6 +326,7 @@
   "ImportQueue": {
     "createGroupLabel": "Crear grupo a partir de imágenes en la ubicación actual",
     "dialogHeader": "{count, plural, =1 {Importar imagen} other {Importar # imágenes}}",
+    "importAsFrame": "Importar como frame",
     "modifyFrame": "Modificar marco",
     "noFrameOption": "Sin marco / como se importó",
     "removeAlreadyImported": "Eliminar ya importados {count, plural, =0 {} other {({count})}}",
@@ -611,6 +614,7 @@
     "updateInvertFramePalette": "Actualizar inversión de paleta de marco",
     "updateInvertPalette": "Actualizar inversión de paleta de imagen",
     "updateLockFrame": "Actualizar configuraciones de marco separadas",
+    "updateMirror": "Actualizar volteo",
     "updatePalette": "Actualizar colores de paleta de imagen",
     "updateRotation": "Actualizar rotación",
     "updateTags": "Actualizar etiquetas",

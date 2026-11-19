@@ -96,7 +96,8 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
         return;
       }
 
-      const rotation = overrides?.rotation || galleryImageData?.rotation;
+      const rotation = overrides?.rotation ?? galleryImageData?.rotation;
+      const mirror = overrides?.mirror ?? galleryImageData?.mirror;
 
       if (loadedTiles && galleryImageData) {
         setGbImageProps({
@@ -107,6 +108,7 @@ export const useImageRender = (hash: string, overrides?: Overrides): UseImageRen
           imageStartLine,
           lockFrame,
           rotation,
+          mirror,
           invertFramePalette: lockFrame ? invertFramePalette : invertPalette,
         });
       }

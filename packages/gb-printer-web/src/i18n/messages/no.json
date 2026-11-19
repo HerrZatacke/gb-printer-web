@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Dato / Tid",
-    "editRotation": "Rediger rotasjon"
+    "editMirror": "Speilvend bilde",
+    "editRotation": "Rediger rotasjon",
+    "mirrorOption": "{option, select, 0 {Ikke speilvend} 1 {Speilvend vertikalt} 2 {Speilvend horisontalt} other {}}"
   },
   "Import": {
     "exportImages": "Eksporter bilder",
@@ -324,6 +326,7 @@
   "ImportQueue": {
     "createGroupLabel": "Opprett gruppe fra bilder på gjeldende plassering",
     "dialogHeader": "{count, plural, =1 {Importer bilde} other {Importer # bilder}}",
+    "importAsFrame": "Importer som frame",
     "modifyFrame": "Endre ramme",
     "noFrameOption": "Ingen ramme / som importert",
     "removeAlreadyImported": "Fjern allerede importerte {count, plural, =0 {} other {({count})}}",
@@ -611,6 +614,7 @@
     "updateInvertFramePalette": "Oppdater inverter ramme palett",
     "updateInvertPalette": "Oppdater inverter palett",
     "updateLockFrame": "Oppdater lås ramme",
+    "updateMirror": "Oppdater speilvending",
     "updatePalette": "Oppdater palett",
     "updateRotation": "Oppdater rotasjon",
     "updateTags": "Oppdater tagger",

@@ -17,6 +17,7 @@ export const Updatable = {
   TAGS: 'tags',
   CREATED: 'created',
   ROTATION: 'rotation',
+  MIRROR: 'mirror',
 } as const;
 export type Updatable = (typeof Updatable)[keyof typeof Updatable];
 
@@ -36,6 +37,7 @@ export const UPDATATABLES: ImageUpdatable[] = [
   Updatable.TAGS,
   Updatable.CREATED,
   Updatable.ROTATION,
+  Updatable.MIRROR,
   Updatable.PALETTE,
   UpdatableMonochrome.INVERT_PALETTE,
   UpdatableMonochrome.FRAME_PALETTE,

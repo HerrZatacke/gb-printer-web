@@ -307,7 +307,9 @@
   },
   "ImageMeta": {
     "dateTime": "Data / Ora",
-    "editRotation": "Modifica rotazione"
+    "editMirror": "Ribalta immagine",
+    "editRotation": "Modifica rotazione",
+    "mirrorOption": "{option, select, 0 {Non ribaltare} 1 {Ribalta verticalmente} 2 {Ribalta orizzontalmente} other {}}"
   },
   "Import": {
     "exportImages": "Esporta immagini",
@@ -324,6 +326,7 @@
   "ImportQueue": {
     "createGroupLabel": "Crea gruppo dalle immagini nella posizione attuale",
     "dialogHeader": "{count, plural, =1 {Importa immagine} other {Importa # immagini}}",
+    "importAsFrame": "Importa come frame",
     "modifyFrame": "Modifica cornice",
     "noFrameOption": "Nessuna cornice / come importato",
     "removeAlreadyImported": "Rimuovi già importati {count, plural, =0 {} other {({count})}}",
@@ -611,6 +614,7 @@
     "updateInvertFramePalette": "Aggiorna inversione palette cornice",
     "updateInvertPalette": "Aggiorna inversione palette immagine",
     "updateLockFrame": "Aggiorna impostazioni cornice separate",
+    "updateMirror": "Aggiorna ribaltamento",
     "updatePalette": "Aggiorna colori palette immagine",
     "updateRotation": "Aggiorna rotazione",
     "updateTags": "Aggiorna tag",

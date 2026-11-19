@@ -7,26 +7,26 @@ import {
 } from 'drizzle-orm/sqlite-core';
 import {
   Rotation,
+  Mirror,
 } from 'gb-image-decoder';
 import {
   type RGBNHashes,
   type RGBNPalette,
   type ImageMetadata,
 } from 'gb-printer-schemas';
+import { anonymousOwner } from '@/db/schema/consts';
 
-// ---- Drizzle table — this is what `drizzle-kit generate` reads ----
-// id is app-generated (z.string(), e.g. a UUID or hash you create yourself),
-// so no .primaryKey({ autoIncrement: true }) — that's only for integer ids
-// SQLite generates for you.
 export const images = sqliteTable('images', {
   // CommonImage properties
   hash: text('hash').primaryKey(),
+  owner: text('owner').notNull().default(anonymousOwner),
   created: text('created'),
   title: text('title'),
   frame: text('frame'),
   tags: text('tags', { mode: 'json' }).default([]).$type<string[]>(),
   lockFrame: integer('lock_frame', { mode: 'boolean' }),
   rotation: integer('rotation').$type<Rotation>(),
+  mirror: integer('mirror').$type<Mirror>(),
   meta: text('meta', { mode: 'json' }).$type<ImageMetadata>(),
 
   // Different properties for MonochromeImage and RGBNImage
@@ -50,6 +50,7 @@ export const images = sqliteTable('images', {
 export const imageReferences = sqliteTable('image_references', {
   sourceHash: text('source_hash').notNull().references(() => images.hash, { onDelete: 'cascade' }),
   referencedHash: text('referenced_hash').notNull(),
+  owner: text('owner').notNull().default(anonymousOwner),
 }, (table) => [
   primaryKey({ columns: [table.sourceHash, table.referencedHash] }),
   index('idx_image_references_referenced_hash').on(table.referencedHash),
@@ -58,6 +59,7 @@ export const imageReferences = sqliteTable('image_references', {
 export const imageTags = sqliteTable('image_tags', {
   imageHash: text('image_hash').notNull().references(() => images.hash, { onDelete: 'cascade' }),
   tag: text('tag').notNull(),
+  owner: text('owner').notNull().default(anonymousOwner),
 }, (table) => [
   primaryKey({ columns: [table.imageHash, table.tag] }),
   index('idx_image_tags_tag').on(table.tag),

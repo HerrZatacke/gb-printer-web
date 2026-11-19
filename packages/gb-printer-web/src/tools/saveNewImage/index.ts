@@ -1,4 +1,4 @@
-import { Rotation } from 'gb-image-decoder';
+import { Mirror, Rotation } from 'gb-image-decoder';
 import { toCreationDate, type MonochromeImage } from 'gb-printer-schemas';
 import { save } from '@/tools/storage';
 
@@ -32,6 +32,7 @@ const saveNewImage = async ({
     invertPalette: false,
     lockFrame: false,
     rotation: Rotation.DEG_0,
+    mirror: Mirror.NO_FLIP,
     frame,
     meta,
   };

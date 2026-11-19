@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import { Rotation } from 'gb-image-decoder';
+import { Mirror, Rotation } from 'gb-image-decoder';
 import {
   Date,
   toCreationDate,
@@ -101,6 +101,7 @@ const useTrashbin = (): UseTrashbin => {
           invertPalette: false,
           lockFrame: false,
           rotation: Rotation.DEG_0,
+          mirror: Mirror.NO_FLIP,
           invertFramePalette: false,
           frame: '',
           meta: null,

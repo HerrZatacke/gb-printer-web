@@ -19,8 +19,8 @@ catalog:
   '@fastify/autoload': ^6.5.0
   '@fastify/cors': ^11.3.0
   '@fastify/passport': ^4.0.2
-  '@fastify/secure-session': ^8.3.0
-  '@fastify/static': ^10.1.3
+  '@fastify/secure-session': ^8.4.2
+  "@fastify/static": ^10.1.12
   '@fastify/websocket': ^11.3.0
   '@mui/icons-material': ^9.3.1
   '@mui/lab': 9.0.0-beta.8
@@ -71,13 +71,13 @@ catalog:
   eslint-plugin-jsx-a11y: ^6.10.2
   eslint-plugin-react: ^7.37.5
   events: ^3.3.0
-  fastify: ^5.12.0
+  fastify: ^5.12.8
   fastify-plugin: ^6.0.0
   favicons: ^7.3.1
   file-saver: ^2.0.5
   filenamify: ^7.0.2
   filesize: ^11.0.22
-  gb-image-decoder: ^2.0.4
+  gb-image-decoder: ^2.1.0
   gb-palettes: ^1.0.14
   gbp-decode: ^1.4.1
   globby: ^16.2.2
@@ -85,7 +85,7 @@ catalog:
   jszip: ^3.10.1
   localforage: ^1.10.0
   mui-markdown: ^3.0.1
-  next: ^16.3.0
+  next: ^16.4.6
   next-intl: ^4.13.5
   node-kmeans: ^1.1.9
   object-hash: ^3.0.0
@@ -112,5 +112,25 @@ catalog:
   use-debounce: ^10.1.1
   uuid: ^14.0.1
   ws: ^8.21.3
-  zod: ^4.4.3
+  zod: ^4.6.7
   zustand: ^5.0.14
+
+minimumReleaseAgeExclude:
+  - gb-image-decoder@2.1.0
+  - esbuild@0.24.3
+  - nanoid@3.3.18
+  - fastify@5.12.1 || 5.12.2 || 5.12.5
+  - fast-uri@3.1.6 || 3.1.7 || 3.1.8 || 3.1.9 || 4.1.3 || 4.1.4 || 4.1.5 || 4.2.3
+  - next@16.3.3 || 16.3.6 || 16.3.8 || 16.4.1 || 16.4.5
+  - sharp@0.35.4 || 0.35.5
+  - js-yaml@4.3.2
+  - brace-expansion@1.1.19 || 1.1.20 || 1.1.21 || 5.0.10 || 5.0.11 || 5.0.12
+  - dompurify@3.4.16 || 3.4.17
+  - katex@0.18.2
+  - source-map-js@1.2.2
+  - compression@1.8.2
+  - shell-quote@1.11.0
+  - zod@4.6.6
+  - glob@14.0.2
+  - minimatch@11.0.1
+  - '@fastify/static@10.1.12'
