@@ -1,1 +1,3 @@
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"Ke0hDkzT40sss6CYVnmfI"}
+2:[["children",{"s":"__PAGE__","h":160}]]
+1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
+0:{"b":"LI6J-csz8hiyiWybg2wVa","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
